@@ -2,6 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -19,18 +20,21 @@ const slides = [
     title: 'Glow Naturally with Soundarya Shrinagar',
     subtitle: 'Discover the secret to radiant skin with our 100% natural formulations.',
     buttonText: 'Explore Skincare',
+    link: '/shop?category=skincare'
   },
   {
     image: hero2,
     title: 'Flat 30% Off on Skincare Products',
     subtitle: 'Limited time offer! Upgrade your beauty routine with our bestsellers.',
     buttonText: 'Shop the Sale',
+    link: '/shop'
   },
   {
     image: hero3,
     title: 'Pure Beauty Inspired by Nature',
     subtitle: 'Ethically sourced, dermatologically tested, and cruelty-free beauty.',
     buttonText: 'Wellness Kit',
+    link: '/shop?category=beauty kits'
   },
 ];
 
@@ -72,9 +76,9 @@ const HeroCarousel = () => {
                     <p className="text-[10px] md:text-xs mb-5 opacity-80 drop-shadow-sm font-medium max-w-xs">
                       {slide.subtitle}
                     </p>
-                    <button className="bg-brand-gold text-white px-6 py-2 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-brand-dark transition-all duration-300 shadow-md">
+                    <Link to={slide.link} className="inline-block bg-brand-gold text-white px-6 py-2 rounded-none text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-brand-dark transition-all duration-300 shadow-md">
                       {slide.buttonText}
-                    </button>
+                    </Link>
                   </motion.div>
                 </div>
               </div>

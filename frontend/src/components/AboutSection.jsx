@@ -14,14 +14,14 @@ import side1 from '../assets/images/blog_skincare.png';
 import side2 from '../assets/images/blog_haircare.png';
 
 const floatingImages = [
-  { src: img1, size: 'w-20 h-28 md:w-36 md:h-48', top: '10%', left: '8%', delay: 0 },
-  { src: img2, size: 'w-18 h-24 md:w-32 md:h-44', top: '22%', left: '22%', delay: 1 },
-  { src: img3, size: 'w-24 h-32 md:w-40 md:h-52', top: '5%', left: '40%', delay: 0.5 },
-  { src: img4, size: 'w-20 h-28 md:w-36 md:h-48', top: '18%', left: '60%', delay: 1.5 },
-  { src: img5, size: 'w-18 h-24 md:w-32 md:h-44', top: '10%', left: '78%', delay: 0.2 },
-  { src: img6, size: 'w-20 h-28 md:w-34 md:h-46', top: '48%', left: '10%', delay: 0.8 },
-  { src: img7, size: 'w-24 h-32 md:w-40 md:h-52', top: '55%', left: '42%', delay: 1.2 },
-  { src: img8, size: 'w-18 h-24 md:w-32 md:h-44', top: '52%', left: '72%', delay: 0.4 },
+  { src: '/cat_skincare.png', size: 'w-20 h-28 md:w-36 md:h-48', top: '10%', left: '8%', delay: 0 },
+  { src: '/cat_haircare.png', size: 'w-18 h-24 md:w-32 md:h-44', top: '22%', left: '22%', delay: 1 },
+  { src: '/cat_wellness.png', size: 'w-24 h-32 md:w-40 md:h-52', top: '5%', left: '40%', delay: 0.5 },
+  { src: '/insta_1.png', size: 'w-20 h-28 md:w-36 md:h-48', top: '18%', left: '60%', delay: 1.5 },
+  { src: '/insta_2.png', size: 'w-18 h-24 md:w-32 md:h-44', top: '10%', left: '78%', delay: 0.2 },
+  { src: '/insta_3.png', size: 'w-20 h-28 md:w-34 md:h-46', top: '48%', left: '10%', delay: 0.8 },
+  { src: '/insta_4.png', size: 'w-24 h-32 md:w-40 md:h-52', top: '55%', left: '42%', delay: 1.2 },
+  { src: '/insta_5.png', size: 'w-18 h-24 md:w-32 md:h-44', top: '52%', left: '72%', delay: 0.4 },
 ];
 
 const AboutSection = () => {
@@ -147,7 +147,7 @@ const AboutSection = () => {
                   </span>
                 </div>
               </div>
-              <img src={side1} alt="Category Skincare" className="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src="/blog_skincare.png" alt="Category Skincare" className="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
             </motion.div>
 
             <motion.div
@@ -163,7 +163,7 @@ const AboutSection = () => {
                   </span>
                 </div>
               </div>
-              <img src={side2} alt="Category Wellness" className="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src="/blog_haircare.png" alt="Category Wellness" className="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
             </motion.div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import HeroCarousel from './HeroCarousel';
 import Categories from './Categories';
-import AboutSection from './AboutSection';
 import TrendingBanner from './TrendingBanner';
 import FeaturedProducts from './FeaturedProducts';
 import OffersBanner from './OffersBanner';
@@ -17,7 +16,6 @@ const Home = () => {
     <>
       <HeroCarousel />
       <Categories />
-      <AboutSection />
       <TrendingBanner />
       <FeaturedProducts />
       <OffersBanner />

@@ -2,6 +2,7 @@ import React from 'react';
 import promoImg from '../assets/images/promo.png';
 import perfumeVideo from '../assets/videos/offers_video.mp4';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const OffersBanner = () => {
   return (
@@ -15,7 +16,7 @@ const OffersBanner = () => {
             playsInline
             className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
           >
-            <source src={perfumeVideo} type="video/mp4" />
+            <source src="/offers_video.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           
@@ -35,12 +36,12 @@ const OffersBanner = () => {
                   Indulge in <br className="hidden md:block" /> Timeless Elegance
                 </h2>
               </motion.div>
-              <button className="bg-white text-brand-dark hover:bg-brand-gold hover:text-white px-5 py-2 sm:px-6 sm:py-2.5 rounded-none text-xs sm:text-sm font-bold transition-all transform hover:-translate-y-1 active:translate-y-0 duration-300 shadow-xl inline-flex items-center justify-center gap-2 group/btn">
+              <Link to="/shop" className="bg-white text-brand-dark hover:bg-brand-gold hover:text-white px-5 py-2 sm:px-6 sm:py-2.5 rounded-none text-xs sm:text-sm font-bold transition-all transform hover:-translate-y-1 active:translate-y-0 duration-300 shadow-xl inline-flex items-center justify-center gap-2 group/btn">
                 <span>Explore Collection</span>
                 <svg className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </button>
+              </Link>
             </div>
           </div>
           

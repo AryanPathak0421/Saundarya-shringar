@@ -21,7 +21,7 @@ const testimonials = [
     name: 'Akanksha Khanna',
     age: 27,
     text: "Delighted with my engagement ring from BlueStone! It's my dream ring, fits perfectly and is stunning to look at. Thanks, BlueStone, for helping us find the perfect symbol of love!",
-    image: testi1,
+    image: '/testi_1.png',
     rotate: '-rotate-6'
   },
   {
@@ -29,7 +29,7 @@ const testimonials = [
     name: 'Diksha Singh',
     age: 29,
     text: "I was worried about finding good quality fine jewellery pieces online, but BlueStone's customer service gave me full assurance and the delivery was super quick. Their jewellery is certified, and there is no compromise on quality.",
-    image: testi2,
+    image: '/testi_2.png',
     rotate: 'rotate-6'
   },
   {
@@ -37,7 +37,7 @@ const testimonials = [
     name: 'Nutan Mishra',
     age: 33,
     text: "I got a Nazariya for my baby boy from BlueStone. It's so cute seeing it on my little one's wrist, and it gives me a sense of security knowing it's there. Thanks, BlueStone, for creating such lovely pieces for our little ones!",
-    image: testi3,
+    image: '/testi_3.png',
     rotate: '-rotate-4'
   },
   {
@@ -45,7 +45,7 @@ const testimonials = [
     name: 'Divya Mishra',
     age: 25,
     text: "On Valentine's Day, I received a beautiful necklace from my husband. It's my favorite piece of jewellery now and I wear it almost every day. It's elegant and goes with any outfit. Thank you, BlueStone!",
-    image: testi4,
+    image: '/testi_4.png',
     rotate: 'rotate-8'
   },
   {
@@ -53,7 +53,7 @@ const testimonials = [
     name: 'Priya Sharma',
     age: 26,
     text: "Soundarya Shrinagar's products have transformed my skincare routine. The quality is unmatched and the results are visible within days. Truly a premium experience!",
-    image: testi5,
+    image: '/testi_5.png',
     rotate: '-rotate-8'
   },
 ];
@@ -67,7 +67,7 @@ const Testimonials = () => {
       <div 
         className="absolute inset-0 z-0 opacity-45"
         style={{
-          backgroundImage: `url(${testiBg})`,
+          backgroundImage: `url('/testi_bg.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           filter: 'blur(2px)',
@@ -118,7 +118,6 @@ const Testimonials = () => {
             sticky: false
           }}
           onSwiper={setSwiperInstance}
-          loopedSlides={5}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
           className="testimonials-swiper !overflow-visible"
         >
@@ -178,7 +177,7 @@ const Testimonials = () => {
         </button>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .testimonials-swiper {
           padding-top: 20px;
           padding-bottom: 40px;

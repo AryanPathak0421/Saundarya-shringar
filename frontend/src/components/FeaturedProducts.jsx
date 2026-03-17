@@ -1,5 +1,6 @@
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 import imgTirtirRed from '../assets/products/tirtir_red_cushion.png';
 import imgTirtirPink from '../assets/products/tirtir_pink_cushion.png';
@@ -78,11 +79,11 @@ const FeaturedProducts = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-6"
+          className="text-center mb-4"
         >
-          <h2 className="text-xl md:text-2xl font-serif font-bold mb-2 text-brand-dark uppercase tracking-wide">Featured Products</h2>
-          <p className="text-gray-500 max-w-lg mx-auto font-medium text-xs md:text-sm">Discover our curated selection of premium organic beauty essentials, crafted with nature's finest ingredients.</p>
-          <div className="w-16 h-1 bg-brand-gold mx-auto mt-3"></div>
+          <h2 className="text-lg md:text-xl font-serif font-bold mb-1 text-brand-dark uppercase tracking-wide">Featured Products</h2>
+          <p className="text-gray-500 max-w-lg mx-auto font-medium text-[10px] md:text-xs">Discover our curated selection of premium organic beauty essentials.</p>
+          <div className="w-12 h-1 bg-brand-gold mx-auto mt-2"></div>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
@@ -91,10 +92,10 @@ const FeaturedProducts = () => {
           ))}
         </div>
         
-        <div className="mt-8 text-center">
-          <button className="border-2 border-brand-dark text-brand-dark px-6 py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-brand-dark hover:text-white transition-all duration-300">
-            View All Products
-          </button>
+        <div className="mt-10 text-center">
+          <Link to="/shop" className="inline-block border-2 border-brand-dark text-brand-dark px-10 py-3 rounded-none text-[10px] font-black uppercase tracking-widest hover:bg-brand-dark hover:text-white transition-all duration-300 shadow-xl active:scale-95">
+            Explore All Creations
+          </Link>
         </div>
       </div>
     </section>

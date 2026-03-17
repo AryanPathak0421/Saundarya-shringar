@@ -11,12 +11,12 @@ import fbLogo from '../assets/images/facebook_logo.jpg';
 const instagramUrl = "https://www.instagram.com/saundaryashringarpvtltd/";
 
 const images = [
-  img1,
-  fbLogo,
-  img2,
-  img3,
-  img4,
-  img5,
+  '/insta_1.png',
+  '/facebook_logo.jpg',
+  '/insta_2.png',
+  '/insta_3.png',
+  '/insta_4.png',
+  '/insta_5.png',
 ];
 
 const InstagramGallery = () => {

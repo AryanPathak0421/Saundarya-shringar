@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -59,7 +60,7 @@ const bestSellers = [
 
 const BestSellers = () => {
   return (
-    <section className="py-10 md:py-12 bg-brand-pink/20">
+    <section className="py-8 md:py-10 bg-brand-pink/20">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center mb-6">
           <motion.div 
@@ -69,8 +70,8 @@ const BestSellers = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="text-center md:text-left mb-4 md:mb-0"
           >
-            <h2 className="text-xl md:text-2xl font-serif font-bold mb-1 text-brand-dark uppercase tracking-wide">Our Best Sellers</h2>
-            <p className="text-gray-500 font-medium text-xs md:text-sm">Most loved products by our community</p>
+            <h2 className="text-lg md:text-xl font-serif font-bold mb-0.5 text-brand-dark uppercase tracking-wide">Our Best Sellers</h2>
+            <p className="text-gray-500 font-medium text-[10px] md:text-xs">Most loved products by our community</p>
           </motion.div>
           <div className="flex space-x-2">
             {/* Custom navigation buttons will be handled by Swiper default for now */}
@@ -95,6 +96,12 @@ const BestSellers = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+
+        <div className="mt-6 text-center">
+          <Link to="/shop?sort=Top Rated" className="inline-block border-2 border-brand-dark text-brand-dark px-10 py-3 rounded-none text-[10px] font-black uppercase tracking-widest hover:bg-brand-dark hover:text-white transition-all duration-300 shadow-xl active:scale-95">
+            View All Bestsellers
+          </Link>
+        </div>
       </div>
     </section>
   );
