@@ -70,20 +70,20 @@ const AboutSection = () => {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 py-16 md:py-24">
+      <div className="container mx-auto px-4 py-8 md:py-16">
         <div className="flex flex-col lg:flex-row gap-12 items-start">
           {/* Main Text Content */}
-          <div className="flex-1 space-y-12">
+          <div className="flex-1 space-y-8">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="bg-brand-pink text-white p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] shadow-2xl relative overflow-hidden group"
+              className="bg-brand-pink text-white p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl relative overflow-hidden group"
             >
               {/* Decorative circle */}
               <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
               
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 italic border-b border-white/20 pb-4">
+              <h2 className="text-2xl md:text-4xl font-serif font-bold mb-4 italic border-b border-white/20 pb-4">
                 The Heritage
               </h2>
               <p className="text-sm md:text-base leading-relaxed opacity-90 font-medium tracking-wide">
@@ -92,7 +92,7 @@ const AboutSection = () => {
                 cosmetic science, we bring you a curation of skincare and wellness products that 
                 celebrate your natural glow.
               </p>
-              <div className="mt-8">
+              <div className="mt-6">
                 <p className="text-xs uppercase tracking-[0.3em] font-bold opacity-70">
                   Established 2004
                 </p>
@@ -103,9 +103,9 @@ const AboutSection = () => {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="space-y-6"
+              className="space-y-3"
             >
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-brand-dark italic">
+              <h2 className="text-2xl md:text-4xl font-serif font-bold text-brand-dark italic">
                 Our Philosophy
               </h2>
               <p className="text-gray-600 leading-relaxed font-inter">
@@ -119,7 +119,7 @@ const AboutSection = () => {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="space-y-4"
+              className="space-y-2"
             >
               <h2 className="text-2xl md:text-3xl font-serif font-bold text-brand-dark italic">
                 Our Approach
@@ -147,7 +147,7 @@ const AboutSection = () => {
                   </span>
                 </div>
               </div>
-              <img src={side1} alt="Category Skincare" className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src={side1} alt="Category Skincare" className="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
             </motion.div>
 
             <motion.div
@@ -163,7 +163,7 @@ const AboutSection = () => {
                   </span>
                 </div>
               </div>
-              <img src={side2} alt="Category Wellness" className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
+              <img src={side2} alt="Category Wellness" className="w-full h-64 md:h-80 object-cover group-hover:scale-110 transition-transform duration-700" />
             </motion.div>
           </div>
         </div>
