@@ -5,34 +5,46 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useShop } from '../context/ShopContext';
 
 const TrackOrder = () => {
-  const { lastOrder, orderDetails } = useShop();
+  const { lastOrder, orderDetails, orderId: actualOrderId } = useShop();
   const [searchParams] = useSearchParams();
   const [orderId, setOrderId] = useState(searchParams.get('id') || '');
   const [isSearching, setIsSearching] = useState(false);
   const [orderData, setOrderData] = useState(null);
+  const [error, setError] = useState('');
 
   const performTrack = (id) => {
     if (!id) return;
+    setError('');
     setIsSearching(true);
-    // Simulate API call
+    
+    // Simulate API call with validation
     setTimeout(() => {
-      setOrderData({
-        id: id,
-        status: 'In Transit',
-        step: 3,
-        currentLocation: 'Hub-4, Bangalore Central',
-        estimatedDelivery: '22 March 2026',
-        items: lastOrder || [],
-        customerName: orderDetails?.name || 'Seeker of Beauty',
-        address: orderDetails?.address || '123, Green Valley, Bangalore, Karnataka',
-        timeline: [
-          { status: 'Order Placed', time: '18 March, 02:00 AM', completed: true },
-          { status: 'Processing', time: '18 March, 04:30 AM', completed: true },
-          { status: 'Shipped', time: '18 March, 09:15 AM', completed: true, current: true },
-          { status: 'Out for Delivery', time: 'Pending', completed: false },
-          { status: 'Delivered', time: 'Pending', completed: false },
-        ]
-      });
+      // Check if the entered ID matches the actual last order ID
+      // For demo purposes, we also allow the default mock ID if no order has been placed yet
+      const isValid = (actualOrderId && id.toUpperCase() === actualOrderId.toUpperCase()) || (!actualOrderId && id === 'SS-718293');
+
+      if (isValid) {
+        setOrderData({
+          id: id,
+          status: 'In Transit',
+          step: 3,
+          currentLocation: 'Hub-4, Bangalore Central',
+          estimatedDelivery: '22 March 2026',
+          items: lastOrder || [],
+          customerName: orderDetails?.name || 'Seeker of Beauty',
+          address: orderDetails?.address || '123, Green Valley, Bangalore, Karnataka',
+          timeline: [
+            { status: 'Order Placed', time: '18 March, 02:00 AM', completed: true },
+            { status: 'Processing', time: '18 March, 04:30 AM', completed: true },
+            { status: 'Shipped', time: '18 March, 09:15 AM', completed: true, current: true },
+            { status: 'Out for Delivery', time: 'Pending', completed: false },
+            { status: 'Delivered', time: 'Pending', completed: false },
+          ]
+        });
+      } else {
+        setOrderData(null);
+        setError('The Ritual Key provided does not match our sacred records.');
+      }
       setIsSearching(false);
     }, 1200);
   };
@@ -85,6 +97,15 @@ const TrackOrder = () => {
                   {isSearching ? 'Whispering...' : 'Track Ritual'}
                 </button>
               </div>
+              {error && (
+                <motion.p 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  className="text-red-400 text-[8px] font-black uppercase tracking-widest mt-4 text-center"
+                >
+                  {error}
+                </motion.p>
+              )}
            </form>
         </div>
 
@@ -160,9 +181,9 @@ const TrackOrder = () => {
                   </div>
               </div>
 
-              {/* Compact Info Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                 <div className="bg-white p-4 border border-gray-100 flex items-center gap-4 group">
+              {/* Compact Info Grid - Added Spacing */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                 <div className="bg-white p-4 border border-gray-100 flex items-center gap-4 group shadow-sm mb-1">
                     <div className="w-10 h-10 bg-gray-50 flex items-center justify-center text-brand-gold transition-colors group-hover:bg-[#5C2E3E] group-hover:text-white">
                        <FiNavigation size={18} />
                     </div>
