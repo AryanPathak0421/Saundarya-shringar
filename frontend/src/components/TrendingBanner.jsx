@@ -59,12 +59,12 @@ const TrendingBanner = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center md:text-left"
+            className="text-center"
           >
            <h2 className="text-xl md:text-2xl font-serif font-bold text-brand-dark tracking-tight">
               TRENDING <span className="text-brand-gold italic">ESSENTIALS</span>
             </h2>
-            <div className="w-16 h-1 bg-brand-gold mt-2 mx-auto md:mx-0"></div>
+            <div className="w-16 h-1 bg-brand-gold mt-2 mx-auto"></div>
           </motion.div>
         </div>
 

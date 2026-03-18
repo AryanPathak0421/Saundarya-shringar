@@ -62,13 +62,13 @@ const BestSellers = () => {
   return (
     <section className="py-8 md:py-10 bg-brand-pink/20">
       <div className="container mx-auto px-4 md:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+        <div className="flex flex-col items-center mb-6 text-center">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-center md:text-left mb-4 md:mb-0"
+            className="text-center mb-4"
           >
             <h2 className="text-lg md:text-xl font-serif font-bold mb-0.5 text-brand-dark uppercase tracking-wide">Our Best Sellers</h2>
             <p className="text-gray-500 font-medium text-[10px] md:text-xs">Most loved products by our community</p>
