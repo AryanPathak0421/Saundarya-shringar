@@ -5,56 +5,89 @@ import footerBg from '../../assets/images/footer_bg.jpg';
 
 const Footer = () => {
   return (
-    <footer className="relative bg-[#FFF0F3] text-brand-dark pt-8 pb-4 border-t border-brand-pink/10 italic overflow-hidden">
-      {/* Sketched Cosmetic Background - High Visibility */}
+    <footer className="relative bg-[#FFF0F3] text-brand-dark pt-12 pb-6 border-t border-brand-pink/10 overflow-hidden">
+      {/* Sketched Cosmetic Background - Subtle */}
       <div 
-        className="absolute inset-0 z-0 opacity-25"
+        className="absolute inset-0 z-0 opacity-10 pointer-events-none"
         style={{
           backgroundImage: `url(${footerBg})`,
-          backgroundSize: '400px',
+          backgroundSize: '300px',
           backgroundRepeat: 'repeat',
         }}
       ></div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-6">
-          {/* Brand Info */}
-          <div className="max-w-xs">
-            <img src={logo} alt="Logo" className="h-10 w-auto mb-3" />
-            <p className="text-gray-500 text-[10px] leading-relaxed mb-4">
-              Pure essence of nature. 100% organic and natural beauty products crafted to enhance your natural glow.
-            </p>
-            <div className="flex space-x-3">
-              <a href="https://www.instagram.com/saundaryashringarpvtltd/" target="_blank" rel="noopener noreferrer" className="p-2 border border-brand-pink/20 rounded-full hover:bg-brand-pink/10 transition-colors text-xs text-brand-dark"><FiInstagram /></a>
-              <a href="https://www.facebook.com/people/Saundarya-Shringar-Pvt-Ltd/61580709900798/" target="_blank" rel="noopener noreferrer" className="p-2 border border-brand-pink/20 rounded-full hover:bg-brand-pink/10 transition-colors text-xs text-brand-dark"><FiFacebook /></a>
-              <a href="https://x.com/LtdShringar" target="_blank" rel="noopener noreferrer" className="p-2 border border-brand-pink/20 rounded-full hover:bg-brand-pink/10 transition-colors text-xs text-brand-dark"><FiTwitter /></a>
-            </div>
+      <div className="container mx-auto px-4 md:px-8 relative z-10 flex flex-col items-center text-center">
+        
+        {/* Centered Brand Branding (Matching Navbar) */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="h-16 w-auto mb-4 flex items-center justify-center">
+            <img
+              src="/logo.png"
+              alt="Soundarya Shrinagar Logo"
+              className="h-full w-auto logo-blend"
+              style={{ mixBlendMode: 'multiply' }}
+            />
           </div>
-
-          {/* Contact Details */}
-          <div className="md:text-right">
-            <h3 className="text-xs font-bold mb-3 uppercase tracking-widest text-brand-gold">Contact Us</h3>
-            <ul className="space-y-2 text-gray-500 text-[10px]">
-              <li className="flex items-center md:justify-end space-x-2">
-                <span className="text-right">Lajpat Nagar Near Radha Swami Bhawan Fatehabad-125050 Haryana</span>
-                <FiMapPin className="text-brand-pink shrink-0" size={10} />
-              </li>
-              <li className="flex items-center md:justify-end space-x-2">
-                <span>+91 9896472169</span>
-                <FiPhone className="text-brand-pink shrink-0" size={10} />
-              </li>
-              <li className="flex items-center md:justify-end space-x-2">
-                <span>customercare@saundaryashringar.com</span>
-                <FiMail className="text-brand-pink shrink-0" size={10} />
-              </li>
-            </ul>
+          <div className="flex flex-col leading-none items-center">
+            <span
+              className="text-xl md:text-2xl font-black tracking-[0.08em] text-[#5C2E3E] uppercase leading-none"
+              style={{ fontFamily: "'Cinzel Decorative', serif" }}
+            >
+              Soundarya
+            </span>
+            <span
+              className="text-[10px] md:text-[12px] tracking-[0.35em] text-[#5C2E3E]/60 mt-1 uppercase font-bold"
+              style={{ fontFamily: "'Cinzel', serif" }}
+            >
+              Shrinagar
+            </span>
           </div>
         </div>
 
-        {/* Bottom Footer */}
-        <div className="pt-4 border-t border-brand-pink/10 flex flex-col md:flex-row justify-between items-center text-[9px] text-gray-400">
-          <p>© 2024 Saundarya Shringar Pvt Ltd. Crafted with Love.</p>
-          <div className="mt-3 md:mt-0 flex space-x-4 grayscale opacity-60">
+        {/* Tagline */}
+        <p className="max-w-md text-gray-500 text-[11px] leading-relaxed mb-8 italic">
+          Pure essence of nature. 100% organic and natural beauty products crafted to enhance your natural glow.
+        </p>
+
+        {/* Contact Us - One Line Address */}
+        <div className="w-full mb-8 pt-6 border-t border-brand-pink/10">
+          <h3 className="text-[10px] font-black mb-4 uppercase tracking-[0.3em] text-brand-gold">Contact Us</h3>
+          
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-[11px] font-medium text-gray-600">
+            <div className="flex items-center gap-2">
+              <FiMapPin className="text-brand-pink" />
+              <span>Lajpat Nagar Near Radha Swami Bhawan Fatehabad-125050 Haryana</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FiPhone className="text-brand-pink" />
+              <span>+91 9896472169</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FiMail className="text-brand-pink" />
+              <span>customercare@saundaryashringar.com</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Social Links */}
+        <div className="flex space-x-6 mb-10">
+          <a href="https://www.instagram.com/saundaryashringarpvtltd/" target="_blank" rel="noopener noreferrer" className="text-lg text-[#5C2E3E]/70 hover:text-brand-pink transition-colors"><FiInstagram /></a>
+          <a href="https://www.facebook.com/people/Saundarya-Shringar-Pvt-Ltd/61580709900798/" target="_blank" rel="noopener noreferrer" className="text-lg text-[#5C2E3E]/70 hover:text-brand-pink transition-colors"><FiFacebook /></a>
+          <a href="https://x.com/LtdShringar" target="_blank" rel="noopener noreferrer" className="text-lg text-[#5C2E3E]/70 hover:text-brand-pink transition-colors"><FiTwitter /></a>
+        </div>
+
+        {/* Bottom Footer: Policy Links & Copyright */}
+        <div className="w-full pt-8 border-t border-brand-pink/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex gap-6 text-[10px] font-black uppercase tracking-widest text-[#5C2E3E]/40 order-2 md:order-1">
+            <a href="#" className="hover:text-brand-pink transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-brand-pink transition-colors">Terms & Conditions</a>
+          </div>
+
+          <p className="text-[10px] font-bold text-gray-400 order-1 md:order-2 tracking-wide uppercase">
+            © 2024 Saundarya Shringar Pvt Ltd. Crafted with Love.
+          </p>
+          
+          <div className="flex space-x-4 grayscale opacity-40 order-3">
             <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-3" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-3" />
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-4" />
