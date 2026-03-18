@@ -6,7 +6,6 @@ import FeaturedProducts from './FeaturedProducts';
 import OffersBanner from './OffersBanner';
 import BestSellers from './BestSellers';
 import WhyChoose from './WhyChoose';
-import BlogSection from './BlogSection';
 import Testimonials from './Testimonials';
 import InstagramGallery from './InstagramGallery';
 import Newsletter from './Newsletter';
@@ -21,7 +20,6 @@ const Home = () => {
       <OffersBanner />
       <BestSellers />
       <WhyChoose />
-      <BlogSection />
       <Testimonials />
       <InstagramGallery />
       <Newsletter />
