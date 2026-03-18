@@ -7,7 +7,7 @@ import { useShop } from '../../context/ShopContext';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { cartCount, wishlistCount, setIsCartDrawerOpen } = useShop();
+  const { cartCount, wishlistCount, setIsCartDrawerOpen, isAuthenticated, user } = useShop();
 
   const menuItems = [
     { name: 'Home', link: '/' },
@@ -110,7 +110,18 @@ const Navbar = () => {
                   </span>
                 )}
               </div>
-              <FiUser className="text-lg cursor-pointer hover:scale-110 transition-transform" />
+              
+              <Link to={isAuthenticated ? "/profile" : "/login"}>
+                <div className="relative group flex items-center justify-center">
+                  {isAuthenticated ? (
+                    <div className="w-8 h-8 rounded-full border border-white/50 flex items-center justify-center bg-brand-dark/20 text-[10px] font-serif italic font-black transition-all group-hover:bg-brand-gold group-hover:border-brand-gold">
+                      {user?.name?.charAt(0).toUpperCase()}
+                    </div>
+                  ) : (
+                    <FiUser className={`text-lg cursor-pointer hover:scale-110 transition-transform ${isActive('/login') ? 'text-brand-dark' : ''}`} />
+                  )}
+                </div>
+              </Link>
 
               {/* Mobile Toggle */}
               <button className="lg:hidden text-xl" onClick={() => setIsOpen(!isOpen)}>
@@ -210,6 +221,11 @@ const Navbar = () => {
             </div>
             <span className="text-[9px] font-bold uppercase tracking-widest">Bag</span>
           </div>
+
+          <Link to={isAuthenticated ? "/profile" : "/login"} className={`flex flex-col items-center gap-1 group transition-colors ${location.pathname === '/profile' || location.pathname === '/login' ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
+            <FiUser className={`text-xl ${location.pathname === '/profile' || location.pathname === '/login' ? 'scale-110' : ''}`} />
+            <span className="text-[9px] font-bold uppercase tracking-widest">Account</span>
+          </Link>
         </div>
       </div>
     </nav>

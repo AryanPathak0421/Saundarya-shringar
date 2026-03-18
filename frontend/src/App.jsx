@@ -13,7 +13,8 @@ import Checkout from './components/user/Checkout';
 import TrackOrder from './components/user/TrackOrder';
 import Footer from './components/user/Footer';
 import CartDrawer from './components/user/CartDrawer';
-import AuthModal from './components/user/AuthModal';
+import Auth from './components/user/Auth';
+import Profile from './components/user/Profile';
 import BlogSection from './components/user/BlogSection';
 import Offers from './components/user/Offers';
 
@@ -23,7 +24,6 @@ import AdminDashboard from './components/admin/AdminDashboard';
 const UserRoutes = () => (
   <>
     <CartDrawer />
-    <AuthModal />
     <div className="min-h-screen bg-brand-light">
       <Navbar />
       <main>
@@ -37,6 +37,8 @@ const UserRoutes = () => (
           <Route path="/track-order" element={<TrackOrder />} />
           <Route path="/blog" element={<BlogSection />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
       <Footer />

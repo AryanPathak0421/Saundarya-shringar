@@ -3,10 +3,13 @@ import { FiHeart, FiShoppingBag, FiStar, FiCheck, FiArrowRight } from 'react-ico
 import { motion, AnimatePresence } from 'framer-motion';
 import { useShop } from '../../context/ShopContext';
 
+import { useNavigate } from 'react-router-dom';
+
 const ProductCard = ({ product }) => {
-  const { addToCart, toggleWishlist, isInWishlist, isAuthenticated, setIsAuthModalOpen } = useShop();
+  const { addToCart, toggleWishlist, isInWishlist, isAuthenticated } = useShop();
   const [isAdded, setIsAdded] = useState(false);
   const liked = isInWishlist(product.id);
+  const navigate = useNavigate();
 
   const handleAdd = (e) => {
     if (e) {
@@ -16,7 +19,7 @@ const ProductCard = ({ product }) => {
     
     // Auth Check
     if (!isAuthenticated) {
-      setIsAuthModalOpen(true);
+      navigate('/login');
       return;
     }
 

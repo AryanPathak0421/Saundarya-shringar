@@ -12,9 +12,9 @@ export const ShopProvider = ({ children }) => {
   const [orderId, setOrderId] = useState(null);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
   
-  // Authentication State
+  // Authentication & User State
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [user, setUser] = useState(null); // Will hold { name, phone, email, etc. }
 
   const clearCart = (details) => {
     const newId = `SS-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -91,8 +91,8 @@ export const ShopProvider = ({ children }) => {
       setIsCartDrawerOpen,
       isAuthenticated,
       setIsAuthenticated,
-      isAuthModalOpen,
-      setIsAuthModalOpen,
+      user,
+      setUser,
       addToCart, 
       removeFromCart, 
       updateQuantity,
