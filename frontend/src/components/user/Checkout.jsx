@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronLeft, FiShoppingBag, FiCreditCard, FiTruck, FiCheckCircle, FiShield, FiMinus, FiPlus, FiTrash2, FiCheck } from 'react-icons/fi';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 import { Link } from 'react-router-dom';
 
 const Checkout = () => {
@@ -152,11 +152,9 @@ const Checkout = () => {
                    <div className="space-y-3">
                      {cart.length > 0 ? (
                        cart.map((item) => (
-                          <div key={item.id} className="bg-white p-2 md:p-3 border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-brand-pink/20 transition-all rounded-sm">
-                            <div className="w-16 h-20 md:w-20 md:h-24 bg-[#F9F6F4] shrink-0 p-1.5 md:p-2">
-                               <div className="w-full h-full bg-white rounded-md shadow-sm border-[3px] md:border-[5px] border-white overflow-hidden relative z-10 transition-all">
-                                  <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" />
-                               </div>
+                         <div key={item.id} className="bg-white p-3 border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-brand-pink/20 transition-all">
+                            <div className="w-16 h-20 bg-[#F9F6F4] shrink-0">
+                               <img src={item.image} alt={item.name} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" />
                             </div>
                             <div className="flex-1 min-w-0">
                                <h3 className="text-[10px] font-black text-[#5C2E3E] uppercase tracking-widest truncate">{item.name}</h3>

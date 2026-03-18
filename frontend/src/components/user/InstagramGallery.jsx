@@ -1,12 +1,12 @@
 import React from 'react';
 import { FiInstagram } from 'react-icons/fi';
 import { motion } from 'framer-motion';
-import img1 from '../assets/images/insta_1.png';
-import img2 from '../assets/images/insta_2.png';
-import img3 from '../assets/images/insta_3.png';
-import img4 from '../assets/images/insta_4.png';
-import img5 from '../assets/images/insta_5.png';
-import fbLogo from '../assets/images/facebook_logo.jpg';
+import img1 from '../../assets/images/insta_1.png';
+import img2 from '../../assets/images/insta_2.png';
+import img3 from '../../assets/images/insta_3.png';
+import img4 from '../../assets/images/insta_4.png';
+import img5 from '../../assets/images/insta_5.png';
+import fbLogo from '../../assets/images/facebook_logo.jpg';
 
 const instagramUrl = "https://www.instagram.com/saundaryashringarpvtltd/";
 

@@ -8,12 +8,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/free-mode';
 
-import testi1 from '../assets/images/testi_1.png';
-import testi2 from '../assets/images/testi_2.png';
-import testi3 from '../assets/images/testi_3.png';
-import testi4 from '../assets/images/testi_4.png';
-import testi5 from '../assets/images/testi_5.png';
-import testiBg from '../assets/images/testi_bg.png';
+import testi1 from '../../assets/images/testi_1.png';
+import testi2 from '../../assets/images/testi_2.png';
+import testi3 from '../../assets/images/testi_3.png';
+import testi4 from '../../assets/images/testi_4.png';
+import testi5 from '../../assets/images/testi_5.png';
+import testiBg from '../../assets/images/testi_bg.png';
 
 const testimonials = [
   {

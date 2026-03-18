@@ -2,14 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import catSkincare from '../assets/images/cat_skincare_new.png';
-import catHaircare from '../assets/images/cat_haircare_new.png';
-import catMakeup from '../assets/images/cat_makeup_new.png';
-import catBathBody from '../assets/images/cat_bathbody_new.png';
-import catWellness from '../assets/images/cat_wellness_new.png';
-import catBeautyKits from '../assets/images/cat_beautykits_new.png';
-import catFragrance from '../assets/images/cat_fragrance_new.png';
-import catEssentialOils from '../assets/images/cat_essentialoils_new.png';
+import catSkincare from '../../assets/images/cat_skincare_new.png';
+import catHaircare from '../../assets/images/cat_haircare_new.png';
+import catMakeup from '../../assets/images/cat_makeup_new.png';
+import catBathBody from '../../assets/images/cat_bathbody_new.png';
+import catWellness from '../../assets/images/cat_wellness_new.png';
+import catBeautyKits from '../../assets/images/cat_beautykits_new.png';
+import catFragrance from '../../assets/images/cat_fragrance_new.png';
+import catEssentialOils from '../../assets/images/cat_essentialoils_new.png';
 
 const categories = [
   { id: 'skincare', name: 'Skincare', image: catSkincare },

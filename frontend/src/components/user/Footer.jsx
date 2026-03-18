@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiFacebook, FiInstagram, FiTwitter, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
-import logo from '../assets/images/logo_pink.png';
-import footerBg from '../assets/images/footer_bg.jpg';
+import logo from '../../assets/images/logo_pink.png';
+import footerBg from '../../assets/images/footer_bg.jpg';
 
 const Footer = () => {
   return (

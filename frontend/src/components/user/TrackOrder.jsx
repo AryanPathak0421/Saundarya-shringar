@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiPackage, FiTruck, FiMapPin, FiCheckCircle, FiSearch, FiClock, FiShield, FiNavigation } from 'react-icons/fi';
 import { Link, useSearchParams } from 'react-router-dom';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 
 const TrackOrder = () => {
   const { lastOrder, orderDetails, orderId: actualOrderId } = useShop();

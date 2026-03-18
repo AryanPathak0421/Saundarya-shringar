@@ -9,11 +9,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import imgLakmePowder from '../assets/products/lakme_face_powder.png';
-import imgLipGloss from '../assets/products/plumping_lip_gloss.png';
-import imgMascara from '../assets/products/volumizing_mascara.png';
-import imgLipstick from '../assets/products/lakme_2_in_1_lipstick.png';
-import imgHighlighter from '../assets/products/liquid_highlighter.png';
+import imgLakmePowder from '../../assets/products/lakme_face_powder.png';
+import imgLipGloss from '../../assets/products/plumping_lip_gloss.png';
+import imgMascara from '../../assets/products/volumizing_mascara.png';
+import imgLipstick from '../../assets/products/lakme_2_in_1_lipstick.png';
+import imgHighlighter from '../../assets/products/liquid_highlighter.png';
 
 const bestSellers = [
   {

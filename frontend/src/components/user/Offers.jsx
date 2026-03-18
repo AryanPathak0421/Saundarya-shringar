@@ -1,17 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 
 // Assets (re-using some from Shop.jsx or general ones)
-import imgTirtirRed from '../assets/products/tirtir_red_cushion.png';
-import imgTirtirConcealer from '../assets/products/tirtir_concealer_stick.png';
-import imgCatkin from '../assets/products/catkin_oriental_lipstick.png';
-import imgVerymiss from '../assets/products/verymiss_lipstick_set.png';
-import imgRoseGold from '../assets/products/rose_gold_eyeshadow_palette.png';
-import imgLakmePowder from '../assets/products/lakme_face_powder.png';
-import imgLipGloss from '../assets/products/plumping_lip_gloss.png';
-import imgMascara from '../assets/products/volumizing_mascara.png';
+import imgTirtirRed from '../../assets/products/tirtir_red_cushion.png';
+import imgTirtirConcealer from '../../assets/products/tirtir_concealer_stick.png';
+import imgCatkin from '../../assets/products/catkin_oriental_lipstick.png';
+import imgVerymiss from '../../assets/products/verymiss_lipstick_set.png';
+import imgRoseGold from '../../assets/products/rose_gold_eyeshadow_palette.png';
+import imgLakmePowder from '../../assets/products/lakme_face_powder.png';
+import imgLipGloss from '../../assets/products/plumping_lip_gloss.png';
+import imgMascara from '../../assets/products/volumizing_mascara.png';
 
 const offerProducts = [
   {

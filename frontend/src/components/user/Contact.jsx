@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiInstagram, FiFacebook, FiTwitter, FiArrowRight } from 'react-icons/fi';
 
 // Import images (assuming we'll move the generated ones here)
-import contactHero from '../assets/images/contact_hero.png';
-import contactThumb from '../assets/images/contact_thumb.png';
+import contactHero from '../../assets/images/contact_hero.png';
+import contactThumb from '../../assets/images/contact_thumb.png';
 
 const Contact = () => {
   return (

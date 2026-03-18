@@ -4,17 +4,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiChevronDown, FiGrid, FiList, FiCheck, FiFilter, FiX } from 'react-icons/fi';
 
 // Assets
-import imgTirtirRed from '../assets/products/tirtir_red_cushion.png';
-import imgTirtirPink from '../assets/products/tirtir_pink_cushion.png';
-import imgTirtirConcealer from '../assets/products/tirtir_concealer_stick.png';
-import imgCatkin from '../assets/products/catkin_oriental_lipstick.png';
-import imgVerymiss from '../assets/products/verymiss_lipstick_set.png';
-import imgRoseGold from '../assets/products/rose_gold_eyeshadow_palette.png';
-import imgLakmePowder from '../assets/products/lakme_face_powder.png';
-import imgLipGloss from '../assets/products/plumping_lip_gloss.png';
-import imgMascara from '../assets/products/volumizing_mascara.png';
-import imgLipstick from '../assets/products/lakme_2_in_1_lipstick.png';
-import imgHighlighter from '../assets/products/liquid_highlighter.png';
+import imgTirtirRed from '../../assets/products/tirtir_red_cushion.png';
+import imgTirtirPink from '../../assets/products/tirtir_pink_cushion.png';
+import imgTirtirConcealer from '../../assets/products/tirtir_concealer_stick.png';
+import imgCatkin from '../../assets/products/catkin_oriental_lipstick.png';
+import imgVerymiss from '../../assets/products/verymiss_lipstick_set.png';
+import imgRoseGold from '../../assets/products/rose_gold_eyeshadow_palette.png';
+import imgLakmePowder from '../../assets/products/lakme_face_powder.png';
+import imgLipGloss from '../../assets/products/plumping_lip_gloss.png';
+import imgMascara from '../../assets/products/volumizing_mascara.png';
+import imgLipstick from '../../assets/products/lakme_2_in_1_lipstick.png';
+import imgHighlighter from '../../assets/products/liquid_highlighter.png';
 
 const categories = [
   { id: 'all', name: 'All' },

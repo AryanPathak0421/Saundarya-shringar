@@ -9,10 +9,10 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import banner1 from '../assets/images/banner_1.png';
-import banner2 from '../assets/images/banner_2.png';
-import banner3 from '../assets/images/banner_3.png';
-import banner4 from '../assets/images/trending_banner.png';
+import banner1 from '../../assets/images/banner_1.png';
+import banner2 from '../../assets/images/banner_2.png';
+import banner3 from '../../assets/images/banner_3.png';
+import banner4 from '../../assets/images/trending_banner.png';
 
 const banners = [
   {

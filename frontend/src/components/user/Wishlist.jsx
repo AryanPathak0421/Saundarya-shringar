@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiHeart, FiShoppingBag, FiTrash2, FiArrowRight } from 'react-icons/fi';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 import { Link } from 'react-router-dom';
 import ProductCard from './ProductCard';
 

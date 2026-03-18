@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FiHeart, FiShoppingBag, FiUser, FiMenu, FiX, FiHome, FiPercent } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoClose } from 'react-icons/io5';
-import blogFloating1 from '../assets/images/blog_floating_1.png';
-import blogFloating2 from '../assets/images/blog_floating_2.png';
-import blogFloating3 from '../assets/images/blog_floating_3.png';
-import blogFloating4 from '../assets/images/blog_floating_4.png';
-import blogItem1 from '../assets/images/blog_item_1.png';
-import blogItem2 from '../assets/images/blog_item_2.png';
-import blogItem3 from '../assets/images/blog_item_3.png';
+import blogFloating1 from '../../assets/images/blog_floating_1.png';
+import blogFloating2 from '../../assets/images/blog_floating_2.png';
+import blogFloating3 from '../../assets/images/blog_floating_3.png';
+import blogFloating4 from '../../assets/images/blog_floating_4.png';
+import blogItem1 from '../../assets/images/blog_item_1.png';
+import blogItem2 from '../../assets/images/blog_item_2.png';
+import blogItem3 from '../../assets/images/blog_item_3.png';
 
 const blogs = [
   {

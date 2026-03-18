@@ -1,42 +1,62 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ShopProvider } from './context/ShopContext';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import AboutSection from './components/AboutSection';
-import Contact from './components/Contact';
-import Shop from './components/Shop';
-import Wishlist from './components/Wishlist';
-import Checkout from './components/Checkout';
-import TrackOrder from './components/TrackOrder';
-import Footer from './components/Footer';
-import CartDrawer from './components/CartDrawer';
 
-import BlogSection from './components/BlogSection';
-import Offers from './components/Offers';
+// User Module Imports
+import Navbar from './components/user/Navbar';
+import Home from './components/user/Home';
+import AboutSection from './components/user/AboutSection';
+import Contact from './components/user/Contact';
+import Shop from './components/user/Shop';
+import Wishlist from './components/user/Wishlist';
+import Checkout from './components/user/Checkout';
+import TrackOrder from './components/user/TrackOrder';
+import Footer from './components/user/Footer';
+import CartDrawer from './components/user/CartDrawer';
+import BlogSection from './components/user/BlogSection';
+import Offers from './components/user/Offers';
+
+// Admin Module Imports
+import AdminDashboard from './components/admin/AdminDashboard';
+
+const UserRoutes = () => (
+  <>
+    <CartDrawer />
+    <div className="min-h-screen bg-brand-light">
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutSection />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/track-order" element={<TrackOrder />} />
+          <Route path="/blog" element={<BlogSection />} />
+          <Route path="/offers" element={<Offers />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  </>
+);
+
+const AdminRoutes = () => (
+  <Routes>
+    <Route path="/" element={<AdminDashboard />} />
+    {/* Add more admin routes here later like /admin/products, /admin/orders */}
+  </Routes>
+);
 
 function App() {
   return (
     <ShopProvider>
       <Router>
-        <CartDrawer />
-        <div className="min-h-screen bg-brand-light">
-          <Navbar />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<AboutSection />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/track-order" element={<TrackOrder />} />
-              <Route path="/blog" element={<BlogSection />} />
-              <Route path="/offers" element={<Offers />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <Routes>
+          <Route path="/admin/*" element={<AdminRoutes />} />
+          <Route path="/*" element={<UserRoutes />} />
+        </Routes>
       </Router>
     </ShopProvider>
   );

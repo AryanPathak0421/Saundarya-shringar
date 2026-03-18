@@ -2,16 +2,16 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 // Import local images for the floating gallery
-import img1 from '../assets/images/cat_skincare.png';
-import img2 from '../assets/images/cat_haircare.png';
-import img3 from '../assets/images/cat_wellness.png';
-import img4 from '../assets/images/insta_1.png';
-import img5 from '../assets/images/insta_2.png';
-import img6 from '../assets/images/insta_3.png';
-import img7 from '../assets/images/insta_4.png';
-import img8 from '../assets/images/insta_5.png';
-import side1 from '../assets/images/blog_skincare.png';
-import side2 from '../assets/images/blog_haircare.png';
+import img1 from '../../assets/images/cat_skincare.png';
+import img2 from '../../assets/images/cat_haircare.png';
+import img3 from '../../assets/images/cat_wellness.png';
+import img4 from '../../assets/images/insta_1.png';
+import img5 from '../../assets/images/insta_2.png';
+import img6 from '../../assets/images/insta_3.png';
+import img7 from '../../assets/images/insta_4.png';
+import img8 from '../../assets/images/insta_5.png';
+import side1 from '../../assets/images/blog_skincare.png';
+import side2 from '../../assets/images/blog_haircare.png';
 
 const floatingImages = [
   { src: '/cat_skincare.png', size: 'w-20 h-28 md:w-36 md:h-48', top: '10%', left: '8%', delay: 0 },

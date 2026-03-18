@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiHeart, FiShoppingBag, FiStar, FiCheck, FiArrowRight } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 
 const ProductCard = ({ product }) => {
   const { addToCart, toggleWishlist, isInWishlist } = useShop();

@@ -1,6 +1,6 @@
 import React from 'react';
-import promoImg from '../assets/images/promo.png';
-import perfumeVideo from '../assets/videos/offers_video.mp4';
+import promoImg from '../../assets/images/promo.png';
+import perfumeVideo from '../../assets/videos/offers_video.mp4';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 

@@ -2,12 +2,12 @@ import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-import imgTirtirRed from '../assets/products/tirtir_red_cushion.png';
-import imgTirtirPink from '../assets/products/tirtir_pink_cushion.png';
-import imgTirtirConcealer from '../assets/products/tirtir_concealer_stick.png';
-import imgCatkin from '../assets/products/catkin_oriental_lipstick.png';
-import imgVerymiss from '../assets/products/verymiss_lipstick_set.png';
-import imgRoseGold from '../assets/products/rose_gold_eyeshadow_palette.png';
+import imgTirtirRed from '../../assets/products/tirtir_red_cushion.png';
+import imgTirtirPink from '../../assets/products/tirtir_pink_cushion.png';
+import imgTirtirConcealer from '../../assets/products/tirtir_concealer_stick.png';
+import imgCatkin from '../../assets/products/catkin_oriental_lipstick.png';
+import imgVerymiss from '../../assets/products/verymiss_lipstick_set.png';
+import imgRoseGold from '../../assets/products/rose_gold_eyeshadow_palette.png';
 
 const products = [
   {
