@@ -12,6 +12,9 @@ import TrackOrder from './components/TrackOrder';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
 
+import BlogSection from './components/BlogSection';
+import Offers from './components/Offers';
+
 function App() {
   return (
     <ShopProvider>
@@ -28,6 +31,8 @@ function App() {
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/track-order" element={<TrackOrder />} />
+              <Route path="/blog" element={<BlogSection />} />
+              <Route path="/offers" element={<Offers />} />
             </Routes>
           </main>
           <Footer />

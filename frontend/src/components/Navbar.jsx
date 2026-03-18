@@ -12,10 +12,10 @@ const Navbar = () => {
   const menuItems = [
     { name: 'Home', link: '/' },
     { name: 'Shop', link: '/shop' },
-    { name: 'Skincare', link: '/skincare' },
-    { name: 'Haircare', link: '/haircare' },
-    { name: 'Makeup', link: '/makeup' },
-    { name: 'Wellness', link: '/wellness' },
+    { name: 'Skincare', link: '/shop?category=skincare' },
+    { name: 'Haircare', link: '/shop?category=haircare' },
+    { name: 'Makeup', link: '/shop?category=makeup' },
+    { name: 'Wellness', link: '/shop?category=organic wellness' },
     { name: 'Offers', link: '/offers' },
     { name: 'Blog', link: '/blog' },
     { name: 'About', link: '/about' },
@@ -23,7 +23,7 @@ const Navbar = () => {
     { name: 'Track', link: '/track-order' },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => (location.pathname + location.search) === path;
 
   return (
     <nav className="sticky top-0 z-50">
@@ -179,17 +179,17 @@ const Navbar = () => {
       {/* Mobile Bottom Navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] px-6 py-2">
         <div className="flex justify-between items-center h-12">
-          <Link to="/" className={`flex flex-col items-center gap-1 group transition-colors ${isActive('/') ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
-            <FiHome className={`text-xl ${isActive('/') ? 'scale-110' : ''}`} />
+          <Link to="/" className={`flex flex-col items-center gap-1 group transition-colors ${location.pathname === '/' ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
+            <FiHome className={`text-xl ${location.pathname === '/' ? 'scale-110' : ''}`} />
             <span className="text-[9px] font-bold uppercase tracking-widest">Home</span>
           </Link>
-          <Link to="/shop" className={`flex flex-col items-center gap-1 group transition-colors ${isActive('/shop') ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
-            <FiShoppingBag className={`text-xl ${isActive('/shop') ? 'scale-110' : ''}`} />
+          <Link to="/shop" className={`flex flex-col items-center gap-1 group transition-colors ${location.pathname === '/shop' ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
+            <FiShoppingBag className={`text-xl ${location.pathname === '/shop' ? 'scale-110' : ''}`} />
             <span className="text-[9px] font-bold uppercase tracking-widest">Shop</span>
           </Link>
-          <Link to="/wishlist" className={`flex flex-col items-center gap-1 group transition-colors ${isActive('/wishlist') ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
+          <Link to="/wishlist" className={`flex flex-col items-center gap-1 group transition-colors ${location.pathname === '/wishlist' ? 'text-brand-pink' : 'text-brand-dark/40'}`}>
             <div className="relative">
-              <FiHeart className={`text-xl ${isActive('/wishlist') ? 'scale-110' : ''}`} />
+              <FiHeart className={`text-xl ${location.pathname === '/wishlist' ? 'scale-110' : ''}`} />
               {wishlistCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-brand-gold text-white text-[7px] w-3.5 h-3.5 rounded-full flex items-center justify-center font-bold">
                   {wishlistCount}
