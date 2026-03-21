@@ -5,10 +5,10 @@ import { FiShoppingBag, FiTrash2, FiMinus, FiPlus, FiArrowRight, FiInfo } from '
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Bag = () => {
-  const { cartItems, updateBagQuantity, removeFromCart, cartTotal } = useShop();
+  const { cart, updateQuantity, removeFromCart, cartTotal } = useShop();
   const navigate = useNavigate();
 
-  if (cartItems.length === 0) {
+  if (cart.length === 0) {
     return (
       <div className="min-h-screen pt-24 pb-20 flex flex-col items-center justify-center bg-[#FDFCFB] px-4">
         <div className="w-20 h-20 bg-brand-pink/10 rounded-full flex items-center justify-center text-brand-pink mb-6">
@@ -35,7 +35,7 @@ const Bag = () => {
               Your <span className="text-brand-pink italic">Shopping Bag</span>
             </h1>
             <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-1">
-              Curated Selection : {cartItems.length} Items
+              Curated Selection : {cart.length} Items
             </p>
           </div>
           <Link to="/shop" className="text-[9px] font-black text-brand-pink uppercase border-b border-brand-pink hover:text-brand-dark hover:border-brand-dark transition-all hidden md:block">
@@ -47,7 +47,7 @@ const Bag = () => {
           {/* Cart Items List */}
           <div className="lg:col-span-2 space-y-4">
             <AnimatePresence>
-              {cartItems.map((item) => (
+              {cart.map((item) => (
                 <motion.div 
                   key={item.id}
                   layout
@@ -77,14 +77,14 @@ const Bag = () => {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center border border-gray-100 rounded-lg overflow-hidden h-8">
                         <button 
-                          onClick={() => updateBagQuantity(item.id, -1)}
+                          onClick={() => updateQuantity(item.id, -1)}
                           className="px-2 hover:bg-gray-50 text-gray-400 transition-colors"
                         >
                           <FiMinus size={12} />
                         </button>
                         <span className="px-3 text-xs font-black text-brand-dark">{item.quantity}</span>
                         <button 
-                          onClick={() => updateBagQuantity(item.id, 1)}
+                          onClick={() => updateQuantity(item.id, 1)}
                           className="px-2 hover:bg-gray-50 text-gray-400 transition-colors"
                         >
                           <FiPlus size={12} />

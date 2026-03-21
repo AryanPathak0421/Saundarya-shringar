@@ -113,39 +113,39 @@ const Auth = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="bg-white shadow-[0_30px_70px_-15px_rgba(92,46,62,0.15)] w-full max-w-[850px] min-h-[500px] relative z-10 rounded-[2rem] md:rounded-[2.5rem] p-2.5 md:p-3 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden border border-white/50 backdrop-blur-sm"
+          className="bg-white shadow-[0_30px_70px_-15px_rgba(92,46,62,0.15)] w-full max-w-[720px] min-h-[440px] relative z-10 rounded-[1.8rem] md:rounded-[2.2rem] p-2 md:p-2.5 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden border border-white/50 backdrop-blur-sm"
         >
           {/* Left panel Image */}
-          <div className="w-full md:w-[48%] h-72 md:h-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative shrink-0 border border-black/5">
+          <div className="w-full md:w-[45%] h-60 md:h-auto rounded-[1.3rem] md:rounded-[1.8rem] overflow-hidden relative shrink-0 border border-black/5">
             <img src={catMakeup} alt="Makeup Inspiration" className="w-full h-full object-cover object-center" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#5C2E3E]/70 via-transparent to-transparent" />
-            <div className="absolute bottom-8 left-8">
-               <h2 className="text-white text-3xl md:text-5xl font-extrabold leading-[1em] tracking-tight drop-shadow-lg">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#5C2E3E]/60 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6">
+               <h2 className="text-white text-2xl md:text-3xl font-extrabold leading-[1em] tracking-tight drop-shadow-md">
                  RADIATE.<br />EMPOWER.<br />GLOW.
                </h2>
             </div>
           </div>
 
           {/* Right panel Form */}
-          <div className="w-full md:w-[52%] px-6 md:px-12 lg:px-16 py-10 md:py-12 flex flex-col justify-center relative">
+          <div className="w-full md:w-[55%] px-6 md:px-10 lg:px-12 py-8 md:py-8 flex flex-col justify-center relative">
             
-            <div className="text-center mb-10">
-               <div className="w-16 h-16 md:w-20 md:h-20 bg-[#FAF7F8] rounded-full border border-[#FBD5DA] mx-auto mb-6 flex items-center justify-center p-3 shadow-inner hover:scale-105 transition-transform">
+            <div className="text-center mb-6 md:mb-8">
+               <div className="w-12 h-12 md:w-14 md:h-14 bg-[#FAF7F8] rounded-full border border-[#FBD5DA] mx-auto mb-4 flex items-center justify-center p-2.5 shadow-inner hover:scale-105 transition-transform">
                   <img src={logoPink} alt="Logo" className="w-full h-full object-contain grayscale opacity-80" />
                </div>
-               <h1 className="text-[24px] md:text-[28px] font-black text-[#5C2E3E] tracking-tight mb-1 uppercase" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+               <h1 className="text-[18px] md:text-[22px] font-black text-[#5C2E3E] tracking-tight mb-0.5 uppercase" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
                  Welcome Back
                </h1>
-               <p className="text-[10px] md:text-xs text-[#5C2E3E]/50 font-bold uppercase tracking-widest">
-                 Enter your credentials to continue
+               <p className="text-[9px] md:text-[10px] text-[#5C2E3E]/50 font-bold uppercase tracking-widest">
+                 Verified Access Only
                </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="w-full space-y-4 md:space-y-5">
+            <form onSubmit={handleSubmit} className="w-full space-y-3.5 md:space-y-4 cursor-text">
               <div className="space-y-1.5">
-                <label className="text-[10px] md:text-[11px] text-gray-800 font-bold ml-1">Mobile Number</label>
+                <label className="text-[9px] md:text-[10px] text-gray-800 font-bold ml-0.5 tracking-wide">Mobile Number</label>
                 <div className="relative">
-                  <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
+                  <FiPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
                   <input
                     type="tel"
                     name="phone"
@@ -153,39 +153,39 @@ const Auth = () => {
                     onChange={handleInputChange}
                     required
                     maxLength={10}
-                    placeholder="Enter your mobile number"
-                    className="w-full bg-[#f4f6f9] border-none pl-10 pr-4 py-3.5 md:py-4 rounded-xl text-xs md:text-[13px] font-semibold focus:bg-[#ecf0f5] focus:outline-none focus:ring-1 focus:ring-black/10 transition-all text-black placeholder:text-gray-400"
+                    placeholder="10-digit number"
+                    className="w-full bg-[#f4f6f9] border-none pl-9 pr-4 py-3 md:py-3.5 rounded-xl text-xs md:text-[12px] font-semibold focus:bg-[#ecf0f5] focus:outline-none focus:ring-1 focus:ring-black/10 transition-all text-black placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between px-1">
+              <div className="flex items-center justify-between px-0.5">
                 <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" className="w-3.5 h-3.5 md:w-4 md:h-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer" />
-                  <span className="text-[9px] md:text-[10px] font-medium text-gray-500 group-hover:text-black transition-colors">Remember me</span>
+                  <input type="checkbox" className="w-3 h-3 rounded border-gray-300 text-black focus:ring-black cursor-pointer" />
+                  <span className="text-[8px] md:text-[9px] font-medium text-gray-500 group-hover:text-black transition-colors">Remember me</span>
                 </label>
-                <button type="button" className="text-[9px] md:text-[10px] font-bold text-black hover:underline transition-all">Forgot Password?</button>
+                <button type="button" className="text-[8px] md:text-[9px] font-bold text-black hover:underline transition-all">Forgot?</button>
               </div>
               
               <button 
                 type="submit"
                 disabled={!form.phone || form.phone.length < 10}
-                className="w-full bg-black text-white py-3.5 md:py-4 rounded-xl text-[11px] md:text-xs font-bold transition-all disabled:opacity-50 hover:bg-gray-800 hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-black/20"
+                className="w-full bg-black text-white py-3.5 md:py-3.5 rounded-xl text-[10px] md:text-[11px] font-black tracking-widest uppercase transition-all disabled:opacity-50 hover:bg-gray-800 hover:-translate-y-0.5 active:scale-95 shadow-lg shadow-black/10"
               >
                 Sign In
               </button>
 
               <button 
                 type="button"
-                className="w-full bg-white border border-gray-200 text-black py-3 md:py-3.5 rounded-xl text-[11px] md:text-xs font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2"
+                className="w-full bg-white border border-gray-100 text-black py-2.5 md:py-3 rounded-xl text-[10px] md:text-[11px] font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="h-4 w-4" />
-                Sign in with Google
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="h-3.5 w-3.5" />
+                Google
               </button>
             </form>
             
-            <div className="mt-8 text-center text-[10px] md:text-[11px]">
-              <span className="text-gray-500 font-medium">Don't have an account? </span>
+            <div className="mt-6 md:mt-8 text-center text-[9px] md:text-[10px]">
+              <span className="text-gray-400 font-medium tracking-tight">New here? </span>
               <button type="button" className="text-black font-extrabold hover:underline">Sign up</button>
             </div>
 
