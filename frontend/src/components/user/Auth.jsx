@@ -88,6 +88,70 @@ const Auth = () => {
     }
   };
 
+  if (!isAdminPath) {
+    return (
+      <div className="fixed inset-0 z-[999] w-full h-[100dvh] bg-[#FAF7F8] font-['Inter',_sans-serif] flex flex-col items-center justify-center p-4 md:p-8 select-none overflow-y-auto">
+        
+        <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20">
+           <Link to="/" className="flex items-center gap-2 font-black text-[9px] md:text-[10px] uppercase tracking-widest text-[#5C2E3E] hover:text-[#E8B4B8] transition-colors">
+              &larr; Back to Store
+           </Link>
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white p-8 md:p-12 border border-[#E8B4B8]/20 shadow-2xl shadow-[#E8B4B8]/10 w-full max-w-sm relative z-10 rounded-none"
+        >
+          <div className="text-center mb-8 md:mb-10">
+             <img src={logoPink} alt="Soundarya Shrinagar" className="h-10 md:h-12 mx-auto mb-4" />
+             <h1 className="text-xl md:text-2xl font-serif font-black text-[#5C2E3E] tracking-widest mb-1.5 leading-none" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+               SIGN IN
+             </h1>
+             <p className="text-[7px] md:text-[8px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+               Verified Customer Access
+             </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-[8px] md:text-[9px] text-[#5C2E3E] font-bold uppercase tracking-widest">Mobile Number</label>
+              <div className="relative">
+                <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm md:text-base" />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={form.phone}
+                  onChange={handleInputChange}
+                  required
+                  maxLength={10}
+                  placeholder="e.g. 8839044030"
+                  className="w-full bg-[#FAF7F8] border border-[#E8B4B8]/30 pl-11 pr-4 py-3 md:py-3.5 text-[11px] md:text-xs font-medium focus:bg-white focus:border-[#E8B4B8] outline-none transition-all text-[#5C2E3E] placeholder:text-gray-300 tracking-widest rounded-none"
+                />
+              </div>
+            </div>
+            
+            <button 
+              type="submit"
+              disabled={!form.phone || form.phone.length < 10}
+              className="w-full bg-[#5C2E3E] text-white py-3.5 md:py-4 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-center mt-6 disabled:opacity-50 hover:bg-[#E8B4B8] hover:text-[#5C2E3E] transition-all shadow-lg hover:shadow-[#E8B4B8]/50 rounded-none"
+            >
+              Continue to Shop
+            </button>
+          </form>
+          
+          <p className="text-[6px] text-center mt-8 md:mt-10 text-gray-400 font-bold uppercase tracking-[0.2em]">
+            By continuing, you agree to Soundarya's Terms
+          </p>
+        </motion.div>
+        
+        {/* Background Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#E8B4B8]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#E8B4B8]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 z-[999] w-full h-[100dvh] bg-[#5C2E3E] font-['Inter',_sans-serif] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden !m-0 !p-0 select-none">
       
@@ -149,127 +213,93 @@ const Auth = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
           >
-            <div className={`flex items-end justify-between ${isAdminPath ? 'mb-4 md:mb-5' : 'mb-6 md:mb-8'}`}>
+            <div className="flex items-end justify-between mb-4 md:mb-5">
                <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-white leading-none">
-                 {isAdminPath ? (isLogin ? 'Login' : 'Register') : 'Sign In'}
+                 {isLogin ? 'Login' : 'Register'}
                </h1>
                
-               {isAdminPath && (
-                 <div className="flex gap-4">
-                    <button 
-                      onClick={() => setIsLogin(true)} 
-                      className={`text-[8px] md:text-[8px] font-black uppercase tracking-widest transition-all pb-0.5 md:pb-1 relative ${isLogin ? 'text-[#92B89D]' : 'text-white/40 hover:text-white/70'}`}
-                    >
-                       Sign In
-                       {isLogin && <span className="absolute bottom-0 left-0 w-full h-[1px] md:h-0.5 bg-[#92B89D] rounded-full" />}
-                    </button>
-                    <button 
-                      onClick={() => setIsLogin(false)} 
-                      className={`text-[8px] md:text-[8px] font-black uppercase tracking-widest transition-all pb-0.5 md:pb-1 relative ${!isLogin ? 'text-[#92B89D]' : 'text-white/40 hover:text-white/70'}`}
-                    >
-                       Create
-                       {!isLogin && <span className="absolute bottom-0 left-0 w-full h-[1px] md:h-0.5 bg-[#92B89D] rounded-full" />}
-                    </button>
-                 </div>
-               )}
+               <div className="flex gap-4">
+                  <button 
+                    onClick={() => setIsLogin(true)} 
+                    className={`text-[8px] md:text-[8px] font-black uppercase tracking-widest transition-all pb-0.5 md:pb-1 relative ${isLogin ? 'text-[#92B89D]' : 'text-white/40 hover:text-white/70'}`}
+                  >
+                     Sign In
+                     {isLogin && <span className="absolute bottom-0 left-0 w-full h-[1px] md:h-0.5 bg-[#92B89D] rounded-full" />}
+                  </button>
+                  <button 
+                    onClick={() => setIsLogin(false)} 
+                    className={`text-[8px] md:text-[8px] font-black uppercase tracking-widest transition-all pb-0.5 md:pb-1 relative ${!isLogin ? 'text-[#92B89D]' : 'text-white/40 hover:text-white/70'}`}
+                  >
+                     Create
+                     {!isLogin && <span className="absolute bottom-0 left-0 w-full h-[1px] md:h-0.5 bg-[#92B89D] rounded-full" />}
+                  </button>
+               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-3 md:space-y-3.5">
-              {!isAdminPath ? (
-                // Customer Login
-                <>
-                  <div className="space-y-1 md:space-y-1">
-                    <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Enter Phone Number</label>
-                    <div className="relative">
-                      <FiPhone className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={form.phone}
-                        onChange={handleInputChange}
-                        required
-                        maxLength={10}
-                        placeholder="e.g. 8839044030"
-                        className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30 tracking-widest"
-                      />
-                    </div>
+              {!isLogin && (
+                <div className="space-y-1 md:space-y-1">
+                  <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Full Name</label>
+                  <div className="relative">
+                    <FiUser className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
+                    <input
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      onChange={handleInputChange}
+                      required={!isLogin}
+                      placeholder="Admin Name"
+                      className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30"
+                    />
                   </div>
-                  <button 
-                    type="submit"
-                    disabled={!form.phone || form.phone.length < 10}
-                    className="w-full bg-gradient-to-r from-[#82a88d] to-[#92B89D] text-white py-2.5 md:py-3 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] text-center mt-3 md:mt-5 disabled:opacity-50 hover:brightness-110 transition-all shadow-lg active:scale-95"
-                  >
-                    Secure Login
-                  </button>
-                </>
-              ) : (
-                // Admin Login
-                <>
-                  {!isLogin && (
-                    <div className="space-y-1 md:space-y-1">
-                      <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Full Name</label>
-                      <div className="relative">
-                        <FiUser className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
-                        <input
-                          type="text"
-                          name="name"
-                          value={form.name}
-                          onChange={handleInputChange}
-                          required={!isLogin}
-                          placeholder="Admin Name"
-                          className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30"
-                        />
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="space-y-1 md:space-y-1">
-                    <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Email Address</label>
-                    <div className="relative">
-                      <FiMail className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
-                      <input
-                        type="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="admin@saundaryashringar.com"
-                        className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 md:space-y-1">
-                    <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Password</label>
-                    <div className="relative">
-                      <FiLock className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
-                      <input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleInputChange}
-                        required
-                        placeholder="••••••••"
-                        className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30"
-                      />
-                    </div>
-                  </div>
-
-                  <button 
-                    type="submit"
-                    disabled={isLogin ? (!form.email || !form.password) : (!form.name || !form.email || !form.password)}
-                    className="w-full bg-gradient-to-r from-[#82a88d] to-[#92B89D] text-white py-2.5 md:py-3 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] text-center mt-3 md:mt-5 disabled:opacity-50 hover:brightness-110 transition-all shadow-lg active:scale-95"
-                  >
-                    {isLogin ? 'Login to Portal' : 'Register Securely'}
-                  </button>
-                </>
+                </div>
               )}
+              
+              <div className="space-y-1 md:space-y-1">
+                <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Email Address</label>
+                <div className="relative">
+                  <FiMail className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
+                  <input
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="admin@saundaryashringar.com"
+                    className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1 md:space-y-1">
+                <label className="text-[8px] md:text-[9px] text-white/80 font-medium tracking-wide">Password</label>
+                <div className="relative">
+                  <FiLock className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-white/50 text-xs" />
+                  <input
+                    type="password"
+                    name="password"
+                    value={form.password}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="••••••••"
+                    className="w-full bg-white/10 border border-white/5 pl-9 md:pl-10 pr-4 py-2 md:py-2.5 rounded-lg text-[10px] md:text-xs font-medium focus:bg-white/20 focus:border-white/20 outline-none transition-all text-white placeholder:text-white/30"
+                  />
+                </div>
+              </div>
+
+              <button 
+                type="submit"
+                disabled={isLogin ? (!form.email || !form.password) : (!form.name || !form.email || !form.password)}
+                className="w-full bg-gradient-to-r from-[#82a88d] to-[#92B89D] text-white py-2.5 md:py-3 rounded-lg text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] text-center mt-3 md:mt-5 disabled:opacity-50 hover:brightness-110 transition-all shadow-lg active:scale-95"
+              >
+                {isLogin ? 'Login to Portal' : 'Register Securely'}
+              </button>
             </form>
           </motion.div>
           
           <div className="mt-6 md:mt-10 text-center">
              <p className="text-[5px] md:text-[6.5px] text-white/30 font-black uppercase tracking-[0.2em] flex items-center justify-center gap-1.5 md:gap-2">
-                &copy; Soundarya Module <span className="w-0.5 h-0.5 md:w-1 md:h-1 bg-white/20 rounded-full" /> {isAdminPath ? 'Authorized Access' : 'Verified Shopping'}
+                &copy; Soundarya Module <span className="w-0.5 h-0.5 md:w-1 md:h-1 bg-white/20 rounded-full" /> Authorized Access
              </p>
           </div>
         </div>
