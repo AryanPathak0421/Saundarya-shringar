@@ -130,10 +130,10 @@ const Auth = () => {
           <div className="w-full md:w-[55%] px-6 md:px-10 lg:px-12 py-8 md:py-8 flex flex-col justify-center relative">
             
             <div className="text-center mb-6 md:mb-8">
-               <div className="w-12 h-12 md:w-14 md:h-14 bg-[#FAF7F8] rounded-full border border-[#FBD5DA] mx-auto mb-4 flex items-center justify-center p-2.5 shadow-inner hover:scale-105 transition-transform">
-                  <img src={logoPink} alt="Logo" className="w-full h-full object-contain grayscale opacity-80" />
+               <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-full border border-[#FBD5DA]/50 mx-auto mb-5 flex items-center justify-center p-2.5 shadow-md hover:scale-105 transition-transform overflow-hidden">
+                  <img src={logoPink} alt="Logo" className="w-full h-full object-contain" />
                </div>
-               <h1 className="text-[18px] md:text-[22px] font-black text-[#5C2E3E] tracking-tight mb-0.5 uppercase" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+               <h1 className="text-[20px] md:text-[24px] font-black text-[#5C2E3E] tracking-tight mb-0.5 uppercase" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
                  Welcome Back
                </h1>
                <p className="text-[9px] md:text-[10px] text-[#5C2E3E]/50 font-bold uppercase tracking-widest">
