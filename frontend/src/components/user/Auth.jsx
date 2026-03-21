@@ -91,13 +91,16 @@ const Auth = () => {
 
   if (!isAdminPath) {
     return (
-      <div className="fixed inset-0 z-[999] w-full h-[100dvh] bg-[#E8EAEF] font-['Inter',_sans-serif] flex items-center justify-center p-4 md:p-8 select-none">
+      <div className="fixed inset-0 z-[999] w-full h-[100dvh] bg-[#FAF7F8] font-['Inter',_sans-serif] flex items-center justify-center p-4 md:p-8 select-none">
         
-        {/* Sky/Cloud Background Elements */}
+        {/* Makeup Themed Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-           <div className="absolute top-10 left-10 w-96 h-96 bg-white/60 rounded-full blur-[100px]" />
-           <div className="absolute bottom-10 right-10 w-96 h-96 bg-white/60 rounded-full blur-[100px]" />
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[#E8EAEF]/50" />
+           <img 
+             src={catMakeup} 
+             alt="Background" 
+             className="w-full h-full object-cover opacity-[0.08] blur-[80px]" 
+           />
+           <div className="absolute inset-0 bg-[#FBD5DA]/20" />
         </div>
 
         <div className="absolute top-6 left-6 md:top-10 md:left-10 z-20">
@@ -110,29 +113,31 @@ const Auth = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="bg-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] w-full max-w-[850px] min-h-[500px] relative z-10 rounded-[1.5rem] md:rounded-[2rem] p-2 md:p-2.5 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden"
+          className="bg-white shadow-[0_30px_70px_-15px_rgba(92,46,62,0.15)] w-full max-w-[850px] min-h-[500px] relative z-10 rounded-[2rem] md:rounded-[2.5rem] p-2.5 md:p-3 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden border border-white/50 backdrop-blur-sm"
         >
           {/* Left panel Image */}
-          <div className="w-full md:w-[48%] h-64 md:h-auto rounded-[1.2rem] md:rounded-[1.7rem] overflow-hidden relative shrink-0 border border-black/5">
-            <img src={catMakeup} alt="Makeup Inspiration" className="w-full h-full object-cover object-top" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-            <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8">
-               <h2 className="text-white text-3xl md:text-5xl font-extrabold leading-[1em] tracking-tight">
+          <div className="w-full md:w-[48%] h-72 md:h-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative shrink-0 border border-black/5">
+            <img src={catMakeup} alt="Makeup Inspiration" className="w-full h-full object-cover object-center" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#5C2E3E]/70 via-transparent to-transparent" />
+            <div className="absolute bottom-8 left-8">
+               <h2 className="text-white text-3xl md:text-5xl font-extrabold leading-[1em] tracking-tight drop-shadow-lg">
                  RADIATE.<br />EMPOWER.<br />GLOW.
                </h2>
             </div>
           </div>
 
           {/* Right panel Form */}
-          <div className="w-full md:w-[52%] px-6 md:px-12 lg:px-16 py-8 md:py-10 flex flex-col justify-center relative">
+          <div className="w-full md:w-[52%] px-6 md:px-12 lg:px-16 py-10 md:py-12 flex flex-col justify-center relative">
             
-            <div className="text-center mb-8">
-               <img src={logoPink} alt="Logo" className="h-8 md:h-10 mx-auto mb-4 grayscale" style={{ filter: "brightness(0) sepia(1)" }} />
-               <h1 className="text-[22px] md:text-[26px] font-black text-black tracking-tight mb-1">
-                 WELCOME BACK
+            <div className="text-center mb-10">
+               <div className="w-16 h-16 md:w-20 md:h-20 bg-[#FAF7F8] rounded-full border border-[#FBD5DA] mx-auto mb-6 flex items-center justify-center p-3 shadow-inner hover:scale-105 transition-transform">
+                  <img src={logoPink} alt="Logo" className="w-full h-full object-contain grayscale opacity-80" />
+               </div>
+               <h1 className="text-[24px] md:text-[28px] font-black text-[#5C2E3E] tracking-tight mb-1 uppercase" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+                 Welcome Back
                </h1>
-               <p className="text-[10px] md:text-xs text-gray-500 font-medium tracking-wide">
-                 Enter your mobile number to access your account
+               <p className="text-[10px] md:text-xs text-[#5C2E3E]/50 font-bold uppercase tracking-widest">
+                 Enter your credentials to continue
                </p>
             </div>
 
