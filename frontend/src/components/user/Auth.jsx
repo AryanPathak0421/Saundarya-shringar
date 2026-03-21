@@ -23,10 +23,30 @@ const Auth = () => {
   });
 
   const [step, setStep] = useState(1); // 1: Phone, 2: OTP (for customer)
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleOtpChange = (index, value) => {
+    if (value.length > 1) value = value[value.length - 1];
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    // Auto-focus move
+    if (value !== '' && index < 5) {
+      const nextInput = document.getElementById(`otp-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
+  };
+
+  const handleKeyDown = (index, e) => {
+    if (e.key === 'Backspace' && otp[index] === '' && index > 0) {
+      const prevInput = document.getElementById(`otp-${index - 1}`);
+      if (prevInput) prevInput.focus();
+    }
   };
 
   const handleCustomerSubmit = (e) => {
@@ -38,7 +58,8 @@ const Auth = () => {
         alert("Please enter a valid 10-digit phone number.");
       }
     } else {
-      if (otp === '123456') {
+      const fullOtp = otp.join('');
+      if (fullOtp === '123456') {
         setUser({
           name: 'Soundarya Customer',
           phone: form.phone,
@@ -173,19 +194,22 @@ const Auth = () => {
                      </div>
                    </div>
                  ) : (
-                   <div className="space-y-2">
+                   <div className="space-y-4">
                      <label className="text-[8px] md:text-[9px] text-white/80 font-black uppercase tracking-widest ml-1">Secret Key (OTP)</label>
-                     <div className="relative">
-                       <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
-                       <input
-                         type="text"
-                         value={otp}
-                         onChange={(e) => setOtp(e.target.value)}
-                         required
-                         maxLength={6}
-                         placeholder="Enter 6-digit OTP"
-                         className="w-full bg-white/5 border border-white/10 pl-10 pr-4 py-3.5 rounded-xl text-xs font-bold tracking-[0.5em] outline-none focus:bg-white/10 focus:border-white/30 transition-all text-white placeholder:text-white/20"
-                       />
+                     <div className="flex justify-between gap-2 md:gap-3">
+                       {otp.map((digit, index) => (
+                         <input
+                           key={index}
+                           id={`otp-${index}`}
+                           type="text"
+                           maxLength={1}
+                           value={digit}
+                           onChange={(e) => handleOtpChange(index, e.target.value)}
+                           onKeyDown={(e) => handleKeyDown(index, e)}
+                           className="w-full h-11 md:h-14 bg-white/5 border border-white/10 rounded-xl text-center text-lg md:text-xl font-bold focus:bg-white/10 focus:border-white/30 transition-all text-white outline-none"
+                           autoFocus={index === 0}
+                         />
+                       ))}
                      </div>
                      <button type="button" onClick={() => setStep(1)} className="text-[8px] text-white/40 font-bold uppercase tracking-widest hover:text-white transition-colors ml-1 mt-2 underline underline-offset-4">Change Number</button>
                    </div>
