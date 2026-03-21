@@ -9,10 +9,16 @@ import catSkincare from '../../assets/images/cat_skincare_new.png';
 import catMakeup from '../../assets/images/cat_makeup_new.png';
 
 const Auth = () => {
-  const { setIsAuthenticated, setUser } = useShop();
+  const { isAuthenticated, setIsAuthenticated, setUser } = useShop();
   const navigate = useNavigate();
   const location = useLocation();
   const isAdminPath = location.pathname.includes('/admin');
+
+  React.useEffect(() => {
+    if (isAuthenticated && !isAdminPath) {
+      navigate('/');
+    }
+  }, [isAuthenticated, isAdminPath, navigate]);
   
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
@@ -68,7 +74,7 @@ const Auth = () => {
         });
         setIsAuthenticated(true);
         alert("Logged in successfully!");
-        navigate(-1);
+        navigate('/');
       } else {
         alert("Invalid OTP. Please use 123456.");
       }
