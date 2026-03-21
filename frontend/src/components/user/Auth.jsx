@@ -113,30 +113,30 @@ const Auth = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="bg-white shadow-[0_30px_70px_-15px_rgba(92,46,62,0.15)] w-full max-w-[720px] min-h-[440px] relative z-10 rounded-[1.8rem] md:rounded-[2.2rem] p-2 md:p-2.5 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden border border-white/50 backdrop-blur-sm"
+          className="bg-white shadow-[0_30px_70px_-15px_rgba(92,46,62,0.15)] w-full max-w-[720px] min-h-[440px] relative z-10 rounded-[1.8rem] md:rounded-[2.2rem] p-1.5 md:p-2.5 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden border border-white/50 backdrop-blur-sm"
         >
           {/* Left panel Image */}
-          <div className="w-full md:w-[45%] h-60 md:h-auto rounded-[1.3rem] md:rounded-[1.8rem] overflow-hidden relative shrink-0 border border-black/5">
+          <div className="w-full md:w-[45%] h-52 md:h-auto rounded-[1.3rem] md:rounded-[1.8rem] overflow-hidden relative shrink-0 border border-black/5">
             <img src={catMakeup} alt="Makeup Inspiration" className="w-full h-full object-cover object-center" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#5C2E3E]/60 via-transparent to-transparent" />
-            <div className="absolute bottom-6 left-6">
-               <h2 className="text-white text-2xl md:text-3xl font-extrabold leading-[1em] tracking-tight drop-shadow-md">
+            <div className="absolute bottom-5 left-5 md:bottom-6 md:left-6">
+               <h2 className="text-white text-xl md:text-3xl font-extrabold leading-[1em] tracking-tight drop-shadow-md">
                  RADIATE.<br />EMPOWER.<br />GLOW.
                </h2>
             </div>
           </div>
 
           {/* Right panel Form */}
-          <div className="w-full md:w-[55%] px-6 md:px-10 lg:px-12 py-8 md:py-8 flex flex-col justify-center relative">
+          <div className="w-full md:w-[55%] px-5 md:px-10 lg:px-12 py-6 md:py-8 flex flex-col justify-center relative">
             
-            <div className="text-center mb-6 md:mb-8">
-               <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-full border border-[#FBD5DA]/50 mx-auto mb-5 flex items-center justify-center p-2.5 shadow-md hover:scale-105 transition-transform overflow-hidden">
+            <div className="text-center mb-5 md:mb-8">
+               <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-full border border-[#FBD5DA]/50 mx-auto mb-4 md:mb-5 flex items-center justify-center p-2 shadow-sm hover:scale-105 transition-transform overflow-hidden">
                   <img src={logoPink} alt="Logo" className="w-full h-full object-contain" />
                </div>
-               <h1 className="text-[20px] md:text-[24px] font-black text-[#5C2E3E] tracking-tight mb-0.5 uppercase" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
+               <h1 className="text-[17px] md:text-[24px] font-black text-[#5C2E3E] tracking-tight mb-0.5 uppercase" style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}>
                  Welcome Back
                </h1>
-               <p className="text-[9px] md:text-[10px] text-[#5C2E3E]/50 font-bold uppercase tracking-widest">
+               <p className="text-[8px] md:text-[10px] text-[#5C2E3E]/50 font-bold uppercase tracking-widest">
                  Verified Access Only
                </p>
             </div>
@@ -177,14 +177,14 @@ const Auth = () => {
 
               <button 
                 type="button"
-                className="w-full bg-white border border-gray-100 text-black py-2.5 md:py-3 rounded-xl text-[10px] md:text-[11px] font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm"
+                className="w-full bg-white border border-gray-100 text-black py-2.5 md:py-3 rounded-xl text-[9px] md:text-[10px] font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm"
               >
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="h-3.5 w-3.5" />
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="h-3.5 w-3.5" />
                 Google
               </button>
             </form>
             
-            <div className="mt-6 md:mt-8 text-center text-[9px] md:text-[10px]">
+            <div className="mt-5 md:mt-8 text-center text-[9px] md:text-[10px]">
               <span className="text-gray-400 font-medium tracking-tight">New here? </span>
               <button type="button" className="text-black font-extrabold hover:underline">Sign up</button>
             </div>
