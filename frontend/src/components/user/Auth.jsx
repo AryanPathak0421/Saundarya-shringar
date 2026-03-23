@@ -6,6 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import logoPink from '../../assets/images/logo_pink.png';
 import authGirl from '../../assets/images/auth_girl.png';
+import registerGirlMakeup from '../../assets/images/register_girl_makeup.png';
 import catSkincare from '../../assets/images/cat_skincare_new.png';
 import catMakeup from '../../assets/images/cat_makeup_new.png';
 
@@ -32,7 +33,7 @@ const Auth = () => {
   const [step, setStep] = useState(1); // 1: Phone, 2: OTP (for customer)
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
-  const leftPanelImage = authGirl;
+  const leftPanelImage = isLogin ? authGirl : registerGirlMakeup;
 
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
