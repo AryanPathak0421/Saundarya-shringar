@@ -255,8 +255,7 @@ const Checkout = () => {
                    <div className="space-y-3">
                       {[
                         { id: 'upi', label: 'UPI Transaction', desc: 'Secure phone-to-phone transfer' },
-                        { id: 'card', label: 'Card Payment', desc: 'Visa, Mastercard, Amex' },
-                        { id: 'cod', label: 'Pay on Arrival', desc: 'Cash on Delivery' }
+                        { id: 'card', label: 'Card Payment', desc: 'Visa, Mastercard, Amex' }
                       ].map(method => (
                         <div 
                           key={method.id} 
@@ -325,7 +324,7 @@ const Checkout = () => {
                  disabled={cart.length === 0}
                  className="w-full bg-[#5C2E3E] text-white py-5 font-bold uppercase tracking-[0.4em] text-[10px] shadow-2xl hover:bg-brand-pink transition-all active:scale-95 disabled:bg-gray-100 disabled:text-gray-400 disabled:shadow-none"
                >
-                 {step === 3 ? 'Complete Order' : 'Continue Journey'}
+                 {step === 3 ? 'Pay Now' : 'Continue Journey'}
                </button>
 
                <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
