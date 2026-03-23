@@ -3,7 +3,7 @@ export const initialProducts = [
   {
     id: 1,
     name: 'TIRTIR Mask Fit Pink Cushion',
-    price: 2450,
+    price: 1450,
     rating: 5,
     reviews: 120,
     image: '/tirtir_pink_cushion.png',
@@ -102,12 +102,12 @@ export const initialProducts = [
   {
     id: 602,
     name: 'Rose Gold Eyeshadow Palette',
-    price: 3500,
+    price: 1550,
     rating: 5,
     reviews: 85,
     image: '/rose_gold_eyeshadow_palette.png',
-    category: 'Jewellery',
-    subCategory: 'Modern',
+    category: 'Makeup',
+    subCategory: 'Eyes',
     description: 'Elegant rose gold tones for festive looks.'
   },
 
@@ -172,8 +172,8 @@ export const initialProducts = [
   {
     id: 351,
     name: 'Bridal Radiance Kit',
-    price: 4500,
-    oldPrice: 5500,
+    price: 1950,
+    oldPrice: 2800,
     rating: 5,
     reviews: 45,
     discount: '18%',

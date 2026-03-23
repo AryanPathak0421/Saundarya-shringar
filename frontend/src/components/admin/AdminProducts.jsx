@@ -1,22 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
 import { initialProducts } from '../../data/products';
-import { FiPlus, FiSearch, FiEdit2, FiTrash2, FiMoreVertical, FiX, FiImage, FiChevronDown } from 'react-icons/fi';
+import { 
+  FiPlus, 
+  FiSearch, 
+  FiEdit2, 
+  FiTrash2, 
+  FiMoreVertical, 
+  FiX, 
+  FiImage, 
+  FiChevronDown, 
+  FiFilter, 
+  FiStar, 
+  FiArrowLeft,
+  FiUploadCloud
+} from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 
 const AdminProducts = () => {
   const [searchParams] = useSearchParams();
   const [isAdding, setIsAdding] = useState(false);
   const [products, setProducts] = useState(initialProducts);
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState('All Categories');
   const [searchQuery, setSearchQuery] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   // Handle Filtering and Searching
   const filteredProducts = products.filter(p => {
-    const matchesFilter = filter === 'All' || p.category === filter;
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
+    // Category Filter
+    const matchesFilter = filter === 'All Categories' || p.category === filter;
+    
+    // Search Query (Name, ID, or direct price match)
+    const searchLower = searchQuery.toLowerCase().trim();
+    const nameMatch = (p.name || '').toLowerCase().includes(searchLower);
+    const skuMatch = String(p.id).toLowerCase().includes(searchLower);
+    const priceMatch = searchQuery !== '' && String(p.price).includes(searchLower);
+    const matchesSearch = searchQuery === '' || nameMatch || skuMatch || priceMatch;
+    
+    // Range Filters
+    const pPrice = Number(p.price);
+    const min = minPrice !== '' ? Number(minPrice) : -Infinity;
+    const max = maxPrice !== '' ? Number(maxPrice) : Infinity;
+    
+    const matchesMinPrice = pPrice >= min;
+    const matchesMaxPrice = pPrice <= max;
+    
+    return matchesFilter && matchesSearch && matchesMinPrice && matchesMaxPrice;
   });
 
   const handleDelete = (id) => {
@@ -38,171 +69,259 @@ const AdminProducts = () => {
   }, [searchParams]);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-4">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-serif font-black text-brand-dark uppercase tracking-widest leading-none mb-1">
-            Store Catalog
-          </h1>
-          <p className="text-[8px] text-gray-400 font-black uppercase tracking-[0.2em]">Inventory Vault</p>
-        </div>
-        
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex bg-white border border-brand-pink/10 p-1 rounded-none shadow-sm">
-            {['All', 'Skincare', 'Soaps', 'Wellness'].map(cat => (
-              <button 
-                key={cat}
-                onClick={() => setFilter(cat)}
-                className={`px-3 py-1 text-[8px] font-black uppercase tracking-widest transition-all ${filter === cat ? 'bg-brand-dark text-white' : 'text-gray-400'}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-          <button 
-            onClick={() => setIsAdding(true)}
-            className="bg-brand-gold text-white px-5 py-2.5 rounded-none text-[9px] font-black uppercase tracking-widest shadow-xl shadow-brand-gold/20 flex items-center gap-2 hover:bg-brand-dark transition-all"
-          >
-            <FiPlus /> New Entry
-          </button>
-        </div>
-      </div>
-
-      {/* Search Bar */}
-      <div className="bg-white p-2 rounded-none border border-brand-pink/10 shadow-sm flex items-center gap-3">
-        <FiSearch className="text-gray-300 ml-2" size={14} />
-        <input 
-          type="text" 
-          placeholder="Search catalog... (e.g. Saffron)"
-          className="bg-transparent border-none outline-none text-[10px] font-bold uppercase w-full placeholder:text-gray-200"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-
-      {/* Product Grid - Compacted */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-        {filteredProducts.map(p => (
+    <div className="max-w-7xl mx-auto space-y-5 pb-10">
+      <AnimatePresence mode="wait">
+        {!isAdding ? (
           <motion.div 
-            key={p.id}
-            whileHover={{ y: -3 }}
-            className="bg-white rounded-none border border-brand-pink/10 shadow-sm group relative flex flex-col overflow-hidden hover:shadow-xl transition-all"
+            key="list"
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="space-y-5"
           >
-            <div className="aspect-square bg-brand-light/20 relative overflow-hidden p-2">
-              <img src={p.image} alt={p.name} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute top-1 right-1 flex flex-col gap-1">
-                 <button onClick={() => setIsAdding(true)} className="p-2 bg-brand-pink text-white rounded-none shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-75 group-hover:scale-100"><FiEdit2 size={10} /></button>
-                 <button onClick={() => handleDelete(p.id)} className="p-2 bg-white text-red-500 rounded-none shadow-xl opacity-0 group-hover:opacity-100 transition-all transform scale-75 group-hover:scale-100"><FiTrash2 size={10} /></button>
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-800 tracking-tight mb-1">
+                  PRODUCTS
+                </h1>
+                <p className="text-gray-400 text-[10px] font-bold uppercase tracking-wider leading-none">
+                  MANAGE YOUR INVENTORY, PRICING, AND PRODUCT DETAILS.
+                </p>
               </div>
+              
+              <button 
+                onClick={() => setIsAdding(true)}
+                className="bg-[#3D2522] text-white px-6 py-2.5 rounded-lg text-xs font-bold flex items-center gap-2 shadow-lg shadow-black/10 hover:bg-black transition-all"
+              >
+                <FiPlus size={16} /> Add New Product
+              </button>
             </div>
-            <div className="p-2 border-t border-brand-pink/10 flex-1 flex flex-col justify-between bg-white">
-              <div className="mb-1">
-                <h3 className="text-[9px] font-bold text-brand-dark uppercase tracking-wider leading-tight mb-1 truncate group-hover:text-brand-pink transition-colors">{p.name}</h3>
-                <div className="flex items-center justify-between">
-                  <p className="text-[6px] text-gray-400 font-medium uppercase tracking-[0.1em]">{p.category}</p>
-                  <span className={`text-[6px] font-bold uppercase tracking-tight px-1 py-0.5 rounded-none ${p.stock > 10 ? 'text-green-600' : 'text-red-600'}`}>
-                    {p.stock} QTY
-                  </span>
-                </div>
-              </div>
-              <div className="flex justify-between items-center pt-1 border-t border-brand-pink/5">
-                <span className="text-[10px] font-serif font-black text-brand-pink truncate">₹{p.price}</span>
-                <FiMoreVertical size={10} className="text-gray-300"/>
-              </div>
-            </div>
-            {p.flashSale && <div className="absolute top-0 left-0 bg-brand-gold text-brand-dark text-[5px] font-black px-1.5 py-0.5 rounded-none uppercase tracking-widest">SALE</div>}
-          </motion.div>
-        ))}
-        
-        <button onClick={() => setIsAdding(true)} className="border border-dashed border-brand-pink/20 rounded-none aspect-square flex flex-col items-center justify-center gap-1 text-gray-300 hover:border-brand-gold hover:text-brand-gold transition-all group bg-white/40">
-           <FiPlus size={16} className="group-hover:scale-110 transition-transform" />
-           <span className="text-[6px] font-bold uppercase tracking-[0.1em]">New Entry</span>
-        </button>
-      </div>
 
-      {/* Add Product Sidebar Panel */}
-      <AnimatePresence>
-        {isAdding && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => setIsAdding(false)}
-              className="fixed inset-0 bg-brand-dark/40 backdrop-blur-sm z-50"
-            />
-            <motion.div 
-              initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-full max-w-sm bg-white z-[60] shadow-2xl flex flex-col p-4 border-l border-brand-pink/10 rounded-none"
-            >
-              <div className="flex justify-between items-center mb-4">
-                <div>
-                  <h2 className="text-sm font-serif font-black text-brand-dark uppercase tracking-widest leading-none mb-1">New Entry</h2>
-                  <p className="text-[7px] text-gray-400 font-black uppercase tracking-[0.2em]">Add to inventory</p>
-                </div>
-                <button onClick={() => setIsAdding(false)} className="p-2 hover:bg-brand-light rounded-none transition-all">
-                  <FiX size={16} className="text-brand-dark" />
+            {/* Compact Filter Bar */}
+            <div className="bg-white p-2.5 rounded-xl border border-gray-100 shadow-sm flex flex-wrap items-center gap-3">
+              <div className="flex-1 min-w-[200px] relative">
+                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+                <input 
+                  type="text" 
+                  placeholder="Search products by name..." 
+                  className="w-full bg-gray-50 border border-transparent focus:border-gray-200 rounded-lg pl-9 pr-4 py-2 text-[11px] font-medium outline-none transition-all"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <select 
+                  className="bg-gray-50 border border-transparent focus:border-gray-200 rounded-lg px-3 py-2 text-[11px] font-bold outline-none cursor-pointer"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  {['All Categories', 'Skincare', 'Soaps', 'Wellness', 'Makeup'].map(c => <option key={c}>{c}</option>)}
+                </select>
+
+                <button 
+                  onClick={() => { setFilter('All Categories'); setSearchQuery(''); setMinPrice(''); setMaxPrice(''); }}
+                  className="bg-gray-50 border border-transparent hover:border-gray-200 rounded-lg px-4 py-2 text-[11px] font-bold text-gray-600 transition-all"
+                >
+                  All
                 </button>
-              </div>
 
-              <form onSubmit={handleSaveProduct} className="flex flex-col h-full overflow-hidden">
-                <div className="flex-1 overflow-y-auto pr-1 space-y-4 no-scrollbar">
-                  <div className="aspect-video bg-brand-light/20 rounded-none border border-dashed border-brand-pink/15 flex flex-col items-center justify-center gap-2 text-gray-400 group hover:border-brand-gold hover:bg-brand-gold/[0.02] cursor-pointer transition-all">
-                    <FiImage size={24} className="text-brand-pink/60 group-hover:scale-110 transition-transform" />
-                    <span className="text-[8px] font-black uppercase tracking-widest">Add Assets</span>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest pl-1">Name</label>
-                      <input type="text" placeholder="Title..." className="w-full bg-brand-light/10 border border-brand-pink/5 rounded-none px-3 py-2 text-[10px] font-bold outline-none focus:border-brand-pink/20 transition-all uppercase" required />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-1">
-                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest pl-1">Category</label>
-                        <div className="relative">
-                          <select className="w-full bg-brand-light/10 border border-brand-pink/5 rounded-none px-3 py-2 text-[10px] font-bold outline-none focus:border-brand-pink/20 transition-all uppercase appearance-none cursor-pointer pr-8">
-                            {['Skincare', 'Soaps', 'Wellness'].map(c => <option key={c}>{c}</option>)}
-                          </select>
-                          <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={12} />
-                        </div>
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest pl-1">Price</label>
-                        <input type="number" placeholder="₹" className="w-full bg-brand-light/10 border border-brand-pink/5 rounded-none px-3 py-2 text-[10px] font-bold outline-none focus:border-brand-pink/20 transition-all" required />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest pl-1">Description</label>
-                      <textarea rows="3" placeholder="..." className="w-full bg-brand-light/10 border border-brand-pink/5 rounded-none px-3 py-2 text-[10px] font-bold outline-none focus:border-brand-pink/20 transition-all resize-none" />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                       <div className="space-y-1">
-                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest pl-1">Stock</label>
-                        <input type="number" placeholder="Qty" className="w-full bg-brand-light/10 border border-brand-pink/5 rounded-none px-3 py-2 text-[10px] font-bold outline-none focus:border-brand-pink/20 transition-all" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[8px] font-black text-gray-400 uppercase tracking-widest pl-1">SKU</label>
-                        <input type="text" placeholder="ID" className="w-full bg-brand-light/10 border border-brand-pink/5 rounded-none px-3 py-2 text-[10px] font-bold outline-none focus:border-brand-pink/20 transition-all uppercase" />
-                      </div>
-                    </div>
-                  </div>
+                <div className="flex items-center gap-1 bg-gray-50 border border-transparent rounded-lg px-2 py-1">
+                  <span className="text-[10px] text-gray-400 font-bold px-1">₹</span>
+                  <input 
+                    type="number" 
+                    placeholder="Min" 
+                    className="w-12 bg-transparent border-none outline-none text-[11px] font-bold"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                  />
+                  <span className="text-gray-300">-</span>
+                  <input 
+                    type="number" 
+                    placeholder="Max" 
+                    className="w-12 bg-transparent border-none outline-none text-[11px] font-bold"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                  />
                 </div>
 
-                <div className="pt-4 border-t border-brand-pink/5 mt-auto">
-                  <button 
-                    type="submit"
-                    className="w-full bg-brand-dark text-white py-3 rounded-none text-[9px] font-black uppercase tracking-[0.2em] shadow-lg shadow-brand-dark/20 hover:bg-black transition-all"
-                  >
-                    Save Product
+                <div className="relative group">
+                  <button className="bg-white border border-gray-100 rounded-lg px-4 py-2 text-[11px] font-bold flex items-center gap-2 shadow-sm hover:shadow-md transition-all">
+                    <FiFilter size={14} className="text-gray-400" />
+                    Bulk Actions
+                    <FiChevronDown size={12} className="text-gray-300" />
                   </button>
                 </div>
-              </form>
-            </motion.div>
-          </>
+              </div>
+            </div>
+
+            {/* Product Table - High Density */}
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-gray-50/50 border-b border-gray-100">
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">PRODUCT NAME</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">CATEGORY</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">PLACEMENT</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">PRICE</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">STOCK</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">RATING</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {filteredProducts.map(p => (
+                    <tr key={p.id} className="hover:bg-gray-50/30 transition-colors group">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-10 h-10 bg-gray-50 rounded-lg overflow-hidden border border-gray-100 p-1 flex-shrink-0">
+                            <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-xs font-bold text-gray-800 group-hover:text-[#3D2522] transition-colors">{p.name || 'Saffron Gold Cream'}</span>
+                            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">SKU-{String(p.id).toUpperCase()}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-xs font-bold text-gray-600">{p.category}</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="px-2 py-0.5 bg-gray-50 text-gray-400 text-[9px] font-bold uppercase rounded leading-none">{p.subCategory || 'General'}</span>
+                          {p.flashSale && (
+                            <span className="px-2 py-0.5 bg-[#FFF5F6] text-[#E8B4B8] text-[9px] font-bold uppercase rounded leading-none">Flash Sale</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-xs font-bold text-gray-800">₹{p.price}</span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span className={`inline-flex px-2 py-1 rounded-lg text-[9px] font-bold uppercase leading-none ${p.stock > 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                          {p.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5 font-bold text-xs">
+                          <FiStar size={12} className="text-yellow-400 fill-yellow-400" />
+                          <span className="text-gray-800">4.5</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            key="add"
+            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+            className="space-y-4"
+          >
+            {/* Create Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                 <button 
+                  onClick={() => setIsAdding(false)}
+                  className="w-9 h-9 bg-white border border-gray-100 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-800 hover:shadow-md transition-all shadow-sm"
+                 >
+                   <FiArrowLeft size={16} />
+                 </button>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-800 tracking-tight mb-0.5">
+                    CREATE NEW PRODUCT
+                  </h1>
+                  <p className="text-gray-400 text-[9px] font-bold uppercase tracking-wider leading-none">
+                    SETUP YOUR PRODUCT DETAILS
+                  </p>
+                </div>
+              </div>
+              
+              <button 
+                onClick={handleSaveProduct}
+                className="bg-[#3D2522] text-white px-7 py-2 rounded-lg text-xs font-bold flex items-center gap-2 shadow-lg shadow-black/10 hover:bg-black transition-all"
+              >
+                <FiPlus size={16} /> Publish Product
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveProduct} className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+              {/* Left Column: Visuals & Labels */}
+              <div className="lg:col-span-4 space-y-4">
+                {/* Visual Gallery */}
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-3">
+                  <h3 className="text-[9px] font-bold text-gray-800 uppercase tracking-wider">Visual Gallery (Max 5)</h3>
+                  <div className="aspect-[4/3] bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-2 group hover:border-[#3D2522] cursor-pointer transition-all">
+                     <div className="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center text-gray-300 group-hover:text-[#3D2522] transition-colors">
+                        <FiUploadCloud size={20} />
+                     </div>
+                     <span className="text-[9px] text-gray-400 font-bold">Add Shot</span>
+                  </div>
+                </div>
+
+                {/* Card Display Labels */}
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+                   <h3 className="text-[9px] font-bold text-gray-800 uppercase tracking-wider">Card Display Labels</h3>
+                   <div className="space-y-3">
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-gray-400 lowercase italic">Status Label (Left)</label>
+                        <input type="text" placeholder="e.g. RUNNING SALE" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 text-[10px] font-bold outline-none focus:border-gray-300 transition-all uppercase" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-gray-400 lowercase italic">Corner Badge (Right)</label>
+                        <input type="text" placeholder="e.g. NEW ARRIVAL" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 text-[10px] font-bold outline-none focus:border-gray-300 transition-all uppercase" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[9px] font-bold text-gray-400 lowercase italic">Stock Marker (Bottom)</label>
+                        <input type="text" placeholder="e.g. ⚡ LIMITED STOCK" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 text-[10px] font-bold outline-none focus:border-gray-300 transition-all uppercase" />
+                      </div>
+                   </div>
+                </div>
+              </div>
+
+              {/* Right Column: Core Info */}
+              <div className="lg:col-span-8 space-y-4">
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+                  <h3 className="text-[9px] font-bold text-gray-800 uppercase tracking-wider">Core Information</h3>
+                  
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-gray-500">Product Title</label>
+                      <input type="text" placeholder="e.g. Gold Floral Ring" className="w-full bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 text-[13px] font-bold outline-none focus:border-gray-300 transition-all" />
+                    </div>
+
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                         <label className="text-[10px] font-bold text-gray-500">PRODUCT CATEGORY <span className="text-red-500">*</span></label>
+                         <span className="text-[8px] text-gray-400 font-bold bg-gray-50 px-1.5 py-0.5 rounded uppercase">Required</span>
+                      </div>
+                      <div className="bg-gray-50/50 border border-gray-100 rounded-lg p-4 space-y-2">
+                         <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest leading-none">MAIN CATEGORY</label>
+                         <div className="relative">
+                            <select className="w-full bg-white border border-gray-100 rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-gray-300 transition-all appearance-none cursor-pointer">
+                               <option>Select Category</option>
+                               <option>Skincare</option>
+                               <option>Makeup</option>
+                               <option>Wellness</option>
+                            </select>
+                            <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none" />
+                         </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-3">
+                  <h3 className="text-[9px] font-bold text-gray-800 uppercase tracking-wider">Navigation Placement</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                     {['SKINCARE', 'MAKEUP', 'SOAPS', 'WELLNESS', 'JEWELLERY', 'INNERWEAR', 'HAIRCARE', 'COMBOS'].map(tag => (
+                       <button key={tag} type="button" className="py-2 px-1.5 bg-gray-50 hover:bg-gray-100 border border-transparent hover:border-gray-200 text-[8px] font-bold text-gray-400 hover:text-brand-pink rounded-lg transition-all uppercase tracking-widest leading-none">{tag}</button>
+                     ))}
+                  </div>
+                </div>
+              </div>
+            </form>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

@@ -67,7 +67,7 @@ const Shop = () => {
   // Advanced Filters State
   const [skinTypeFilter, setSkinTypeFilter] = useState('All');
   const [concernFilter, setConcernFilter] = useState('All');
-  const [priceRange, setPriceRange] = useState(5000);
+  const [priceRange, setPriceRange] = useState(2000);
 
   const sortRef = useRef(null);
   const sortOptions = ['Top Rated', 'Price: Low to High', 'Price: High to Low', 'New Arrivals'];
@@ -284,7 +284,7 @@ const Shop = () => {
                     <span className="text-[9px] font-bold text-brand-gold">UP TO ₹{priceRange}</span>
                   </div>
                   <input 
-                    type="range" min="500" max="5000" step="100" 
+                    type="range" min="50" max="2000" step="50" 
                     value={priceRange}
                     onChange={(e) => setPriceRange(e.target.value)}
                     className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-gold"
@@ -319,7 +319,7 @@ const Shop = () => {
             <h3 className="text-xl font-serif font-black text-[#5C2E3E] mb-2 opacity-30 italic">"Glow not found..."</h3>
             <p className="text-[10px] text-gray-400 mb-6 uppercase tracking-widest">Adjust filters to find your match</p>
             <button 
-              onClick={() => {setSearchQuery(''); setSkinTypeFilter('All'); setConcernFilter('All'); setActiveCategory('all'); setPriceRange(5000);}}
+              onClick={() => {setSearchQuery(''); setSkinTypeFilter('All'); setConcernFilter('All'); setActiveCategory('all'); setPriceRange(2000);}}
               className="px-8 py-3 bg-[#5C2E3E] text-white text-[9px] font-bold uppercase tracking-[0.3em] rounded-full shadow-lg"
             >
               Clear All Discovery

@@ -103,7 +103,7 @@ const AdminSettings = () => {
                      <input type="password" className="w-full bg-white/5 border border-white/10 p-3 text-xs outline-none focus:border-brand-gold transition-all" value={passwordForm.confirm} onChange={(e) => setPasswordForm({...passwordForm, confirm: e.target.value})} required />
                   </div>
                 </div>
-                <div className="flex justify-end gap-3 pt-2">
+                <div className="flex items-center justify-end gap-5 pt-4">
                    <button type="button" onClick={() => setActiveSecurityView(null)} className="text-[9px] font-bold uppercase text-white/40 hover:text-white tracking-widest">Discard</button>
                    <button type="submit" className="bg-brand-gold text-brand-dark px-10 py-3 text-[9px] font-bold uppercase tracking-widest shadow-2xl shadow-brand-gold/10 hover:bg-white transition-all">Save Changes</button>
                 </div>
@@ -258,76 +258,74 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-4 pb-10">
-      <div className="flex justify-between items-end mb-2">
-        <div>
-          <h1 className="text-xl font-serif font-black text-brand-dark uppercase tracking-widest leading-none mb-1">
-            Portal Settings
-          </h1>
-          <p className="text-[8px] text-gray-400 font-medium uppercase tracking-[0.2em]">Identity & Security</p>
-        </div>
+    <div className="max-w-5xl mx-auto space-y-3 pb-6 font-serif">
+      <div className="mb-0.5">
+        <h1 className="text-lg font-black text-brand-dark uppercase tracking-widest leading-none mb-1">
+          Portal Settings
+        </h1>
+        <p className="text-[7px] text-gray-400 font-bold uppercase tracking-[0.2em] opacity-60">Identity & Security</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
         <div className="md:col-span-1">
-          <div className="bg-white rounded-none border border-brand-pink/10 shadow-md overflow-hidden h-full sticky top-20">
-             <div className="h-16 bg-brand-light/40" />
-             <div className="px-4 pb-6 -mt-8 text-center">
-                <div className="w-16 h-16 mx-auto rounded-none bg-white p-1 shadow-lg mb-3 border border-brand-pink/5 relative group cursor-pointer">
-                   <div className="w-full h-full rounded-none bg-brand-dark flex items-center justify-center text-brand-gold text-xl font-serif font-black">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full sticky top-20">
+             <div className="h-10 bg-brand-light/30" />
+             <div className="px-3 pb-4 -mt-6 text-center">
+                <div className="w-12 h-12 mx-auto rounded-xl bg-white p-1 shadow-md mb-2 border border-brand-pink/5 relative group cursor-pointer overflow-hidden">
+                   <div className="w-full h-full rounded-lg bg-brand-dark flex items-center justify-center text-brand-gold text-sm font-serif font-black">
                       {adminInfo.name.substring(0, 2).toUpperCase()}
                    </div>
                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                      <FiImage className="text-white" size={14} />
+                      <FiImage className="text-white" size={10} />
                    </div>
                 </div>
-                <h2 className="text-sm font-serif font-bold text-brand-dark uppercase leading-tight mb-1">{adminInfo.name}</h2>
-                <p className="text-[8px] text-brand-pink font-medium uppercase tracking-widest mb-4">{adminInfo.role}</p>
+                <h2 className="text-xs font-bold text-brand-dark uppercase leading-tight mb-0.5">{adminInfo.name}</h2>
+                <p className="text-[7px] text-brand-pink font-black uppercase tracking-widest mb-3 opacity-70">{adminInfo.role}</p>
                 
-                <div className="space-y-2 text-left">
-                   <div className="flex items-center gap-2 p-2 bg-brand-light/10 rounded-none border border-brand-pink/5 overflow-hidden">
-                      <FiMail size={12} className="text-brand-pink shrink-0" />
-                      <span className="text-[8px] font-medium text-brand-dark truncate">{adminInfo.email}</span>
+                <div className="space-y-1.5 text-left font-sans">
+                   <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100 overflow-hidden">
+                      <FiMail size={10} className="text-brand-pink shrink-0" />
+                      <span className="text-[9px] font-bold text-brand-dark truncate">{adminInfo.email}</span>
                    </div>
-                   <div className="flex items-center gap-2 p-2 bg-brand-light/10 rounded-none border border-brand-pink/5">
-                      <FiShield size={12} className="text-brand-gold shrink-0" />
-                      <span className="text-[8px] font-medium text-brand-dark uppercase">Super Admin Control</span>
+                   <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-100">
+                      <FiShield size={10} className="text-brand-gold shrink-0" />
+                      <span className="text-[7px] font-black text-brand-dark uppercase tracking-tighter">Super Admin Control</span>
                    </div>
                 </div>
              </div>
           </div>
         </div>
 
-        <div className="md:col-span-3 space-y-4">
+        <div className="md:col-span-3 space-y-3">
           <AnimatePresence mode="wait">
             {isEditingProfile ? (
               <motion.div 
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-                className="bg-white rounded-none border-2 border-brand-gold/20 shadow-2xl p-6 relative"
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 relative font-sans"
               >
-                <div className="flex justify-between items-center mb-6 pb-4 border-b border-brand-pink/5">
-                  <h3 className="text-sm font-serif font-bold text-brand-dark uppercase tracking-widest flex items-center gap-2">
-                     <FiEdit3 className="text-brand-gold" /> Refine Profile Details
+                <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-50">
+                  <h3 className="text-xs font-serif font-bold text-brand-dark uppercase tracking-widest flex items-center gap-2">
+                     <FiEdit3 className="text-brand-gold" size={12}/> Refine Profile Details
                   </h3>
-                  <button onClick={() => setIsEditingProfile(false)} className="text-gray-300 hover:text-brand-dark p-2 font-bold"><FiX size={16} /></button>
+                  <button onClick={() => setIsEditingProfile(false)} className="text-gray-300 hover:text-brand-dark p-1 font-bold"><FiX size={14} /></button>
                 </div>
-                <form onSubmit={handleProfileUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-1.5">
-                    <label className="text-[8px] font-bold text-gray-400 uppercase tracking-widest pl-1">Display Name</label>
-                    <input type="text" value={profileForm.name} onChange={(e) => setProfileForm({...profileForm, name: e.target.value})} className="w-full bg-brand-light/10 border border-brand-pink/10 p-3 text-[10px] font-medium outline-none focus:border-brand-pink transition-all uppercase" />
+                <form onSubmit={handleProfileUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[7px] font-black text-gray-400 uppercase tracking-widest pl-1">Display Name</label>
+                    <input type="text" value={profileForm.name} onChange={(e) => setProfileForm({...profileForm, name: e.target.value})} className="w-full bg-gray-50 border border-gray-100 p-2 rounded-lg text-[10px] font-bold outline-none focus:border-brand-pink/30 focus:bg-white transition-all uppercase shadow-inner" />
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[8px] font-bold text-gray-400 uppercase tracking-widest pl-1">Secure Email</label>
-                    <input type="email" value={profileForm.email} onChange={(e) => setProfileForm({...profileForm, email: e.target.value})} className="w-full bg-brand-light/10 border border-brand-pink/10 p-3 text-[10px] font-medium outline-none focus:border-brand-pink transition-all" />
+                  <div className="space-y-1">
+                    <label className="text-[7px] font-black text-gray-400 uppercase tracking-widest pl-1">Secure Email</label>
+                    <input type="email" value={profileForm.email} onChange={(e) => setProfileForm({...profileForm, email: e.target.value})} className="w-full bg-gray-50 border border-gray-100 p-2 rounded-lg text-[10px] font-bold outline-none focus:border-brand-pink/30 focus:bg-white transition-all shadow-inner" />
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[8px] font-bold text-gray-400 uppercase tracking-widest pl-1">Active Password</label>
-                    <input type="text" value={profileForm.password} onChange={(e) => setProfileForm({...profileForm, password: e.target.value})} className="w-full bg-brand-light/10 border border-brand-pink/10 p-3 text-[10px] font-medium outline-none focus:border-brand-pink transition-all" />
+                  <div className="space-y-1">
+                    <label className="text-[7px] font-black text-gray-400 uppercase tracking-widest pl-1">Active Password</label>
+                    <input type="text" value={profileForm.password} onChange={(e) => setProfileForm({...profileForm, password: e.target.value})} className="w-full bg-gray-50 border border-gray-100 p-2 rounded-lg text-[10px] font-bold outline-none focus:border-brand-pink/30 focus:bg-white transition-all shadow-inner" />
                   </div>
-                  <div className="flex items-end justify-end gap-3 mt-4 md:col-span-2">
-                    <button type="button" onClick={() => setIsEditingProfile(false)} className="text-[9px] font-bold uppercase text-gray-400 hover:text-brand-dark tracking-widest">Discard</button>
-                    <button type="submit" className="bg-brand-dark text-white px-8 py-3 rounded-none text-[9px] font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-black transition-all flex items-center gap-2">
-                      <FiSave /> Save Identity
+                  <div className="flex items-center justify-end gap-4 mt-2 md:col-span-2">
+                    <button type="button" onClick={() => setIsEditingProfile(false)} className="text-[8px] font-black uppercase text-gray-400 hover:text-brand-dark tracking-widest">Discard</button>
+                    <button type="submit" className="bg-brand-dark text-white px-6 py-2 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] shadow-lg shadow-brand-dark/20 hover:bg-black transition-all flex items-center gap-2">
+                      <FiSave size={10}/> Save Identity
                     </button>
                   </div>
                 </form>
@@ -335,38 +333,38 @@ const AdminSettings = () => {
             ) : (
               <motion.div 
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                className="bg-white rounded-none border border-brand-pink/10 shadow-md p-5 pb-8 relative group"
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 pb-6 relative group font-sans"
               >
-                <div className="flex justify-between items-center mb-6 border-b border-brand-pink/5 pb-4">
-                  <h3 className="text-[10px] font-serif font-bold text-brand-dark uppercase tracking-widest leading-none flex items-center gap-2">
-                    <FiUser className="text-brand-pink" size={12} /> Account Profile
+                <div className="flex justify-between items-center mb-4 border-b border-gray-50 pb-2">
+                  <h3 className="text-[9px] font-serif font-black text-brand-dark uppercase tracking-widest leading-none flex items-center gap-2">
+                    <FiUser className="text-brand-pink" size={10} /> Account Profile
                   </h3>
                   <button 
                     onClick={() => setIsEditingProfile(true)}
-                    className="bg-brand-pink/5 text-brand-pink px-4 py-2 rounded-none text-[9px] font-bold uppercase tracking-widest hover:bg-brand-pink hover:text-white transition-all flex items-center gap-2 border border-brand-pink/10"
+                    className="bg-white text-brand-pink px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest hover:bg-brand-pink hover:text-white transition-all flex items-center gap-1.5 border border-brand-pink/10 shadow-sm"
                   >
-                    <FiEdit3 size={11} /> Edit Profile
+                    <FiEdit3 size={10} /> Edit Profile
                   </button>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
-                    <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Display Name</p>
-                    <p className="text-[11px] font-medium text-brand-dark uppercase tracking-tight">{adminInfo.name}</p>
+                    <p className="text-[6px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-60">Display Name</p>
+                    <p className="text-[10px] font-bold text-brand-dark uppercase tracking-tight">{adminInfo.name}</p>
                   </div>
                   <div>
-                    <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Authority Role</p>
+                    <p className="text-[6px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-60">Authority Role</p>
                     <div className="flex items-center gap-1.5">
-                      <p className="text-[11px] font-medium text-brand-dark uppercase tracking-tight">{adminInfo.role}</p>
-                      <FiCheck className="text-green-500" size={10} />
+                      <p className="text-[10px] font-bold text-brand-dark uppercase tracking-tight">{adminInfo.role}</p>
+                      <FiCheck className="text-green-500" size={8} />
                     </div>
                   </div>
                   <div className="col-span-2 md:col-span-1">
-                    <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Secure Email</p>
-                    <p className="text-[11px] font-medium text-brand-dark lowercase overflow-hidden text-ellipsis whitespace-nowrap">{adminInfo.email}</p>
+                    <p className="text-[6px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-60">Secure Email</p>
+                    <p className="text-[10px] font-bold text-brand-dark lowercase overflow-hidden text-ellipsis whitespace-nowrap">{adminInfo.email}</p>
                   </div>
                   <div>
-                    <p className="text-[7px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">Active Password</p>
-                    <p className="text-[11px] font-medium text-brand-dark tracking-wide">{adminInfo.password}</p>
+                    <p className="text-[6px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-60">Active Password</p>
+                    <p className="text-[10px] font-bold text-brand-dark tracking-wide">{adminInfo.password}</p>
                   </div>
                 </div>
               </motion.div>

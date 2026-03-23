@@ -39,6 +39,9 @@ import AdminFinance from './components/admin/AdminFinance';
 import AdminBanners from './components/admin/AdminBanners';
 import AdminSettings from './components/admin/AdminSettings';
 import AdminLayout from './components/admin/AdminLayout';
+import AdminComingSoon from './components/admin/AdminComingSoon';
+import AdminInventory from './components/admin/AdminInventory';
+import { FiBox, FiRotateCcw, FiRefreshCw, FiTag, FiShoppingBag, FiUsers } from 'react-icons/fi';
 
 const UserRoutes = () => (
   <>
@@ -86,6 +89,11 @@ const AdminRoutes = () => (
       <Route path="/finance" element={<AdminFinance />} />
       <Route path="/banners" element={<AdminBanners />} />
       <Route path="/settings" element={<AdminSettings />} />
+      <Route path="/inventory" element={<AdminInventory />} />
+      <Route path="/returns" element={<AdminComingSoon title="RETURNS" icon={<FiRotateCcw size={40} />} />} />
+      <Route path="/replacements" element={<AdminComingSoon title="REPLACEMENTS" icon={<FiRefreshCw size={40} />} />} />
+      <Route path="/coupons" element={<AdminComingSoon title="COUPONS" icon={<FiTag size={40} />} />} />
+      <Route path="/customers" element={<AdminUsers />} />
     </Route>
   </Routes>
 );

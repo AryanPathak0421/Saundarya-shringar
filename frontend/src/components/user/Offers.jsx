@@ -17,98 +17,98 @@ const offerProducts = [
   {
     id: 1,
     name: 'TIRTIR Mask Fit Red Cushion',
-    price: 2899,
-    oldPrice: 3499,
+    price: 899,
+    oldPrice: 1650,
     rating: 5,
     reviews: 1245,
-    discount: '17%',
+    discount: '45%',
     image: imgTirtirRed,
     category: 'makeup',
-    label: 'Hot Offer'
+    label: 'Big Drop'
   },
   {
     id: 103,
     name: 'Glow Vit-C Serum',
-    price: 1850,
-    oldPrice: 2200,
+    price: 549,
+    oldPrice: 1250,
     rating: 5,
     reviews: 450,
-    discount: '15%',
+    discount: '56%',
     image: imgTirtirRed,
     category: 'skincare',
-    label: 'Limited Time'
+    label: 'Pocket Deal'
   },
   {
     id: 201,
     name: 'Oriental Silk Foundation',
-    price: 2850,
-    oldPrice: 3200,
+    price: 799,
+    oldPrice: 1899,
     rating: 5,
     reviews: 890,
-    discount: '10%',
+    discount: '58%',
     image: imgLakmePowder,
     category: 'makeup',
-    label: 'Best Deal'
+    label: 'Mega Sale'
   },
   {
     id: 5,
     name: 'Verymiss Kiss Proof Trio',
-    price: 999,
-    oldPrice: 1499,
+    price: 399,
+    oldPrice: 999,
     rating: 4,
     reviews: 856,
-    discount: '33%',
+    discount: '60%',
     image: imgVerymiss,
     category: 'makeup',
-    label: 'Super Saver'
+    label: 'Super Budget'
   },
   {
     id: 6,
     name: 'Rose Gold Eyeshadow Palette',
-    price: 3250,
-    oldPrice: 4000,
+    price: 649,
+    oldPrice: 1550,
     rating: 5,
     reviews: 840,
-    discount: '20%',
+    discount: '58%',
     image: imgRoseGold,
     category: 'makeup',
-    label: 'Exclusive'
+    label: 'Lowest Ever'
   },
   {
     id: 351,
     name: 'Bridal Radiance Kit',
-    price: 4500,
-    oldPrice: 5500,
+    price: 999,
+    oldPrice: 2800,
     rating: 5,
     reviews: 45,
-    discount: '18%',
+    discount: '64%',
     image: imgRoseGold,
     category: 'beauty kits',
-    label: 'Bundle Deal'
+    label: 'Steal Price'
   },
   {
     id: 3,
     name: 'Dual Concealer Stick',
-    price: 1650,
-    oldPrice: 1950,
+    price: 349,
+    oldPrice: 899,
     rating: 5,
     reviews: 560,
-    discount: '15%',
+    discount: '61%',
     image: imgTirtirConcealer,
     category: 'makeup',
-    label: 'Flash Sale'
+    label: 'Budget Find'
   },
   {
     id: 401,
     name: 'Oud Majesty Perfume',
-    price: 3450,
-    oldPrice: 3950,
+    price: 199,
+    oldPrice: 450,
     rating: 5,
     reviews: 120,
-    discount: '12%',
+    discount: '55%',
     image: imgLipGloss,
     category: 'fragrances',
-    label: 'Daily Deal'
+    label: 'Daily Steal'
   }
 ];
 

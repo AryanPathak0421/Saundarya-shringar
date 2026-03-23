@@ -71,7 +71,7 @@ const Auth = () => {
       const fullOtp = otp.join('');
       if (fullOtp === '123456') {
         setUser({
-          name: 'Soundarya Customer',
+          name: 'Saundarya Customer',
           phone: form.phone,
           role: 'Customer',
           joined: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
@@ -139,13 +139,13 @@ const Auth = () => {
           px-6 pt-3 pb-6 md:pt-4 md:pb-10 min-h-[35vh] md:min-h-[50vh] transition-all shadow-xl shrink-0 overflow-hidden"
         >
           {/* Logo Section */}
-          <div className="flex items-center gap-2 mb-3 md:mb-10 md:px-6">
-            <img src={logoPink} alt="Logo" className="h-5 md:h-8 w-auto" />
+          <div className="flex items-center gap-3 mb-6 md:mb-8 md:px-6">
+            <img src="/logo.png" alt="Logo" className="h-4 md:h-10 w-auto logo-blend" />
             <div className="flex flex-col leading-none">
-               <h2 className="text-[12px] md:text-base font-serif font-black text-[#5C2E3E] tracking-[0.1em]" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
-                 Soundarya
+               <h2 className="text-[10px] md:text-lg font-black text-[#5C2E3E] uppercase tracking-[0.12em]" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+                 Saundarya
                </h2>
-               <span className="text-[5px] md:text-[7px] text-[#5C2E3E] font-bold uppercase tracking-[0.4em] opacity-80" style={{ fontFamily: "'Cinzel', serif" }}>
+               <span className="text-[4px] md:text-[8px] text-[#5C2E3E]/70 font-bold uppercase tracking-[0.45em] mt-0.5" style={{ fontFamily: "'Cinzel', serif" }}>
                  Shrinagar
                </span>
             </div>
@@ -296,13 +296,13 @@ const Auth = () => {
         px-6 pt-3 pb-6 md:pt-4 md:pb-10 min-h-[35vh] md:min-h-[50vh] transition-all shadow-xl shrink-0"
       >
         {/* Header / Logo */}
-        <div className="flex items-center gap-2 mb-3 md:mb-10 md:px-6">
-          <img src={logoPink} alt="Soundarya Shrinagar Logo" className="h-5 md:h-8 w-auto" />
+        <div className="flex items-center gap-3 mb-6 md:mb-8 md:px-6">
+          <img src="/logo.png" alt="Soundarya Shrinagar Logo" className="h-4 md:h-10 w-auto logo-blend" />
           <div className="flex flex-col leading-none">
-             <h2 className="text-[12px] md:text-base font-serif font-black text-[#5C2E3E] tracking-[0.1em]" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
-               Soundarya
+             <h2 className="text-[10px] md:text-lg font-black text-[#5C2E3E] uppercase tracking-[0.12em]" style={{ fontFamily: "'Cinzel Decorative', serif" }}>
+               Saundarya
              </h2>
-             <span className="text-[5px] md:text-[7px] text-[#5C2E3E] font-bold uppercase tracking-[0.4em] opacity-80" style={{ fontFamily: "'Cinzel', serif" }}>
+             <span className="text-[4px] md:text-[8px] text-[#5C2E3E]/70 font-bold uppercase tracking-[0.45em] mt-0.5" style={{ fontFamily: "'Cinzel', serif" }}>
                Shrinagar
              </span>
           </div>

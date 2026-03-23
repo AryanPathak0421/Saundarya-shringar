@@ -13,7 +13,14 @@ import {
   FiSearch,
   FiTrendingUp,
   FiMenu,
-  FiX
+  FiX,
+  FiChevronDown,
+  FiRotateCcw,
+  FiRefreshCw,
+  FiBox,
+  FiTag,
+  FiDollarSign,
+  FiUser
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -56,13 +63,18 @@ const AdminLayout = () => {
   };
 
   const menuItems = [
-    { title: 'Dashboard', path: '/admin', icon: <FiGrid /> },
-    { title: 'Products', path: '/admin/products', icon: <FiShoppingBag /> },
+    { title: 'Overview', path: '/admin', icon: <FiGrid /> },
     { title: 'Categories', path: '/admin/categories', icon: <FiLayers /> },
-    { title: 'Users', path: '/admin/users', icon: <FiUsers /> },
+    { title: 'Products', path: '/admin/products', icon: <FiShoppingBag /> },
+    { title: 'Inventory', path: '/admin/inventory', icon: <FiBox /> },
     { title: 'Orders', path: '/admin/orders', icon: <FiShoppingBag /> },
-    { title: 'Finance', path: '/admin/finance', icon: <FiTrendingUp /> },
+    { title: 'Finance', path: '/admin/finance', icon: <FiDollarSign /> },
+    { title: 'Customers', path: '/admin/customers', icon: <FiUsers /> },
+    { title: 'Returns', path: '/admin/returns', icon: <FiRotateCcw /> },
+    { title: 'Replacements', path: '/admin/replacements', icon: <FiRefreshCw /> },
+    { title: 'Coupons', path: '/admin/coupons', icon: <FiTag /> },
     { title: 'Banners', path: '/admin/banners', icon: <FiImage /> },
+    { title: 'Profile', path: '/admin/settings', icon: <FiUser /> },
     { title: 'Settings', path: '/admin/settings', icon: <FiSettings /> },
   ];
 
@@ -85,59 +97,64 @@ const AdminLayout = () => {
       <AnimatePresence>
         {isSidebarOpen && (
           <motion.aside 
-            initial={{ x: -260 }}
+            initial={{ x: -280 }}
             animate={{ x: 0 }}
-            exit={{ x: -260 }}
+            exit={{ x: -280 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="w-56 bg-[#FBD5DA] text-[#5C2E3E] flex flex-col fixed h-screen z-50 border-r border-brand-pink/5"
+            className="w-64 bg-[#3D2522] text-white flex flex-col fixed h-screen z-50 shadow-2xl overflow-hidden"
           >
-            <div className="p-4 border-b border-brand-pink/10 relative">
-              <Link to="/admin" className="flex items-center gap-2.5 group">
-                <img
-                  src="/logo.png"
-                  alt="Logo"
-                  className="h-12 w-auto transition-all logo-blend group-hover:scale-105"
-                />
-                <div className="flex flex-col leading-tight">
-                  <h2 className="text-[13px] font-serif font-bold text-[#5C2E3E] uppercase tracking-[0.12em]">
-                    <span style={{ fontFamily: "'Cinzel Decorative', serif" }}>Soundarya</span>
-                  </h2>
-                  <span className="text-[8px] text-[#5C2E3E] opacity-70 font-medium uppercase tracking-[0.4em]" style={{ fontFamily: "'Cinzel', serif" }}>
+            <div className="p-8 flex items-center justify-center flex-shrink-0">
+              <Link to="/admin" className="flex flex-col items-center gap-1 group">
+                <div className="flex flex-col items-center leading-none">
+                  <span
+                    className="text-[14px] font-black tracking-[0.12em] text-white uppercase leading-none"
+                    style={{ fontFamily: "'Cinzel Decorative', 'Cinzel', serif" }}
+                  >
+                    Saundarya
+                  </span>
+                  <span
+                    className="text-[8px] tracking-[0.45em] text-white/60 mt-1 uppercase font-bold"
+                    style={{ fontFamily: "'Cinzel', serif" }}
+                  >
                     Shrinagar
                   </span>
                 </div>
               </Link>
             </div>
 
-            <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto no-scrollbar">
+            <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-scroll custom-sidebar-scrollbar min-h-0">
               {menuItems.map((item) => (
                 <Link
-                  key={item.path}
+                  key={item.title}
                   to={item.path}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-none transition-all duration-300 group relative overflow-hidden ${
+                  className={`flex items-center gap-4 px-4 py-3.5 rounded-none transition-all duration-300 group relative ${
                     location.pathname === item.path 
-                    ? 'bg-[#5C2E3E] text-white font-bold' 
-                    : 'text-[#5C2E3E]/70 hover:bg-white/40 hover:text-[#5C2E3E] hover:pl-5'
+                    ? 'bg-white/10 text-white font-bold' 
+                    : 'text-white/70 hover:text-white'
                   }`}
                 >
                   <div className={`transition-all duration-300 ${location.pathname === item.path ? 'scale-110' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
-                    {React.cloneElement(item.icon, { size: 14 })}
+                    {React.cloneElement(item.icon, { size: 18 })}
                   </div>
-                  <span className="text-[10px] font-bold tracking-[0.05em] uppercase">{item.title}</span>
-                  {location.pathname !== item.path && (
-                    <div className="absolute left-0 w-1 h-full bg-[#5C2E3E] -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+                  <span className="text-[12px] font-bold tracking-wide">{item.title}</span>
+                  {item.hasSubmenu && (
+                    <FiChevronDown size={14} className="ml-auto opacity-50" />
+                  )}
+                  {location.pathname === item.path && (
+                    <div className="absolute left-0 w-1.5 h-1/2 top-1/4 bg-white rounded-r-full" />
                   )}
                 </Link>
               ))}
+              <div className="h-20 w-full flex-shrink-0" />
             </nav>
 
-            <div className="p-4 mt-auto border-t border-brand-pink/10 bg-white/10 text-center">
+            <div className="p-6 border-t border-white/10 flex-shrink-0">
               <button 
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2 text-[#5C2E3E]/60 hover:text-red-500 transition-all group rounded-none hover:bg-white/40"
+                className="w-full flex items-center gap-4 px-4 py-2 text-white/70 hover:text-white transition-all group"
               >
-                <FiLogOut className="text-sm group-hover:-translate-x-1 transition-transform" />
-                <span className="text-[8px] font-bold tracking-[0.15em] uppercase">Exit Portal</span>
+                <FiLogOut className="text-xl rotate-180" />
+                <span className="text-[12px] font-bold tracking-widest uppercase">Logout</span>
               </button>
             </div>
           </motion.aside>
@@ -145,7 +162,7 @@ const AdminLayout = () => {
       </AnimatePresence>
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-56' : 'ml-0'}`}>
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
         {/* Header - Premium Navigation */}
         <header className="h-12 bg-white/80 backdrop-blur-xl border-b border-brand-pink/5 flex items-center justify-between px-4 sticky top-0 z-40 transition-all">
           <div className="flex items-center gap-4">
@@ -158,13 +175,10 @@ const AdminLayout = () => {
             >
               <FiMenu size={18} />
             </button>
-            <div className="hidden lg:flex items-center gap-2 bg-brand-light/50 px-4 py-1.5 rounded-none w-56 lg:w-80 border border-brand-pink/10 group focus-within:border-brand-pink/30 transition-all">
-              <FiSearch className="text-brand-pink/50 group-focus-within:text-brand-pink" size={12} />
-              <input 
-                type="text" 
-                placeholder="GLOBAL SEARCH (SKU, CUSTOMER...)" 
-                className="bg-transparent border-none outline-none text-[9px] w-full font-medium uppercase tracking-wider text-brand-dark placeholder:text-gray-300"
-              />
+            <div className="flex items-center gap-4">
+              <h1 className="text-[11px] font-black text-gray-800 tracking-[0.2em] uppercase px-4 border-l-2 border-brand-pink/10 ml-2 leading-none">
+                {menuItems.find(item => item.path === location.pathname)?.title || 'Overview'}
+              </h1>
             </div>
           </div>
 
@@ -220,15 +234,15 @@ const AdminLayout = () => {
             </div>
 
             <div className="w-[1px] h-6 bg-brand-pink/10 hidden sm:block"></div>
-            <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/admin/settings')}>
+            <Link to="/admin/settings" className="flex items-center gap-3 hover:bg-gray-50 p-1 rounded-lg transition-all group">
               <div className="text-right hidden sm:block">
-                <p className="text-[9px] font-bold text-brand-dark uppercase tracking-widest leading-none mb-0.5">{user?.name || 'Trisha Mishra'}</p>
-                <p className="text-[6px] text-brand-pink font-bold uppercase tracking-tighter opacity-70">{user?.role || 'Super Admin Control'}</p>
+                <p className="text-[11px] font-bold text-gray-800 leading-tight group-hover:text-brand-pink transition-colors">Admin User</p>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">SUPER ADMIN</p>
               </div>
-              <div className="w-9 h-9 rounded-md bg-brand-dark flex items-center justify-center text-brand-gold text-[11px] font-bold shadow-lg transition-transform group-hover:scale-105">
-                {user?.name ? user.name.substring(0, 2).toUpperCase() : 'TM'}
+              <div className="w-9 h-9 bg-[#3D2522] rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md group-hover:bg-brand-pink transition-all">
+                A
               </div>
-            </div>
+            </Link>
           </div>
         </header>
 

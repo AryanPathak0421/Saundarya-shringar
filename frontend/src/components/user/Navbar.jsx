@@ -42,7 +42,7 @@ const Navbar = () => {
                   className="text-sm md:text-lg font-black tracking-[0.12em] text-white uppercase leading-none"
                   style={{ fontFamily: "'Cinzel Decorative', 'Cinzel', serif" }}
                 >
-                  Soundarya
+                  Saundarya
                 </span>
                 <span
                   className="text-[7px] md:text-[9px] tracking-[0.45em] text-white/80 mt-1 uppercase font-bold"

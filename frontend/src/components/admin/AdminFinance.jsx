@@ -33,27 +33,29 @@ const AdminFinance = () => {
         </button>
       </div>
 
-      {/* Finance Cards - Compacted */}
+      {/* Finance Cards - Dashboard Style */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {financeStats.map((stat, i) => (
           <motion.div 
             key={i}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ y: -2 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-white rounded-none p-3 border border-brand-pink/5 shadow-sm relative overflow-hidden group"
+            className="bg-white p-3.5 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between group cursor-default"
           >
-             <div className={`p-1.5 ${stat.bg} ${stat.color} rounded-none w-fit mb-2 group-hover:scale-110 transition-transform`}>
-                {React.cloneElement(stat.icon, { size: 14 })}
-             </div>
-             <p className="text-[7px] font-black uppercase tracking-widest text-gray-400 mb-0.5">{stat.title}</p>
-             <h3 className="text-lg font-serif font-black text-brand-dark leading-none">{stat.value}</h3>
-             <div className="flex items-center justify-between mt-2 border-t border-brand-pink/5 pt-2">
-                <span className={`text-[7px] font-black flex items-center gap-0.5 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-500'}`}>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">{stat.title}</span>
+              <div className="flex items-end gap-1.5">
+                <span className="text-lg font-bold text-gray-800 leading-none">{stat.value}</span>
+                <span className={`text-[7px] font-black flex items-center gap-0.5 mb-0.5 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-500'}`}>
                    {stat.change.startsWith('+') ? <FiArrowUpRight size={8} /> : <FiTrendingDown size={8} />} {stat.change}
                 </span>
-                <span className="text-[5px] font-black text-gray-300 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Growth</span>
-             </div>
+              </div>
+            </div>
+            <div className={`w-10 h-10 ${stat.bg} ${stat.color} rounded-lg flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform`}>
+              {React.cloneElement(stat.icon, { size: 18 })}
+            </div>
           </motion.div>
         ))}
       </div>

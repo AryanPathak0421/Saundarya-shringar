@@ -84,34 +84,40 @@ const AdminCategories = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-              {categories.map((cat) => (
-                <div key={cat.id} className="bg-white rounded-none border border-brand-pink/10 shadow-sm overflow-hidden group cursor-pointer hover:shadow-xl transition-all">
-                  <div className="h-20 bg-brand-light/10 relative overflow-hidden">
+              {categories.map((cat, i) => (
+                <motion.div 
+                  key={cat.id} 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden group cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                >
+                  <div className="h-16 bg-brand-light/10 relative overflow-hidden">
                     <img 
                       src={cat.image} 
                       alt={cat.name} 
                       className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110" 
                     />
                   </div>
-                  <div className="p-2 border-t border-brand-pink/5">
-                     <h3 className="text-[9px] font-bold text-brand-dark uppercase tracking-wider leading-none mb-1 group-hover:text-brand-pink transition-colors truncate">{cat.name}</h3>
+                  <div className="p-2 border-t border-gray-50">
+                     <h3 className="text-[9px] font-black text-brand-dark uppercase tracking-wider leading-none mb-1 group-hover:text-brand-pink transition-colors truncate">{cat.name}</h3>
                      <div className="flex items-center justify-between">
-                        <span className="text-[7px] text-brand-pink font-medium uppercase tracking-tighter">{cat.count} Items</span>
+                        <span className="text-[7px] text-brand-pink font-black uppercase tracking-tighter">{cat.count} Items</span>
                         <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                            <button onClick={(e) => { e.stopPropagation(); startEdit(cat); }} className="p-1 text-brand-dark hover:bg-brand-pink/10 transition-all"><FiEdit2 size={10} /></button>
                            <button onClick={(e) => { e.stopPropagation(); handleDelete(cat.id); }} className="p-1 text-red-500 hover:bg-red-50 transition-all"><FiTrash2 size={10} /></button>
                         </div>
                      </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
               
               <button 
                 onClick={() => { setEditingCat(null); setForm({name: '', count: 0}); setIsAdding(true); }}
-                className="h-full min-h-[100px] border border-dashed border-brand-pink/10 rounded-none flex flex-col items-center justify-center gap-1 text-gray-400 hover:border-brand-pink hover:text-brand-pink hover:bg-brand-pink/[0.02] transition-all group bg-white/40"
+                className="h-full min-h-[90px] border-2 border-dashed border-gray-100 rounded-xl flex flex-col items-center justify-center gap-1 text-gray-400 hover:border-brand-pink/30 hover:text-brand-pink hover:bg-brand-pink/[0.02] transition-all group bg-white"
                >
                   <FiPlus size={14} className="group-hover:scale-110 transition-transform" />
-                  <span className="text-[7px] font-bold uppercase tracking-[0.1em]">New</span>
+                  <span className="text-[7px] font-black uppercase tracking-[0.1em]">Divine New</span>
               </button>
             </div>
           </motion.div>
@@ -119,62 +125,65 @@ const AdminCategories = () => {
           <motion.div 
              key="add"
              initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-             className="max-w-xl mx-auto bg-white rounded-none border border-brand-pink/10 shadow-2xl p-6 relative overflow-hidden"
+             className="max-w-md mx-auto bg-white rounded-2xl border border-brand-pink/10 shadow-2xl p-5 relative overflow-hidden"
           >
-             <div className="absolute top-0 left-0 w-full h-1.5 bg-brand-dark" />
+             <div className="absolute top-0 left-0 w-full h-1 bg-brand-dark" />
              <button 
                 onClick={() => setIsAdding(false)}
-                className="absolute top-4 right-4 p-1.5 bg-brand-light/50 text-brand-dark rounded-none hover:bg-brand-pink/10 transition-all font-bold"
+                className="absolute top-4 right-4 p-1.5 bg-gray-50 text-brand-dark rounded-lg hover:bg-brand-pink/10 transition-all font-bold"
              >
-                <FiX />
+                <FiX size={12} />
              </button>
-
-             <div className="mb-6 text-center">
-                <div className="w-12 h-12 bg-brand-light rounded-none flex items-center justify-center text-brand-dark mx-auto mb-3 border border-brand-pink/5 shadow-inner">
-                   <FiGrid size={20} />
+ 
+             <div className="mb-5 text-center pt-1">
+                <div className="w-10 h-10 bg-brand-light rounded-xl flex items-center justify-center text-brand-dark mx-auto mb-2 border border-brand-pink/5 shadow-inner">
+                   <FiGrid size={18} />
                 </div>
                 <h2 className="text-lg font-serif font-black text-brand-dark uppercase tracking-widest leading-none mb-1">
-                  {editingCat ? 'Refine Category' : 'Divine Category'}
+                  {editingCat ? 'Edit Category' : 'New Category'}
                 </h2>
-                <p className="text-[8px] text-gray-400 font-medium uppercase tracking-[0.2em]">Store hierarchy classification</p>
+                <p className="text-[7px] text-gray-400 font-black uppercase tracking-[0.2em] opacity-60">Store hierarchy hub</p>
              </div>
-
-             <form onSubmit={handleAdd} className="space-y-4">
-                <div className="space-y-1.5">
-                   <label className="text-[8px] font-bold text-brand-dark/50 uppercase tracking-widest pl-1">Name</label>
+ 
+             <form onSubmit={handleAdd} className="space-y-3.5">
+                <div className="space-y-1">
+                   <label className="text-[8px] font-black text-brand-dark/40 uppercase tracking-widest ml-1">Title</label>
                    <div className="relative">
                       <FiEdit2 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-300" size={12} />
                       <input 
                          type="text" 
                          placeholder="e.g. Organic Soaps"
-                         className="w-full bg-brand-light/20 border border-brand-pink/10 p-3 pl-10 rounded-none text-[10px] font-medium uppercase tracking-wider outline-none focus:border-brand-dark transition-all"
+                         className="w-full bg-gray-50 border border-gray-100 p-2.5 pl-10 rounded-lg text-[10px] font-black uppercase tracking-wider outline-none focus:border-brand-pink/30 focus:bg-white transition-all shadow-inner"
                          value={form.name}
                          onChange={(e) => setForm({...form, name: e.target.value})}
                          required
                       />
                    </div>
                 </div>
-
-                <div className="space-y-1.5">
-                   <label className="text-[8px] font-bold text-brand-dark/50 uppercase tracking-widest pl-1">Stock Count</label>
+ 
+                <div className="space-y-1">
+                   <label className="text-[8px] font-black text-brand-dark/40 uppercase tracking-widest ml-1">Asset Count</label>
                    <div className="relative">
                       <FiPlus className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-300" size={12} />
                       <input 
                          type="number" 
                          placeholder="0"
-                         className="w-full bg-brand-light/20 border border-brand-pink/10 p-3 pl-10 rounded-none text-[10px] font-medium uppercase tracking-wider outline-none focus:border-brand-dark transition-all"
+                         className="w-full bg-gray-50 border border-gray-100 p-2.5 pl-10 rounded-lg text-[10px] font-black uppercase tracking-wider outline-none focus:border-brand-pink/30 focus:bg-white transition-all shadow-inner"
                          value={form.count}
                          onChange={(e) => setForm({...form, count: e.target.value})}
                       />
                    </div>
                 </div>
-
-                <button 
-                   type="submit"
-                   className="w-full bg-brand-dark text-white py-3.5 rounded-none text-[9px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-brand-dark/20 flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-[0.98]"
-                >
-                   {editingCat ? 'Save Changes' : 'Create Category'} <FiX className="rotate-45" />
-                </button>
+ 
+                <div className="pt-1">
+                   <button 
+                      type="submit"
+                      className="w-full bg-brand-dark text-white py-3 rounded-lg text-[9px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-brand-dark/20 flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-[0.98] group"
+                   >
+                      {editingCat ? 'Save Hierarchy' : 'Create Category'} 
+                      <FiX size={10} className="rotate-45 group-hover:rotate-90 transition-transform" />
+                   </button>
+                </div>
              </form>
           </motion.div>
         )}
