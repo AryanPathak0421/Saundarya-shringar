@@ -1,35 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-
-import catSkincare from '../../assets/images/cat_skincare_new.png';
-import catHaircare from '../../assets/images/cat_haircare_new.png';
-import catMakeup from '../../assets/images/cat_makeup_new.png';
-import catBathBody from '../../assets/images/cat_bathbody_new.png';
-import catWellness from '../../assets/images/cat_wellness_new.png';
-import catBeautyKits from '../../assets/images/cat_beautykits_new.png';
-import catFragrance from '../../assets/images/cat_fragrance_new.png';
-import catEssentialOils from '../../assets/images/cat_essentialoils_new.png';
-import catSoaps from '../../assets/images/cat_soaps.png';
-import catJewellery from '../../assets/images/cat_jewellery.png';
-import catInnerwear from '../../assets/images/cat_innerwear.png';
-
-const categories = [
-  { id: 'Skincare', name: 'Skincare', image: catSkincare },
-  { id: 'Soaps', name: 'Soaps', image: catSoaps },
-  { id: 'Makeup', name: 'Makeup', image: catMakeup },
-  { id: 'Jewellery', name: 'Jewellery', image: catJewellery },
-  { id: 'Innerwear', name: 'Innerwear', image: catInnerwear },
-  { id: 'Haircare', name: 'Haircare', image: catHaircare },
-  { id: 'Wellness', name: 'Wellness', image: catWellness },
-  { id: 'Combos', name: 'Combos', image: catBeautyKits },
-];
+import { useShop } from '../../context/ShopContext';
 
 const Categories = () => {
+  const { categories, loading } = useShop();
+
+  if (loading && categories.length === 0) {
+    return (
+      <div className="py-8 bg-brand-light">
+        <div className="container mx-auto px-4 flex justify-center gap-4">
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <div key={i} className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gray-200 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <section className="py-6 md:py-8 bg-brand-light">
       <div className="container mx-auto px-4 md:px-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -42,12 +34,12 @@ const Categories = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-x-4 gap-y-2">
           {categories.map((cat, index) => (
-            <Link 
-              to={`/shop?category=${cat.id}`}
-              key={cat.id}
+            <Link
+              to={`/shop?category=${cat.name}`}
+              key={cat._id || index}
               className="flex flex-col items-center group cursor-pointer"
             >
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
@@ -55,8 +47,8 @@ const Categories = () => {
                 className="flex flex-col items-center"
               >
                 <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full overflow-hidden mb-2 border-2 border-transparent group-hover:border-brand-gold transition-all duration-300 shadow-sm hover:shadow-md">
-                  <img 
-                    src={cat.image} 
+                  <img
+                    src={cat.image}
                     alt={cat.name}
                     loading="lazy"
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

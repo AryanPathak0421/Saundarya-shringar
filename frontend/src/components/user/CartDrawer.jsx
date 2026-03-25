@@ -36,7 +36,7 @@ const CartDrawer = () => {
                   Your Selection <span className="text-brand-pink/50 ml-1">({cartCount})</span>
                 </h2>
               </div>
-              <button 
+              <button
                 onClick={() => setIsCartDrawerOpen(false)}
                 className="p-2 hover:bg-gray-50 rounded-full transition-colors"
               >
@@ -48,9 +48,9 @@ const CartDrawer = () => {
             <div className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
               {cart.length > 0 ? (
                 cart.map((item) => (
-                  <motion.div 
+                  <motion.div
                     layout
-                    key={item.id} 
+                    key={item._id}
                     className="flex gap-4 items-center bg-white p-3 rounded-2xl border border-gray-50 shadow-sm"
                   >
                     <div className="w-20 h-24 rounded-xl overflow-hidden bg-[#F9F6F4] shrink-0">
@@ -61,22 +61,22 @@ const CartDrawer = () => {
                         {item.name}
                       </h3>
                       <p className="text-[9px] text-gray-400 font-serif italic mb-3">{item.subCategory}</p>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3 bg-gray-50 rounded-full px-3 py-1">
-                          <button onClick={() => updateQuantity(item.id, -1)} className="text-gray-400 hover:text-brand-pink">
+                          <button onClick={() => updateQuantity(item._id, -1)} className="text-gray-400 hover:text-brand-pink">
                             <FiMinus size={10} />
                           </button>
                           <span className="text-[10px] font-bold text-[#5C2E3E] w-4 text-center">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, 1)} className="text-gray-400 hover:text-brand-pink">
+                          <button onClick={() => updateQuantity(item._id, 1)} className="text-gray-400 hover:text-brand-pink">
                             <FiPlus size={10} />
                           </button>
                         </div>
                         <span className="text-[11px] font-black text-brand-gold">₹{item.price * item.quantity}</span>
                       </div>
                     </div>
-                    <button 
-                      onClick={() => removeFromCart(item.id)}
+                    <button
+                      onClick={() => removeFromCart(item._id)}
                       className="p-2 text-gray-300 hover:text-red-400 transition-colors"
                     >
                       <FiTrash2 size={14} />
@@ -85,17 +85,17 @@ const CartDrawer = () => {
                 ))
               ) : (
                 <div className="py-20 text-center">
-                   <div className="w-16 h-16 bg-brand-pink/5 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <FiShoppingBag className="text-brand-pink/20" size={32} />
-                   </div>
-                   <h3 className="text-xl font-serif font-black text-[#5C2E3E] mb-2 italic opacity-40">Your bag is empty</h3>
-                   <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-8">Ready to start your journey?</p>
-                   <button 
+                  <div className="w-16 h-16 bg-brand-pink/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <FiShoppingBag className="text-brand-pink/20" size={32} />
+                  </div>
+                  <h3 className="text-xl font-serif font-black text-[#5C2E3E] mb-2 italic opacity-40">Your bag is empty</h3>
+                  <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-8">Ready to start your journey?</p>
+                  <button
                     onClick={() => setIsCartDrawerOpen(false)}
                     className="px-8 py-3 bg-[#5C2E3E] text-white text-[9px] font-bold uppercase tracking-[0.2em] rounded-full"
-                   >
-                     Explore Shop
-                   </button>
+                  >
+                    Explore Shop
+                  </button>
                 </div>
               )}
             </div>
@@ -110,7 +110,7 @@ const CartDrawer = () => {
                 <p className="text-[9px] text-gray-400 text-center font-serif italic mb-2">
                   *Shipping & taxes calculated at checkout
                 </p>
-                <Link 
+                <Link
                   to="/checkout"
                   onClick={() => setIsCartDrawerOpen(false)}
                   className="w-full bg-[#5C2E3E] text-white py-4 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] shadow-2xl hover:bg-brand-pink transition-all flex items-center justify-center gap-2 group"

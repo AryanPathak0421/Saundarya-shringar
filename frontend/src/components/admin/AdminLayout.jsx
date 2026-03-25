@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation, Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { useShop } from '../../context/ShopContext';
-import { 
-  FiGrid, 
-  FiShoppingBag, 
-  FiUsers, 
-  FiLayers, 
-  FiImage, 
-  FiSettings, 
+import {
+  FiGrid,
+  FiShoppingBag,
+  FiUsers,
+  FiLayers,
+  FiImage,
+  FiSettings,
   FiLogOut,
   FiBell,
   FiSearch,
@@ -20,7 +20,8 @@ import {
   FiBox,
   FiTag,
   FiDollarSign,
-  FiUser
+  FiUser,
+  FiMessageSquare
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,12 +29,7 @@ const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 1024);
   const location = useLocation();
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated, setUser, user } = useShop();
-
-  // Route protection
-  if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
-  }
+  const { isAuthenticated, isAuthLoading, logout, user } = useShop();
 
   React.useEffect(() => {
     // Close sidebar automatically when navigating on mobile
@@ -48,6 +44,19 @@ const AdminLayout = () => {
     { id: 2, text: 'Product "Lakme Face Powder" low in stock', time: '1h ago' }
   ]);
 
+  // Route protection
+  if (isAuthLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#FAF7F8]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#5C2E3E]"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
   const removeNotification = (id) => {
     setNotifications(notifications.filter(n => n.id !== id));
     if (notifications.length <= 1) setIsNotificationsOpen(false);
@@ -56,25 +65,26 @@ const AdminLayout = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     if (window.confirm('Securely terminating admin session. Proceed to exit?')) {
-      setIsAuthenticated(false);
-      setUser(null);
+      logout();
       navigate('/admin/login');
     }
   };
 
   const menuItems = [
-    { title: 'Overview', path: '/admin', icon: <FiGrid /> },
+    { title: 'Overview', path: '/admin', icon: <FiBox /> },
     { title: 'Categories', path: '/admin/categories', icon: <FiLayers /> },
     { title: 'Products', path: '/admin/products', icon: <FiShoppingBag /> },
     { title: 'Inventory', path: '/admin/inventory', icon: <FiBox /> },
     { title: 'Orders', path: '/admin/orders', icon: <FiShoppingBag /> },
     { title: 'Finance', path: '/admin/finance', icon: <FiDollarSign /> },
     { title: 'Customers', path: '/admin/customers', icon: <FiUsers /> },
-    { title: 'Returns', path: '/admin/returns', icon: <FiRotateCcw /> },
-    { title: 'Replacements', path: '/admin/replacements', icon: <FiRefreshCw /> },
+    { title: 'Returns & Replace', path: '/admin/returns', icon: <FiRotateCcw /> },
     { title: 'Coupons', path: '/admin/coupons', icon: <FiTag /> },
     { title: 'Banners', path: '/admin/banners', icon: <FiImage /> },
-    { title: 'Profile', path: '/admin/settings', icon: <FiUser /> },
+    { title: 'Blogs', path: '/admin/blogs', icon: <FiLayers /> },
+    { title: 'Testimonials', path: '/admin/testimonials', icon: <FiUsers /> },
+    { title: 'Instagram Feed', path: '/admin/instagram', icon: <FiTrendingUp /> },
+    { title: 'Feedback Ledger', path: '/admin/reviews', icon: <FiMessageSquare /> },
     { title: 'Settings', path: '/admin/settings', icon: <FiSettings /> },
   ];
 
@@ -83,7 +93,7 @@ const AdminLayout = () => {
       {/* Mobile Overlay */}
       <AnimatePresence>
         {isSidebarOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -96,7 +106,7 @@ const AdminLayout = () => {
       {/* Sidebar - Persistent and Toggleable */}
       <AnimatePresence>
         {isSidebarOpen && (
-          <motion.aside 
+          <motion.aside
             initial={{ x: -280 }}
             animate={{ x: 0 }}
             exit={{ x: -280 }}
@@ -127,11 +137,10 @@ const AdminLayout = () => {
                 <Link
                   key={item.title}
                   to={item.path}
-                  className={`flex items-center gap-4 px-4 py-3.5 rounded-none transition-all duration-300 group relative ${
-                    location.pathname === item.path 
-                    ? 'bg-white/10 text-white font-bold' 
+                  className={`flex items-center gap-4 px-4 py-3.5 rounded-none transition-all duration-300 group relative ${location.pathname === item.path
+                    ? 'bg-white/10 text-white font-bold'
                     : 'text-white/70 hover:text-white'
-                  }`}
+                    }`}
                 >
                   <div className={`transition-all duration-300 ${location.pathname === item.path ? 'scale-110' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
                     {React.cloneElement(item.icon, { size: 18 })}
@@ -149,7 +158,7 @@ const AdminLayout = () => {
             </nav>
 
             <div className="p-6 border-t border-white/10 flex-shrink-0">
-              <button 
+              <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-4 px-4 py-2 text-white/70 hover:text-white transition-all group"
               >
@@ -166,7 +175,7 @@ const AdminLayout = () => {
         {/* Header - Premium Navigation */}
         <header className="h-12 bg-white/80 backdrop-blur-xl border-b border-brand-pink/5 flex items-center justify-between px-4 sticky top-0 z-40 transition-all">
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 setIsSidebarOpen(!isSidebarOpen);
@@ -184,7 +193,7 @@ const AdminLayout = () => {
 
           <div className="flex items-center gap-4">
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
                 className={`relative p-1.5 transition-all ${isNotificationsOpen ? 'text-brand-pink' : 'text-gray-400 hover:text-brand-pink'}`}
               >
@@ -213,7 +222,7 @@ const AdminLayout = () => {
                             <p className="text-[9px] text-brand-dark font-medium leading-tight mb-1">{n.text}</p>
                             <div className="flex items-center justify-between">
                               <span className="text-[7px] text-gray-400 uppercase tracking-tighter">{n.time}</span>
-                              <button 
+                              <button
                                 onClick={() => removeNotification(n.id)}
                                 className="text-[7px] font-black text-brand-pink uppercase tracking-widest hover:underline"
                               >

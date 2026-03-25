@@ -3,37 +3,11 @@ import ProductCard from './ProductCard';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiChevronDown, FiGrid, FiList, FiCheck, FiFilter, FiX } from 'react-icons/fi';
 
-// Assets
-import { initialProducts } from '../../data/products';
-
-const categories = [
-  { id: 'all', name: 'All' },
-  { id: 'Skincare', name: 'Skincare' },
-  { id: 'Soaps', name: 'Soaps' },
-  { id: 'Haircare', name: 'Haircare' },
-  { id: 'Makeup', name: 'Makeup' },
-  { id: 'Jewellery', name: 'Jewellery' },
-  { id: 'Innerwear', name: 'Innerwear' },
-  { id: 'Wellness', name: 'Wellness' },
-  { id: 'Combos', name: 'Combos' },
-];
-
-const subCategoriesMap = {
-  'Skincare': ['Cleanser', 'Face Wash', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen'],
-  'Soaps': ['Natural', 'Herbal', 'Handmade'],
-  'Haircare': ['Hair Oil', 'Shampoo', 'Conditioner'],
-  'Makeup': ['Foundation', 'Compact', 'Lipstick', 'Lip Balm', 'Eyes', 'Kajal'],
-  'Jewellery': ['Traditional', 'Modern', 'Antique'],
-  'Innerwear': ['Daily', 'Premium', 'Lace'],
-  'Wellness': ['Supplements', 'Detox'],
-  'Combos': ['Gifts', 'Festive'],
-};
-
-
-
 import { useSearchParams } from 'react-router-dom';
+import { useShop } from '../../context/ShopContext';
 
 const Shop = () => {
+  const { products, categories: dynamicCategories, loading } = useShop();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlCategory = searchParams.get('category') || 'all';
   const urlSort = searchParams.get('sort') || 'New Arrivals';
@@ -41,6 +15,18 @@ const Shop = () => {
   const [activeCategory, setActiveCategory] = useState(urlCategory);
   const [activeSubCategory, setActiveSubCategory] = useState(null);
   const [sortBy, setSortBy] = useState(urlSort);
+
+  // Fallback subcategories if not provided by backend (can be enhanced)
+  const subCategoriesMap = {
+    'Skincare': ['Cleanser', 'Face Wash', 'Toner', 'Serum', 'Moisturizer', 'Sunscreen'],
+    'Soaps': ['Natural', 'Herbal', 'Handmade'],
+    'Haircare': ['Hair Oil', 'Shampoo', 'Conditioner'],
+    'Makeup': ['Foundation', 'Compact', 'Lipstick', 'Lip Balm', 'Eyes', 'Kajal'],
+    'Jewellery': ['Traditional', 'Modern', 'Antique'],
+    'Innerwear': ['Daily', 'Premium', 'Lace'],
+    'Wellness': ['Supplements', 'Detox'],
+    'Combos': ['Gifts', 'Festive'],
+  };
 
   // Sync state with URL when it changes
   useEffect(() => {
@@ -63,11 +49,11 @@ const Shop = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  
+
   // Advanced Filters State
   const [skinTypeFilter, setSkinTypeFilter] = useState('All');
   const [concernFilter, setConcernFilter] = useState('All');
-  const [priceRange, setPriceRange] = useState(2000);
+  const [priceRange, setPriceRange] = useState(50000);
 
   const sortRef = useRef(null);
   const sortOptions = ['Top Rated', 'Price: Low to High', 'Price: High to Low', 'New Arrivals'];
@@ -82,14 +68,14 @@ const Shop = () => {
   }, []);
 
   // Filter Logic
-  const filteredProducts = initialProducts.filter(p => {
+  const filteredProducts = products.filter(p => {
     const showOffersOnly = searchParams.get('offers') === 'true';
     if (showOffersOnly && !p.discount && !p.flashSale) return false;
 
     const matchesCategory = activeCategory === 'all' || p.category === activeCategory;
     const matchesSubCategory = !activeSubCategory || p.subCategory === activeSubCategory;
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          p.subCategory?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.subCategory?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesSkin = skinTypeFilter === 'All' || p.skinType === skinTypeFilter || p.skinType === 'All';
     const matchesConcern = concernFilter === 'All' || p.concern === concernFilter;
     const matchesPrice = p.price <= priceRange;
@@ -99,12 +85,12 @@ const Shop = () => {
     if (sortBy === 'Price: Low to High') return a.price - b.price;
     if (sortBy === 'Price: High to Low') return b.price - a.price;
     if (sortBy === 'Top Rated') return b.rating - a.rating;
-    return b.id - a.id; 
+    return b._id > a._id ? -1 : 1;
   });
 
   return (
     <div className="min-h-screen bg-[#FDFCFB] font-sans selection:bg-brand-pink selection:text-white pb-20">
-      
+
       {/* Header - Compact Editorial */}
       <header className="bg-gradient-to-b from-brand-pink/5 to-transparent pt-4 pb-2 text-center">
         <div className="container mx-auto px-4">
@@ -121,18 +107,25 @@ const Shop = () => {
       {/* STICKY TOOLBAR: Category & Sub-Category */}
       <div className="sticky top-[60px] md:top-[72px] z-40 bg-white/70 backdrop-blur-xl border-y border-gray-100 shadow-sm">
         <div className="container mx-auto px-0 md:px-8">
-          
-          {/* Main Categories - Balanced scrolling */}
+
           <div className="flex items-center lg:justify-center space-x-1 py-2 border-b border-gray-50 overflow-x-auto no-scrollbar px-4 lg:px-0">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryChange(cat.id)}
-                className={`relative whitespace-nowrap px-4 py-1.5 rounded-full text-[8px] md:text-[10px] font-bold tracking-[0.1em] transition-all uppercase ${
-                  activeCategory === cat.id 
-                  ? 'bg-[#5C2E3E] text-white shadow-md' 
-                  : 'text-[#5C2E3E]/50 hover:text-brand-pink bg-brand-pink/5'
+            <button
+              onClick={() => handleCategoryChange('all')}
+              className={`relative whitespace-nowrap px-4 py-1.5 rounded-full text-[8px] md:text-[10px] font-bold tracking-[0.1em] transition-all uppercase ${activeCategory === 'all'
+                ? 'bg-[#5C2E3E] text-white shadow-md'
+                : 'text-[#5C2E3E]/50 hover:text-brand-pink bg-brand-pink/5'
                 }`}
+            >
+              All
+            </button>
+            {dynamicCategories.map((cat) => (
+              <button
+                key={cat._id || cat.name}
+                onClick={() => handleCategoryChange(cat.name)}
+                className={`relative whitespace-nowrap px-4 py-1.5 rounded-full text-[8px] md:text-[10px] font-bold tracking-[0.1em] transition-all uppercase ${activeCategory === cat.name
+                  ? 'bg-[#5C2E3E] text-white shadow-md'
+                  : 'text-[#5C2E3E]/50 hover:text-brand-pink bg-brand-pink/5'
+                  }`}
               >
                 {cat.name}
               </button>
@@ -142,7 +135,7 @@ const Shop = () => {
           {/* Sub-Category Chips - Dynamic & Scrollable */}
           <AnimatePresence mode="wait">
             {activeCategory !== 'all' && subCategoriesMap[activeCategory] && (
-              <motion.div 
+              <motion.div
                 key={activeCategory}
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -151,11 +144,10 @@ const Shop = () => {
               >
                 <button
                   onClick={() => setActiveSubCategory(null)}
-                  className={`whitespace-nowrap px-4 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${
-                    !activeSubCategory 
-                    ? 'bg-brand-pink border-brand-pink text-white shadow-sm' 
+                  className={`whitespace-nowrap px-4 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${!activeSubCategory
+                    ? 'bg-brand-pink border-brand-pink text-white shadow-sm'
                     : 'border-gray-200 text-[#5C2E3E]/40 hover:border-brand-pink/30'
-                  }`}
+                    }`}
                 >
                   ALL ITEMS
                 </button>
@@ -163,11 +155,10 @@ const Shop = () => {
                   <button
                     key={sub}
                     onClick={() => setActiveSubCategory(sub)}
-                    className={`whitespace-nowrap px-4 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${
-                      activeSubCategory === sub 
-                      ? 'bg-brand-pink border-brand-pink text-white shadow-sm' 
+                    className={`whitespace-nowrap px-4 py-1.5 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${activeSubCategory === sub
+                      ? 'bg-brand-pink border-brand-pink text-white shadow-sm'
                       : 'border-gray-200 text-[#5C2E3E]/40 hover:border-brand-pink/30'
-                    }`}
+                      }`}
                   >
                     {sub}
                   </button>
@@ -181,26 +172,25 @@ const Shop = () => {
       {/* FILTER & SORT SECTION */}
       <div className="container mx-auto px-4 md:px-8 py-2">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 py-2 border-b border-gray-100">
-          
+
           <div className="flex items-center gap-3">
-             <button 
-               onClick={() => setIsFilterOpen(!isFilterOpen)}
-               className={`flex items-center gap-2 px-5 py-2 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${
-                 isFilterOpen ? 'bg-brand-gold border-brand-gold text-white' : 'border-gray-100 text-[#5C2E3E]/60 hover:border-brand-gold/30'
-               }`}
-             >
-               <FiFilter /> Smart Filters
-             </button>
-             <div className="relative group">
-               <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
-               <input 
-                 type="text" 
-                 placeholder="Search products..."
-                 value={searchQuery}
-                 onChange={(e) => setSearchQuery(e.target.value)}
-                 className="pl-10 pr-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] w-48 transition-all focus:border-brand-pink/30 outline-none placeholder:italic"
-               />
-             </div>
+            <button
+              onClick={() => setIsFilterOpen(!isFilterOpen)}
+              className={`flex items-center gap-2 px-5 py-2 rounded-full text-[9px] font-bold tracking-widest uppercase border transition-all ${isFilterOpen ? 'bg-brand-gold border-brand-gold text-white' : 'border-gray-100 text-[#5C2E3E]/60 hover:border-brand-gold/30'
+                }`}
+            >
+              <FiFilter /> Smart Filters
+            </button>
+            <div className="relative group">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={14} />
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-2 bg-white border border-gray-100 rounded-full text-[10px] w-48 transition-all focus:border-brand-pink/30 outline-none placeholder:italic"
+              />
+            </div>
           </div>
 
           <div className="relative" ref={sortRef}>
@@ -222,9 +212,8 @@ const Shop = () => {
                     <button
                       key={opt}
                       onClick={() => handleSortChange(opt)}
-                      className={`w-full text-left px-4 py-2.5 text-[9px] font-bold tracking-widest rounded-lg transition-colors ${
-                        sortBy === opt ? 'bg-brand-pink/10 text-brand-pink' : 'hover:bg-gray-50 text-[#5C2E3E]/60'
-                      }`}
+                      className={`w-full text-left px-4 py-2.5 text-[9px] font-bold tracking-widest rounded-lg transition-colors ${sortBy === opt ? 'bg-brand-pink/10 text-brand-pink' : 'hover:bg-gray-50 text-[#5C2E3E]/60'
+                        }`}
                     >
                       {opt.toUpperCase()}
                     </button>
@@ -238,58 +227,56 @@ const Shop = () => {
         {/* Filter Drawer / Accordion */}
         <AnimatePresence>
           {isFilterOpen && (
-            <motion.div 
+            <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               className="overflow-hidden bg-[#F9F6F4] rounded-2xl p-6 mt-4 border border-gray-100 flex flex-wrap gap-8"
             >
-                <div className="space-y-3 w-full">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5C2E3E]">Skin Type</h4>
-                  <div className="flex gap-2 overflow-x-auto flex-nowrap no-scrollbar pb-1">
-                    {['All', 'Dry', 'Oily', 'Combination', 'Sensitive'].map(t => (
-                      <button 
-                        key={t}
-                        onClick={() => setSkinTypeFilter(t)}
-                        className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all ${
-                          skinTypeFilter === t ? 'bg-[#5C2E3E] text-white' : 'bg-white border text-gray-400'
+              <div className="space-y-3 w-full">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5C2E3E]">Skin Type</h4>
+                <div className="flex gap-2 overflow-x-auto flex-nowrap no-scrollbar pb-1">
+                  {['All', 'Dry', 'Oily', 'Combination', 'Sensitive'].map(t => (
+                    <button
+                      key={t}
+                      onClick={() => setSkinTypeFilter(t)}
+                      className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all ${skinTypeFilter === t ? 'bg-[#5C2E3E] text-white' : 'bg-white border text-gray-400'
                         }`}
-                      >
-                        {t}
-                      </button>
-                    ))}
-                  </div>
+                    >
+                      {t}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                <div className="space-y-3 w-full">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5C2E3E]">Skin Concern</h4>
-                  <div className="flex gap-2 overflow-x-auto flex-nowrap no-scrollbar pb-1">
-                    {['All', 'Acne', 'Pigmentation', 'Anti-aging', 'Dryness', 'Glow'].map(c => (
-                      <button 
-                        key={c}
-                        onClick={() => setConcernFilter(c)}
-                        className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all ${
-                          concernFilter === c ? 'bg-[#5C2E3E] text-white' : 'bg-white border text-gray-400'
+              <div className="space-y-3 w-full">
+                <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5C2E3E]">Skin Concern</h4>
+                <div className="flex gap-2 overflow-x-auto flex-nowrap no-scrollbar pb-1">
+                  {['All', 'Acne', 'Pigmentation', 'Anti-aging', 'Dryness', 'Glow'].map(c => (
+                    <button
+                      key={c}
+                      onClick={() => setConcernFilter(c)}
+                      className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-[9px] font-bold uppercase transition-all ${concernFilter === c ? 'bg-[#5C2E3E] text-white' : 'bg-white border text-gray-400'
                         }`}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                  </div>
+                    >
+                      {c}
+                    </button>
+                  ))}
                 </div>
+              </div>
 
-                <div className="space-y-3 min-w-[200px]">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5C2E3E]">Price Range</h4>
-                    <span className="text-[9px] font-bold text-brand-gold">UP TO ₹{priceRange}</span>
-                  </div>
-                  <input 
-                    type="range" min="50" max="2000" step="50" 
-                    value={priceRange}
-                    onChange={(e) => setPriceRange(e.target.value)}
-                    className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-gold"
-                  />
+              <div className="space-y-3 min-w-[200px]">
+                <div className="flex justify-between items-center">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#5C2E3E]">Price Range</h4>
+                  <span className="text-[9px] font-bold text-brand-gold">UP TO ₹{priceRange}</span>
                 </div>
+                <input
+                  type="range" min="50" max="50000" step="500"
+                  value={priceRange}
+                  onChange={(e) => setPriceRange(e.target.value)}
+                  className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-gold"
+                />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -307,7 +294,7 @@ const Shop = () => {
         <motion.div layout className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 bg-transparent border-none">
           <AnimatePresence mode="popLayout">
             {filteredProducts.map((product) => (
-              <motion.div key={product.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <motion.div key={product._id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <ProductCard product={product} />
               </motion.div>
             ))}
@@ -318,8 +305,8 @@ const Shop = () => {
           <div className="py-20 text-center">
             <h3 className="text-xl font-serif font-black text-[#5C2E3E] mb-2 opacity-30 italic">"Glow not found..."</h3>
             <p className="text-[10px] text-gray-400 mb-6 uppercase tracking-widest">Adjust filters to find your match</p>
-            <button 
-              onClick={() => {setSearchQuery(''); setSkinTypeFilter('All'); setConcernFilter('All'); setActiveCategory('all'); setPriceRange(2000);}}
+            <button
+              onClick={() => { setSearchQuery(''); setSkinTypeFilter('All'); setConcernFilter('All'); setActiveCategory('all'); setPriceRange(50000); }}
               className="px-8 py-3 bg-[#5C2E3E] text-white text-[9px] font-bold uppercase tracking-[0.3em] rounded-full shadow-lg"
             >
               Clear All Discovery

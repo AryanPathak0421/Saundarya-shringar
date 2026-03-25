@@ -21,6 +21,7 @@ import BlogSection from './components/user/BlogSection';
 import Offers from './components/user/Offers';
 import ProductDetail from './components/user/ProductDetail';
 import Bag from './components/user/Bag';
+import UserOrders from './components/user/UserOrders';
 import ScrollToTop from './components/user/ScrollToTop';
 
 // Policy Imports
@@ -41,6 +42,13 @@ import AdminSettings from './components/admin/AdminSettings';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminComingSoon from './components/admin/AdminComingSoon';
 import AdminInventory from './components/admin/AdminInventory';
+import AdminCoupons from './components/admin/AdminCoupons';
+import AdminReturns from './components/admin/AdminReturns';
+import AdminBlogs from './components/admin/AdminBlogs';
+import AdminTestimonials from './components/admin/AdminTestimonials';
+import AdminInstagram from './components/admin/AdminInstagram';
+import AdminReplacements from './components/admin/AdminReplacements';
+import AdminReviews from './components/admin/AdminReviews';
 import { FiBox, FiRotateCcw, FiRefreshCw, FiTag, FiShoppingBag, FiUsers } from 'react-icons/fi';
 
 const UserRoutes = () => (
@@ -61,6 +69,7 @@ const UserRoutes = () => (
           <Route path="/offers" element={<Offers />} />
           <Route path="/login" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/orders" element={<UserOrders />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/bag" element={<Bag />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -78,7 +87,7 @@ const AdminRoutes = () => (
   <Routes>
     {/* Standalone Route for Admin Login */}
     <Route path="/login" element={<Auth />} />
-    
+
     {/* Nested Routes inside AdminLayout */}
     <Route element={<AdminLayout />}>
       <Route path="/" element={<AdminDashboard />} />
@@ -90,10 +99,13 @@ const AdminRoutes = () => (
       <Route path="/banners" element={<AdminBanners />} />
       <Route path="/settings" element={<AdminSettings />} />
       <Route path="/inventory" element={<AdminInventory />} />
-      <Route path="/returns" element={<AdminComingSoon title="RETURNS" icon={<FiRotateCcw size={40} />} />} />
-      <Route path="/replacements" element={<AdminComingSoon title="REPLACEMENTS" icon={<FiRefreshCw size={40} />} />} />
-      <Route path="/coupons" element={<AdminComingSoon title="COUPONS" icon={<FiTag size={40} />} />} />
+      <Route path="/returns" element={<AdminReturns />} />
+      <Route path="/coupons" element={<AdminCoupons />} />
       <Route path="/customers" element={<AdminUsers />} />
+      <Route path="/blogs" element={<AdminBlogs />} />
+      <Route path="/testimonials" element={<AdminTestimonials />} />
+      <Route path="/instagram" element={<AdminInstagram />} />
+      <Route path="/reviews" element={<AdminReviews />} />
     </Route>
   </Routes>
 );

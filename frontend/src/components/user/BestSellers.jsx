@@ -4,67 +4,32 @@ import { Navigation, Pagination } from 'swiper/modules';
 import ProductCard from './ProductCard';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useShop } from '../../context/ShopContext';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import imgLakmePowder from '../../assets/products/lakme_face_powder.png';
-import imgLipGloss from '../../assets/products/plumping_lip_gloss.png';
-import imgMascara from '../../assets/products/volumizing_mascara.png';
-import imgLipstick from '../../assets/products/lakme_2_in_1_lipstick.png';
-import imgHighlighter from '../../assets/products/liquid_highlighter.png';
-
-const bestSellers = [
-  {
-    id: 10,
-    name: 'Face Scrub (Mini)',
-    price: 149,
-    rating: 5,
-    reviews: 912,
-    image: imgLakmePowder,
-  },
-  {
-    id: 11,
-    name: 'Lustrous Lip Gloss',
-    price: 299,
-    rating: 5,
-    reviews: 610,
-    image: imgLipGloss,
-    hasTimer: true,
-  },
-  {
-    id: 12,
-    name: 'Volumizing Eye Mascara',
-    price: 349,
-    rating: 4,
-    reviews: 489,
-    image: imgMascara,
-  },
-  {
-    id: 13,
-    name: 'Herbal Lipstick Stick',
-    price: 199,
-    rating: 4,
-    reviews: 745,
-    image: imgLipstick,
-    hasTimer: true,
-  },
-  {
-    id: 14,
-    name: 'Organic Kajal Pencil',
-    price: 99,
-    rating: 5,
-    reviews: 520,
-    image: imgHighlighter,
-  },
-];
-
 const BestSellers = () => {
+  const { products, loading } = useShop();
+
+  // Filter or sort by best sellers (e.g., higher ratings/reviews)
+  const bestSellers = [...products]
+    .sort((a, b) => (b.rating * b.reviews) - (a.rating * a.reviews))
+    .slice(0, 8);
+
+  if (loading && products.length === 0) {
+    return (
+      <div className="py-10 bg-brand-pink/20 flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-dark"></div>
+      </div>
+    );
+  }
+
   return (
     <section className="py-8 md:py-10 bg-brand-pink/20">
       <div className="container mx-auto px-4 md:px-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -87,7 +52,7 @@ const BestSellers = () => {
           className="pb-8"
         >
           {bestSellers.map((product) => (
-            <SwiperSlide key={product.id}>
+            <SwiperSlide key={product._id}>
               <ProductCard product={product} />
             </SwiperSlide>
           ))}

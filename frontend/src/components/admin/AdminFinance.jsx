@@ -1,23 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import AdminLayout from './AdminLayout';
-import { FiDollarSign, FiTrendingUp, FiTrendingDown, FiShoppingBag, FiCreditCard, FiArrowUpRight, FiMoreVertical, FiCalendar, FiClock as FiClockIcon, FiExternalLink } from 'react-icons/fi';
+import { FiDollarSign, FiTrendingUp, FiTrendingDown, FiShoppingBag, FiCreditCard, FiArrowUpRight, FiMoreVertical, FiCalendar, FiClock as FiClockIcon, FiExternalLink, FiRefreshCw } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import api from '../../utils/api';
 
 const AdminFinance = () => {
-  const financeStats = [
-    { title: 'Gross Revenue', value: '₹4,52,000', change: '+24%', icon: <FiDollarSign />, color: 'text-green-600', bg: 'bg-green-50' },
-    { title: 'Net Profit', value: '₹1,28,000', change: '+12%', icon: <FiTrendingUp />, color: 'text-brand-pink', bg: 'bg-brand-light' },
-    { title: 'Avg. Order', value: '₹1,850', change: '-4%', icon: <FiShoppingBag />, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { title: 'Pending Dues', value: '₹12,400', change: '8 units', icon: <FiClockIcon />, color: 'text-blue-600', bg: 'bg-blue-50' }
+  const [data, setData] = useState({ stats: [], recentTransactions: [] });
+  const [loading, setLoading] = useState(true);
+
+  const fetchFinanceData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/admins/finance-stats');
+      setData(res.data.data);
+    } catch (err) {
+      console.error("Failed to fetch finance stats:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchFinanceData();
+  }, [fetchFinanceData]);
+
+  const handlePaymentStatusUpdate = async (orderId, newStatus) => {
+    try {
+      await api.patch(`/orders/${orderId}`, { paymentStatus: newStatus });
+      fetchFinanceData(); // Soft refresh backend stats calculation
+    } catch (err) {
+      alert("Failed to update payment ledger");
+    }
+  };
+
+  const totalRevenue = data.stats.find(s => s._id === 'Completed')?.total || 0;
+  const pendingRevenue = data.stats.find(s => s._id === 'Pending')?.total || 0;
+  const totalOrders = data.stats.reduce((acc, s) => acc + s.count, 0);
+  const avgOrderValue = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(0) : 0;
+
+  const financeStatsCards = [
+    { title: 'Gross Revenue', value: `₹${totalRevenue.toLocaleString()}`, change: '+100%', icon: <FiDollarSign />, color: 'text-green-600', bg: 'bg-green-50' },
+    { title: 'Net Liquidity', value: `₹${totalRevenue.toLocaleString()}`, change: '+100%', icon: <FiTrendingUp />, color: 'text-brand-pink', bg: 'bg-brand-light' },
+    { title: 'Avg. Order', value: `₹${avgOrderValue.toLocaleString()}`, change: 'Real-time', icon: <FiShoppingBag />, color: 'text-orange-600', bg: 'bg-orange-50' },
+    { title: 'Pending Dues', value: `₹${pendingRevenue.toLocaleString()}`, change: `${data.stats.find(s => s._id === 'Pending')?.count || 0} items`, icon: <FiClockIcon />, color: 'text-blue-600', bg: 'bg-blue-50' }
   ];
 
-  const transactions = [
-    { id: 'T-9921', user: 'Aditi Sharma', amount: '₹1,250', status: 'Success', method: 'UPI', date: '20 Mar' },
-    { id: 'T-9920', user: 'Rahul Verma', amount: '₹3,400', status: 'Success', method: 'Credit Card', date: '19 Mar' },
-    { id: 'T-9919', user: 'Priya Singh', amount: '₹2,100', status: 'Processing', method: 'Net Banking', date: '19 Mar' },
-    { id: 'T-9918', user: 'Suresh Kumar', amount: '₹850', status: 'Success', method: 'Razorpay', date: '18 Mar' },
-    { id: 'T-9917', user: 'Neha Gupta', amount: '₹1,500', status: 'Refunded', method: 'UPI', date: '18 Mar' }
-  ];
+  if (loading) return <div className="h-96 flex items-center justify-center text-[10px] font-black uppercase tracking-[0.3em] text-brand-dark/20 animate-pulse">Synchronizing Ledgers...</div>;
 
   return (
     <div className="max-w-7xl mx-auto space-y-4">
@@ -28,15 +56,15 @@ const AdminFinance = () => {
           </h1>
           <p className="text-[8px] text-gray-400 font-black uppercase tracking-[0.2em]">Live Revenue & Transaction Audits</p>
         </div>
-        <button className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-none border border-brand-pink/10 text-[8px] font-black uppercase tracking-widest shadow-sm hover:bg-brand-pink/[0.02] transition-colors">
-           <FiCalendar /> Filter Range
+        <button onClick={fetchFinanceData} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-none border border-brand-pink/10 text-[8px] font-black uppercase tracking-widest shadow-sm hover:bg-brand-pink/[0.02] transition-colors active:scale-95">
+          <FiRefreshCw /> REFRESH LEDGER
         </button>
       </div>
 
       {/* Finance Cards - Dashboard Style */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {financeStats.map((stat, i) => (
-          <motion.div 
+        {financeStatsCards.map((stat, i) => (
+          <motion.div
             key={i}
             whileHover={{ y: -2 }}
             initial={{ opacity: 0, y: 10 }}
@@ -48,8 +76,8 @@ const AdminFinance = () => {
               <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">{stat.title}</span>
               <div className="flex items-end gap-1.5">
                 <span className="text-lg font-bold text-gray-800 leading-none">{stat.value}</span>
-                <span className={`text-[7px] font-black flex items-center gap-0.5 mb-0.5 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-red-500'}`}>
-                   {stat.change.startsWith('+') ? <FiArrowUpRight size={8} /> : <FiTrendingDown size={8} />} {stat.change}
+                <span className={`text-[7px] font-black flex items-center gap-0.5 mb-0.5 ${stat.change.startsWith('+') ? 'text-green-600' : 'text-blue-500'}`}>
+                  {stat.change.startsWith('+') ? <FiArrowUpRight size={8} /> : <FiClockIcon size={8} />} {stat.change}
                 </span>
               </div>
             </div>
@@ -62,50 +90,55 @@ const AdminFinance = () => {
 
       {/* Recent Transactions Table */}
       <div className="bg-brand-dark rounded-none p-5 text-white border border-white/5 relative overflow-hidden shadow-2xl">
-         <div className="flex items-center justify-between mb-6">
-           <div>
-              <h3 className="text-base font-serif font-black text-brand-gold uppercase tracking-widest leading-none mb-1">Audit Logs</h3>
-              <p className="text-[8px] text-gray-500 font-black uppercase tracking-[0.2em]">summary</p>
-           </div>
-           <div className="flex bg-white/5 p-1 rounded-none">
-              <button className="px-3 py-1 bg-brand-gold text-brand-dark rounded-none text-[8px] font-black uppercase tracking-widest">All</button>
-              <button className="px-3 py-1 text-gray-400 rounded-none text-[8px] font-black uppercase tracking-widest">Withdrawals</button>
-           </div>
-         </div>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h3 className="text-base font-serif font-black text-brand-gold uppercase tracking-widest leading-none mb-1">Audit Logs</h3>
+            <p className="text-[8px] text-gray-500 font-black uppercase tracking-[0.2em]">Financial summary</p>
+          </div>
+          <div className="flex bg-white/5 p-1 rounded-none">
+            <button className="px-3 py-1 bg-brand-gold text-brand-dark rounded-none text-[8px] font-black uppercase tracking-widest">Live</button>
+          </div>
+        </div>
 
-         <div className="overflow-x-auto">
-           <table className="w-full text-left">
-             <thead>
-               <tr className="border-b border-white/5">
-                 <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50">Txn ID</th>
-                 <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50">User</th>
-                 <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50">Amount</th>
-                 <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50 text-right">Status</th>
-                 <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50 text-right">Audit</th>
-               </tr>
-             </thead>
-             <tbody className="divide-y divide-white/5">
-               {transactions.map((tr) => (
-                 <tr key={tr.id} className="hover:bg-white/[0.02] transition-colors group text-[9px]">
-                    <td className="px-4 py-3 font-black text-brand-gold uppercase">{tr.id}</td>
-                    <td className="px-4 py-3 font-bold text-gray-300 uppercase">{tr.user}</td>
-                    <td className="px-4 py-3 font-black">{tr.amount}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-white/5">
+                <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50">Txn ID</th>
+                <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50">User</th>
+                <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50">Amount</th>
+                <th className="px-4 py-3 text-[6px] font-black uppercase tracking-widest text-brand-gold/50 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {data.recentTransactions?.length > 0 ? (
+                data.recentTransactions.map((tr) => (
+                  <tr key={tr._id} className="hover:bg-white/[0.02] transition-colors group text-[9px]">
+                    <td className="px-4 py-3 font-black text-brand-gold uppercase">#{tr._id.slice(-6)}</td>
+                    <td className="px-4 py-3 font-bold text-gray-300 uppercase">{tr.user?.name || 'Guest'}</td>
+                    <td className="px-4 py-3 font-black">₹{tr.totalAmount}</td>
                     <td className="px-4 py-3 text-right">
-                       <span className={`px-2 py-0.5 rounded-none text-[6px] font-black uppercase tracking-widest border ${tr.status === 'Success' ? 'bg-green-500/10 text-green-500 border-green-500/20' : tr.status === 'Refunded' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-brand-gold/10 text-brand-gold border-brand-gold/20'}`}>
-                          {tr.status}
-                       </span>
+                      <select
+                        value={tr.paymentStatus}
+                        onChange={(e) => handlePaymentStatusUpdate(tr._id, e.target.value)}
+                        className={`px-2 py-1 rounded-none text-[7px] font-black uppercase tracking-widest border border-white/20 outline-none cursor-pointer transition-colors ${tr.paymentStatus === 'Completed' ? 'bg-green-500/10 text-green-500' : tr.paymentStatus === 'Failed' || tr.paymentStatus === 'Refunded' ? 'bg-red-500/10 text-red-500' : 'bg-brand-gold/10 text-brand-gold'}`}
+                      >
+                        <option value="Pending" className="bg-brand-dark text-brand-gold">Pending</option>
+                        <option value="Completed" className="bg-brand-dark text-green-500">Completed</option>
+                        <option value="Failed" className="bg-brand-dark text-red-500">Failed</option>
+                        <option value="Refunded" className="bg-brand-dark text-red-500">Refunded</option>
+                      </select>
                     </td>
-                    <td className="px-4 py-3 text-right">
-                       <button className="inline-flex items-center gap-1.5 bg-brand-gold/10 text-brand-gold px-2.5 py-1.5 rounded-none text-[8px] font-bold uppercase tracking-widest hover:bg-brand-gold hover:text-brand-dark transition-all border border-brand-gold/20 shadow-sm opacity-60 group-hover:opacity-100">
-                         <FiExternalLink size={10}/>
-                         <span>Audit</span>
-                       </button>
-                    </td>
-                 </tr>
-               ))}
-             </tbody>
-           </table>
-         </div>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="px-4 py-10 text-center opacity-40 italic text-brand-gold text-[10px] font-black uppercase tracking-[0.3em]">No Transactions Logged</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

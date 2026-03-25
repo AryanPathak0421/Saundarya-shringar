@@ -1,46 +1,71 @@
 import React, { useState } from 'react';
-import { initialProducts } from '../../data/products';
-import { 
-  FiPackage, 
-  FiAlertTriangle, 
-  FiArrowUp, 
-  FiArrowDown, 
-  FiSearch, 
-  FiFilter, 
-  FiRefreshCw, 
+import { useShop } from '../../context/ShopContext';
+import api from '../../utils/api';
+import {
+  FiPackage,
+  FiAlertTriangle,
+  FiArrowUp,
+  FiArrowDown,
+  FiSearch,
+  FiFilter,
+  FiRefreshCw,
   FiDatabase,
   FiShoppingBag,
-  FiActivity
+  FiActivity,
+  FiEdit3,
+  FiCheck,
+  FiX
 } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const AdminInventory = () => {
+  const { products, fetchData } = useShop();
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('All'); // All, Low Stock, Out of Stock
+  const [editingId, setEditingId] = useState(null);
+  const [editStockValue, setEditStockValue] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
-  // Simulate stock data
-  const inventoryItems = initialProducts.map(p => ({
+  // Sync with live DB products
+  const inventoryItems = products.map(p => ({
     ...p,
-    stock: Math.floor(Math.random() * 50),
-    reserved: Math.floor(Math.random() * 5),
+    id: p._id,
+    stock: p.stock !== undefined ? p.stock : 100,
+    reserved: 0,
     warehouse: 'Primary Vault',
-    lastUpdated: '2h ago'
+    lastUpdated: new Date(p.updatedAt || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   }));
 
   const filteredItems = inventoryItems.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          item.id.toString().includes(searchQuery);
-    
+    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.id.toString().includes(searchQuery);
+
     if (filter === 'Low Stock') return matchesSearch && item.stock < 10 && item.stock > 0;
     if (filter === 'Out of Stock') return matchesSearch && item.stock === 0;
     return matchesSearch;
   });
 
+  const handleUpdateStock = async (id) => {
+    if (editStockValue === '' || isNaN(editStockValue)) return;
+    setIsUpdating(true);
+    try {
+      await api.patch(`/products/${id}`, { stock: Number(editStockValue) });
+      fetchData(); // Sync globally
+      setEditingId(null);
+    } catch (error) {
+      alert("Failed to patch inventory bounds.");
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const totalValuation = inventoryItems.reduce((acc, item) => acc + (item.price * item.stock), 0);
+
   const stats = [
     { title: 'Total SKUs', value: inventoryItems.length, icon: <FiPackage />, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { title: 'Critical Stock', value: inventoryItems.filter(i => i.stock < 5).length, icon: <FiAlertTriangle />, color: 'text-red-500', bg: 'bg-red-50' },
-    { title: 'Units in Transit', value: '142', icon: <FiActivity />, color: 'text-brand-pink', bg: 'bg-brand-light' },
-    { title: 'Vault Valuation', value: '₹12.4L', icon: <FiDatabase />, color: 'text-green-600', bg: 'bg-green-50' }
+    { title: 'Critical Stock', value: inventoryItems.filter(i => i.stock < 10 && i.stock > 0).length, icon: <FiAlertTriangle />, color: 'text-red-500', bg: 'bg-red-50' },
+    { title: 'Out of Stock', value: inventoryItems.filter(i => i.stock === 0).length, icon: <FiActivity />, color: 'text-brand-pink', bg: 'bg-brand-light' },
+    { title: 'Vault Valuation', value: `₹${(totalValuation / 100000).toFixed(2)}L`, icon: <FiDatabase />, color: 'text-green-600', bg: 'bg-green-50' }
   ];
 
   return (
@@ -53,16 +78,16 @@ const AdminInventory = () => {
           <p className="text-[8px] text-gray-400 font-black uppercase tracking-[0.2em]">Real-time Stock Audits & Warehousing</p>
         </div>
         <div className="flex items-center gap-2">
-           <button className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-none border border-brand-pink/5 text-[8px] font-black uppercase tracking-widest shadow-sm hover:bg-brand-pink/[0.02] transition-colors">
-              <FiRefreshCw /> REFRESH LIVE DATA
-           </button>
+          <button onClick={() => fetchData()} className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-none border border-brand-pink/5 text-[8px] font-black uppercase tracking-widest shadow-sm hover:bg-brand-pink/[0.02] transition-colors active:scale-95">
+            <FiRefreshCw /> REFRESH LIVE DATA
+          </button>
         </div>
       </div>
 
       {/* Analytics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {stats.map((stat, i) => (
-          <motion.div 
+          <motion.div
             key={i}
             whileHover={{ y: -2 }}
             initial={{ opacity: 0, y: 10 }}
@@ -85,19 +110,19 @@ const AdminInventory = () => {
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-3 border border-brand-pink/5 shadow-sm">
         <div className="flex items-center gap-2 w-full md:w-96">
           <div className="flex-1 bg-brand-light/20 border border-brand-pink/5 p-2 flex items-center gap-2 group focus-within:border-brand-pink/20 transition-all">
-             <FiSearch size={14} className="text-gray-300" />
-             <input 
-              type="text" 
-              placeholder="Filter by SKU or Product Name..." 
+            <FiSearch size={14} className="text-gray-300" />
+            <input
+              type="text"
+              placeholder="Filter by SKU or Product Name..."
               className="bg-transparent border-none outline-none text-[9px] font-bold uppercase tracking-widest w-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-             />
+            />
           </div>
         </div>
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-2 md:pb-0">
           {['All', 'Low Stock', 'Out of Stock'].map(f => (
-            <button 
+            <button
               key={f}
               onClick={() => setFilter(f)}
               className={`px-4 py-1.5 text-[8px] font-black uppercase tracking-widest border transition-all ${filter === f ? 'bg-brand-dark text-white border-brand-dark' : 'bg-transparent text-gray-400 border-gray-100 hover:border-brand-pink/20'}`}
@@ -135,35 +160,70 @@ const AdminInventory = () => {
                       <div>
                         <h4 className="text-[10px] font-black text-brand-dark uppercase truncate max-w-[180px] leading-tight mb-1">{item.name}</h4>
                         <div className="flex items-center gap-2">
-                           <span className="text-[7px] font-black text-brand-pink uppercase">ID: {item.id}</span>
-                           <span className="w-1 h-1 bg-gray-200 rounded-full" />
-                           <span className="text-[7px] font-medium text-gray-400">CAT: {item.category}</span>
+                          <span className="text-[7px] font-black text-brand-pink uppercase">ID: {item.id}</span>
+                          <span className="w-1 h-1 bg-gray-200 rounded-full" />
+                          <span className="text-[7px] font-medium text-gray-400">CAT: {item.category}</span>
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-[9px] font-bold text-gray-500 uppercase tracking-widest">{item.warehouse}</td>
                   <td className="px-6 py-4">
-                    <div className="space-y-1.5 min-w-[120px]">
-                      <div className="flex justify-between items-center text-[8px] font-black uppercase">
-                        <span className={item.stock < 10 ? 'text-red-500' : 'text-gray-400'}>{item.stock} Units</span>
-                        <span className="text-gray-300">Available</span>
-                      </div>
-                      <div className="h-1 bg-gray-100 rounded-none overflow-hidden">
-                        <motion.div 
+                    <div className="space-y-1.5 min-w-[140px]">
+                      {editingId === item.id ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            autoFocus
+                            value={editStockValue}
+                            onChange={(e) => setEditStockValue(e.target.value)}
+                            className="w-16 bg-white border border-brand-pink/20 rounded px-2 py-1 text-xs font-bold outline-none ring-1 ring-brand-pink/10"
+                            disabled={isUpdating}
+                          />
+                          <button onClick={() => handleUpdateStock(item.id)} disabled={isUpdating} className="text-green-500 hover:text-green-600 disabled:opacity-50">
+                            <FiCheck size={14} />
+                          </button>
+                          <button onClick={() => setEditingId(null)} disabled={isUpdating} className="text-red-400 hover:text-red-500 disabled:opacity-50">
+                            <FiX size={14} />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex justify-between items-center text-[8px] font-black uppercase group/edit cursor-pointer" onClick={() => { setEditingId(item.id); setEditStockValue(String(item.stock)); }}>
+                          <span className={`${item.stock < 10 ? 'text-red-500 font-black animate-pulse' : 'text-gray-500'} flex items-center gap-1`}>
+                            {item.stock} Units <FiEdit3 size={10} className="opacity-0 group-hover/edit:opacity-100 transition-opacity text-brand-pink" />
+                          </span>
+                          <span className={`${item.stock < 10 ? 'text-red-400' : 'text-gray-300'}`}>{item.stock === 0 ? 'Depleted' : 'In Stock'}</span>
+                        </div>
+                      )}
+
+                      <div className="h-1 bg-gray-100 rounded-none overflow-hidden flex">
+                        <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${Math.min(100, (item.stock / 50) * 100)}%` }}
-                          className={`h-full ${item.stock < 10 ? 'bg-red-500' : 'bg-brand-pink'}`}
+                          className={`h-full ${item.stock < 10 ? 'bg-red-500' : item.stock < 25 ? 'bg-amber-400' : 'bg-brand-pink'}`}
                         />
+                      </div>
+                      <div className="flex justify-between items-center pt-1">
+                        <span className={`text-[6px] font-black uppercase tracking-tighter ${item.stock > 40 ? 'text-green-500' : 'text-gray-400'}`}>
+                          {item.stock > 40 ? 'High Demand' : item.stock > 15 ? 'Stable' : 'Risk Factor'}
+                        </span>
+                        <span className="text-[6px] text-gray-300 font-bold uppercase truncate max-w-[60px]">Update: {item.lastUpdated}</span>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">
-                    {item.reserved} <span className="text-[7px] font-medium opacity-50 ml-1">UNITS</span>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">
+                        {item.reserved} <span className="text-[7px] font-medium opacity-50 ml-0.5">RES</span>
+                      </span>
+                      <span className={`text-[6px] font-bold uppercase tracking-tighter px-1.5 py-0.5 rounded-full w-fit ${item.stock < 10 ? 'bg-red-50 text-red-500' : 'bg-blue-50 text-blue-500'}`}>
+                        {item.stock < 10 ? 'Critical' : 'Secured'}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <p className="text-[11px] font-black text-brand-dark">₹{item.price * item.stock}</p>
-                    <p className="text-[7px] text-gray-400 uppercase tracking-tighter mt-1">Retail Est.</p>
+                    <p className="text-[11px] font-black text-brand-dark leading-none">₹{item.price * item.stock}</p>
+                    <p className="text-[7px] text-gray-400 uppercase tracking-tighter mt-1">Live Valuation</p>
                   </td>
                 </tr>
               ))}
@@ -172,8 +232,8 @@ const AdminInventory = () => {
         </div>
         {filteredItems.length === 0 && (
           <div className="p-20 text-center">
-             <div className="text-gray-200 mb-4 flex justify-center"><FiShoppingBag size={48} /></div>
-             <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">No Assets Found In Current Audit</p>
+            <div className="text-gray-200 mb-4 flex justify-center"><FiShoppingBag size={48} /></div>
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">No Assets Found In Current Audit</p>
           </div>
         )}
       </div>

@@ -37,7 +37,7 @@ const MiniTimer = () => {
 const ProductCard = ({ product }) => {
   const { addToCart, toggleWishlist, isInWishlist, isAuthenticated } = useShop();
   const [isAdded, setIsAdded] = useState(false);
-  const liked = isInWishlist(product.id);
+  const liked = isInWishlist(product._id);
   const navigate = useNavigate();
 
   const handleAdd = (e) => {
@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
       e.preventDefault();
       e.stopPropagation();
     }
-    
+
     // Auth Check
     if (!isAuthenticated) {
       navigate('/login');
@@ -69,12 +69,12 @@ const ProductCard = ({ product }) => {
     if (!isAuthenticated) {
       navigate('/login');
     } else {
-      navigate(`/product/${product.id}`);
+      navigate(`/product/${product._id}`);
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -106,68 +106,66 @@ const ProductCard = ({ product }) => {
         </AnimatePresence>
 
         {/* Wishlist Icon */}
-        <button 
+        <button
           type="button"
           onClick={handleWishlist}
-          className={`absolute top-2 right-2 z-30 transition-all p-1.5 rounded-full bg-white/90 backdrop-blur-sm shadow-md active:scale-90 ${
-            liked ? 'text-brand-pink scale-110' : 'text-gray-300 hover:text-brand-pink'
-          }`}
+          className={`absolute top-2 right-2 z-30 transition-all p-1.5 rounded-full bg-white/90 backdrop-blur-sm shadow-md active:scale-90 ${liked ? 'text-brand-pink scale-110' : 'text-gray-300 hover:text-brand-pink'
+            }`}
         >
           <FiHeart className={`w-3 h-3 ${liked ? 'fill-current' : ''}`} />
         </button>
-        
+
         {/* Image - Filling the card proper */}
         <div className="w-full h-full overflow-hidden relative z-10 rounded-2xl bg-white/50 shadow-inner group">
-          <img 
-            src={product.image} 
+          <img
+            src={product.image}
             alt={product.name}
             loading="lazy"
             className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
           />
           {product.discount && (
-             <div className="absolute bottom-2 left-2 right-2 bg-white/70 backdrop-blur-sm py-1 px-2 rounded-lg border border-brand-pink/5 z-20 hidden md:block">
-               <p className="text-[7px] font-black text-brand-dark uppercase tracking-widest text-center">
-                 ⚡ Limited Stock Available
-               </p>
-             </div>
+            <div className="absolute bottom-2 left-2 right-2 bg-white/70 backdrop-blur-sm py-1 px-2 rounded-lg border border-brand-pink/5 z-20 hidden md:block">
+              <p className="text-[7px] font-black text-brand-dark uppercase tracking-widest text-center">
+                ⚡ Limited Stock Available
+              </p>
+            </div>
           )}
         </div>
-        
+
         {/* Ultra-Compact Quick Add Overlay */}
         <div className="absolute inset-x-3 md:inset-x-4 bottom-0 z-30 lg:translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-          <button 
+          <button
             type="button"
             onClick={handleAdd}
-            className={`w-full py-3 rounded-none flex items-center justify-center space-x-2 transition-all text-[8px] font-black uppercase tracking-[0.2em] shadow-2xl active:scale-95 mb-2 ${
-              isAdded ? 'bg-brand-gold text-white' : 'bg-[#5C2E3E] text-white'
-            }`}
+            className={`w-full py-3 rounded-none flex items-center justify-center space-x-2 transition-all text-[8px] font-black uppercase tracking-[0.2em] shadow-2xl active:scale-95 mb-2 ${isAdded ? 'bg-brand-gold text-white' : 'bg-[#5C2E3E] text-white'
+              }`}
           >
             {isAdded ? (
-                <div className="flex items-center gap-1.5">
-                  <FiCheck className="w-3 h-3" />
-                  <span>Collected</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5">
-                  <FiShoppingBag className="w-3 h-3" />
-                  <span>Add to Bag</span>
-                </div>
-              )}
+              <div className="flex items-center gap-1.5">
+                <FiCheck className="w-3 h-3" />
+                <span>Collected</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <FiShoppingBag className="w-3 h-3" />
+                <span>Add to Bag</span>
+              </div>
+            )}
           </button>
         </div>
       </div>
-      
+
       <div className="p-3 text-left flex flex-col flex-1 bg-transparent relative">
         <h3 className="font-sans font-bold text-[10px] md:text-[11px] text-gray-800 mb-1.5 line-clamp-2 leading-tight min-h-[2.4em]">
           {product.name}
         </h3>
-        
+
         <div className="flex items-center gap-1.5 mb-2">
           <div className="flex items-center gap-0.5">
             {[...Array(5)].map((_, i) => (
-              <FiStar 
-                key={i} 
-                className={`w-2.5 h-2.5 ${i < (product.rating || 4) ? "fill-brand-gold text-brand-gold" : "text-gray-100"}`} 
+              <FiStar
+                key={i}
+                className={`w-2.5 h-2.5 ${i < (product.rating || 4) ? "fill-brand-gold text-brand-gold" : "text-gray-100"}`}
               />
             ))}
           </div>
@@ -185,15 +183,15 @@ const ProductCard = ({ product }) => {
             )}
           </div>
           <div className="flex items-center gap-1.5">
-             <div className="flex items-center gap-1 bg-green-50 px-1.5 py-0.5 rounded border border-green-100">
-               <FiCheck className="w-2.5 h-2.5 text-green-600" />
-               <span className="text-green-600 font-bold text-[7px] uppercase tracking-tighter">Fast Delivery</span>
-             </div>
-             {product.discount && (
-                <span className="text-[#5C2E3E] font-black text-[7px] uppercase tracking-tighter border-l border-gray-200 pl-1.5">
-                  Ends Soon
-                </span>
-             )}
+            <div className="flex items-center gap-1 bg-green-50 px-1.5 py-0.5 rounded border border-green-100">
+              <FiCheck className="w-2.5 h-2.5 text-green-600" />
+              <span className="text-green-600 font-bold text-[7px] uppercase tracking-tighter">Fast Delivery</span>
+            </div>
+            {product.discount && (
+              <span className="text-[#5C2E3E] font-black text-[7px] uppercase tracking-tighter border-l border-gray-200 pl-1.5">
+                Ends Soon
+              </span>
+            )}
           </div>
         </div>
       </div>

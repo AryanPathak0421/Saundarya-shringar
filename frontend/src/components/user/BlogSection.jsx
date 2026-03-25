@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IoClose } from 'react-icons/io5';
 import { useSearchParams } from 'react-router-dom';
+import api from '../../utils/api';
 import blogFloating1 from '../../assets/images/blog_floating_1.png';
 import blogFloating2 from '../../assets/images/blog_floating_2.png';
 import blogFloating3 from '../../assets/images/blog_floating_3.png';
@@ -106,13 +107,29 @@ const blogs = [
 const BlogSection = () => {
   const [searchParams] = useSearchParams();
   const catParam = searchParams.get('category');
-  
+
+  const [dynamicBlogs, setDynamicBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
-  const filteredBlogs = catParam 
-    ? blogs.filter(b => b.category.toLowerCase() === catParam.toLowerCase())
-    : blogs;
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await api.get('/blogs');
+        setDynamicBlogs(res.data.data.blogs);
+      } catch (err) {
+        console.error('Failed to fetch blogs:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  const filteredBlogs = catParam
+    ? dynamicBlogs.filter(b => b.category.toLowerCase() === catParam.toLowerCase())
+    : dynamicBlogs;
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -133,10 +150,10 @@ const BlogSection = () => {
   return (
     <section className="pt-6 md:pt-10 pb-12 md:pb-24 bg-[#FEFAF6] overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
-        
+
         {/* COMPACT JOURNAL HERO - EXACT TYPOGRAPHY MATCH */}
         <div className="relative mb-6 md:mb-10 text-center pt-0 max-w-5xl mx-auto">
-          
+
           <motion.span
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -167,7 +184,7 @@ const BlogSection = () => {
 
           {/* CENTRAL HEADING - High Contrast Serif - Clean Transparent Look */}
           <div className="relative w-full flex justify-center items-center py-2 md:py-4 my-1 md:my-2">
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -209,56 +226,63 @@ const BlogSection = () => {
         </div>
 
         {/* COMPACT BLOG CARDS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-          {displayedBlogs.map((blog, index) => (
-            <motion.div 
-              key={blog.id} 
-              onClick={() => setSelectedBlog(blog)}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="flex flex-col group cursor-pointer max-w-[280px] md:max-w-[320px] mx-auto w-full"
-            >
-              <div className="relative overflow-hidden mb-4 aspect-square bg-gray-50 shadow-lg border border-brand-pink/5">
-                <span className="absolute top-3 left-3 z-10 bg-brand-pink/90 text-brand-dark px-3 py-1 text-[7px] md:text-[8px] font-bold tracking-widest uppercase shadow-sm">
-                  {blog.category}
-                </span>
-                <img 
-                  src={blog.image} 
-                  alt={blog.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
-              
-              <div className="space-y-2 px-1 text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-2 text-gray-400 text-[8px] md:text-[10px] font-bold tracking-widest uppercase">
-                  <span>{blog.date}</span>
-                  <span className="w-1 h-1 bg-brand-gold/20 rounded-full"></span>
-                  <span>{blog.readTime}</span>
+        {loading ? (
+          <div className="py-20 text-center animate-pulse">
+            <div className="w-10 h-10 border-4 border-brand-pink border-t-brand-gold rounded-full mx-auto mb-4 animate-spin"></div>
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest tracking-[0.4em]">Retrieving Journal...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            {displayedBlogs.map((blog, index) => (
+              <motion.div
+                key={blog._id}
+                onClick={() => setSelectedBlog(blog)}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="flex flex-col group cursor-pointer max-w-[280px] md:max-w-[320px] mx-auto w-full"
+              >
+                <div className="relative overflow-hidden mb-4 aspect-square bg-gray-50 shadow-lg border border-brand-pink/5">
+                  <span className="absolute top-3 left-3 z-10 bg-brand-pink/90 text-brand-dark px-3 py-1 text-[7px] md:text-[8px] font-bold tracking-widest uppercase shadow-sm">
+                    {blog.category}
+                  </span>
+                  <img
+                    src={blog.image}
+                    alt={blog.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
                 </div>
-                
-                <h3 className="text-sm md:text-xl font-serif font-bold text-[#5C2E3E] leading-snug group-hover:text-brand-gold transition-colors duration-300 uppercase tracking-tight">
-                  {blog.title}
-                </h3>
-                
-                <p className="text-gray-500 text-[11px] md:text-[14px] leading-relaxed font-sans opacity-70 line-clamp-2 px-2 md:px-0">
-                  {blog.excerpt}
-                </p>
-                
-                <div className="pt-2">
-                  <button className="inline-flex items-center gap-1.5 text-[8px] md:text-[9px] font-black tracking-[0.2em] uppercase text-brand-dark group-hover:text-brand-gold transition-all duration-300 border-b border-brand-gold/10 group-hover:border-brand-gold pb-1">
-                    READ STORY
-                  </button>
+
+                <div className="space-y-2 px-1 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2 text-gray-400 text-[8px] md:text-[10px] font-bold tracking-widest uppercase">
+                    <span>{blog.date}</span>
+                    <span className="w-1 h-1 bg-brand-gold/20 rounded-full"></span>
+                    <span>{blog.readTime}</span>
+                  </div>
+
+                  <h3 className="text-sm md:text-xl font-serif font-bold text-[#5C2E3E] leading-snug group-hover:text-brand-gold transition-colors duration-300 uppercase tracking-tight">
+                    {blog.title}
+                  </h3>
+
+                  <p className="text-gray-500 text-[11px] md:text-[14px] leading-relaxed font-sans opacity-70 line-clamp-2 px-2 md:px-0">
+                    {blog.excerpt}
+                  </p>
+
+                  <div className="pt-2">
+                    <button className="inline-flex items-center gap-1.5 text-[8px] md:text-[9px] font-black tracking-[0.2em] uppercase text-brand-dark group-hover:text-brand-gold transition-all duration-300 border-b border-brand-gold/10 group-hover:border-brand-gold pb-1">
+                      READ STORY
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         <div className="text-center mt-16 md:mt-24">
           {!showAll && (
-            <motion.button 
+            <motion.button
               onClick={() => setShowAll(true)}
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
@@ -268,7 +292,7 @@ const BlogSection = () => {
             </motion.button>
           )}
           {showAll && (
-            <motion.button 
+            <motion.button
               onClick={() => setShowAll(false)}
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
@@ -284,21 +308,21 @@ const BlogSection = () => {
       <AnimatePresence>
         {selectedBlog && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedBlog(null)}
               className="absolute inset-0 bg-brand-dark/60 backdrop-blur-sm"
             />
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-4xl bg-white shadow-2xl overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
             >
-              <button 
+              <button
                 onClick={() => setSelectedBlog(null)}
                 className="absolute top-4 right-4 z-20 p-2 bg-white/80 backdrop-blur-md rounded-full text-brand-dark hover:bg-brand-pink transition-colors"
                 aria-label="Close modal"
@@ -307,9 +331,9 @@ const BlogSection = () => {
               </button>
 
               <div className="w-full md:w-1/2 h-64 md:h-auto overflow-hidden">
-                <img 
-                  src={selectedBlog.image} 
-                  alt={selectedBlog.title} 
+                <img
+                  src={selectedBlog.image}
+                  alt={selectedBlog.title}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -339,7 +363,7 @@ const BlogSection = () => {
                   <span className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">
                     Reading Time: {selectedBlog.readTime}
                   </span>
-                  <button 
+                  <button
                     onClick={() => setSelectedBlog(null)}
                     className="text-[10px] font-black tracking-[0.2em] uppercase text-brand-dark border-b-2 border-brand-gold/40 hover:border-brand-gold transition-all"
                   >
