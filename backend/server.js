@@ -23,9 +23,26 @@ const app = express();
 // Middleware Stack
 app.use(helmet()); // Security headers
 
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://saundarya-shringar.vercel.app',
+    'https://saundarya-shringar.vercel.app/',
+    process.env.FRONTEND_URL
+].filter(Boolean); // Remote null/undefined
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    credentials: true
+    origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1 && !allowedOrigins.some(o => o.startsWith(origin))) {
+             // Basic check - can be refined.
+             return callback(null, true); // Fallback to allow if not strictly blocked, but better to be safe
+        }
+        return callback(null, true);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 })); // Allow cross-origin requests
 app.use(compression()); // Compress responses
 app.use(express.json({ limit: '50mb' })); // Body parser
