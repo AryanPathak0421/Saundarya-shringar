@@ -31,20 +31,7 @@ const allowedOrigins = [
 
 // Cors Configuration
 app.use(cors({
-    origin: function (origin, callback) {
-        // allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        // Remove trailing slash for comparison if present
-        const sanitizedOrigin = origin.replace(/\/$/, "");
-        
-        if (allowedOrigins.some(o => o.replace(/\/$/, "") === sanitizedOrigin)) {
-            return callback(null, true);
-        } else {
-            console.warn(`Origin ${origin} not allowed by CORS`);
-            return callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: '*', // Temporarily allow all for debugging Render/Vercel issues
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
