@@ -26,19 +26,24 @@ app.use(helmet()); // Security headers
 const allowedOrigins = [
     'http://localhost:5173',
     'https://saundarya-shringar.vercel.app',
-    'https://saundarya-shringar.vercel.app/',
     process.env.FRONTEND_URL
-].filter(Boolean); // Remote null/undefined
+].filter(Boolean); // Remove null/undefined
 
+// Cors Configuration
 app.use(cors({
     origin: function (origin, callback) {
         // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1 && !allowedOrigins.some(o => o.startsWith(origin))) {
-             // Basic check - can be refined.
-             return callback(null, true); // Fallback to allow if not strictly blocked, but better to be safe
+        
+        // Remove trailing slash for comparison if present
+        const sanitizedOrigin = origin.replace(/\/$/, "");
+        
+        if (allowedOrigins.some(o => o.replace(/\/$/, "") === sanitizedOrigin)) {
+            return callback(null, true);
+        } else {
+            console.warn(`Origin ${origin} not allowed by CORS`);
+            return callback(new Error('Not allowed by CORS'));
         }
-        return callback(null, true);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
